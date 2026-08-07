@@ -1,0 +1,66 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "typescript",
+    "import",
+    "unicorn",
+    "oxc"
+  ],
+  "categories": {
+    "correctness": "warn",
+    "perf": "warn"
+  },
+  "env": {
+    "builtin": true
+  },
+  "ignorePatterns": [
+    "dist/**",
+    "node_modules/**",
+    ".astro/**"
+  ],
+  "rules": {
+    "eqeqeq": ["error", "always", { "null": "ignore" }],
+    "eslint/no-unused-vars": "error",
+    "import/first": "error",
+    "import/no-duplicates": "error",
+    "no-console": "warn",
+    "no-debugger": "error",
+    "no-duplicate-case": "error",
+    "no-empty": ["error", { "allowEmptyCatch": true }],
+    "no-eval": "error",
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": false,
+        "variables": false
+      }
+    ],
+    "no-var": "error",
+    "prefer-const": ["error", { "destructuring": "all" }],
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx", "**/*.astro"],
+      "rules": {
+        "no-use-before-define": "off"
+      }
+    },
+    {
+      "files": ["**/*.d.ts"],
+      "rules": {
+        "no-useless-constructor": "off",
+        "no-unused-vars": "off"
+      }
+    }
+  ]
+}
