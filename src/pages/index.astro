@@ -1,14 +1,14 @@
 ---
 import Footer from '../components/Footer.astro';
 import Header from '../components/header/Header.astro';
-import Hero from '../components/Hero.astro';
+import Main from '../components/Main.astro';
+import MenuDrawer from '../components/drawer/MenuDrawer.astro';
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout>
+<Layout title="Aitorias - Front-End Developer">
 	<Header />
-	<main>
-		<Hero />
-	</main>
-	<Footer />
+	<Main />
+  <Footer />
+	<MenuDrawer />
 </Layout>
