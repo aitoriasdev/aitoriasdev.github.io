@@ -1,0 +1,61 @@
+---
+interface NavItem {
+  label: string;
+  href: string;
+}
+
+const NAV_ITEMS: NavItem[] = [
+  { label: 'About', href: '#about' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Contact', href: '#contact' },
+];
+---
+
+<nav aria-label="Main Navigation">
+  <!-- Desktop Navigation -->
+  <ul class="hidden items-center gap-8 md:flex">
+    {NAV_ITEMS.map((item) => (
+      <li>
+        <a
+          href={item.href}
+          class="text-sm font-medium text-text-muted-light transition-colors hover:text-accent-primary dark:text-text-muted-dark dark:hover:text-accent-primary"
+        >
+          {item.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <!-- Mobile Navigation (No JS Required) -->
+  <details class="group relative md:hidden">
+    <summary
+      class="flex cursor-pointer items-center rounded-lg p-2 text-text-main-light hover:bg-surface-light dark:text-text-main-dark dark:hover:bg-surface-dark list-none [&::-webkit-details-marker]:hidden"
+      aria-label="Toggle Navigation Menu"
+    >
+      <!-- Hamburger Icon -->
+      <svg class="h-6 w-6 group-open:hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+      <!-- Close Icon -->
+      <svg class="hidden h-6 w-6 group-open:block" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </summary>
+
+    <div class="absolute right-0 top-full mt-2 w-48 rounded-xl border border-border-light bg-surface-light/95 p-3 shadow-xl backdrop-blur-md dark:border-border-dark dark:bg-surface-dark/95">
+      <ul class="flex flex-col gap-2">
+        {NAV_ITEMS.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="block rounded-lg px-3 py-2 text-sm font-medium text-text-main-light transition-colors hover:bg-bg-light hover:text-accent-primary dark:text-text-main-dark dark:hover:bg-bg-dark dark:hover:text-accent-primary"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </details>
+</nav>

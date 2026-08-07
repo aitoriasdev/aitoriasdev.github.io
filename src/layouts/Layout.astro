@@ -1,3 +1,7 @@
+---
+import "../styles/global.css";
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -7,18 +11,15 @@
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<link rel="sitemap" href="/sitemap-index.xml" />
-		<title>Astro Basics</title>
+		<title>Front End Developer - Aitorias</title>
+		<script is:inline>
+			const theme = localStorage.getItem('theme') || 'system';
+			const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+			document.documentElement.classList.toggle('dark', isDark);
+		</script>
 	</head>
-	<body>
+	<body class="bg-bg-light text-text-main-light transition-colors dark:bg-bg-dark dark:text-text-main-dark">
 		<slot />
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
