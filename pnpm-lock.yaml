@@ -28,7 +28,7 @@ importers:
         specifier: ^17.3.0
         version: 17.3.0
       node:
-        specifier: runtime:^24.19.0
+        specifier: runtime:^24.0.0
         version: runtime:24.19.0
       oxlint:
         specifier: ^1.77.0
