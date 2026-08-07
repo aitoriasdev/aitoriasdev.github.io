@@ -1,0 +1,151 @@
+---
+import NavLink from '../header/menu/NavLink.astro';
+import Logo from '../header/Logo.astro';
+import { NAV_ITEMS, type NavItem } from '../../config/navigation';
+
+interface Props {
+  items?: NavItem[];
+}
+
+const { items = NAV_ITEMS } = Astro.props;
+---
+<div role="presentation">
+  <!-- Mobile Backdrop Overlay -->
+  <div
+    id="mobile-backdrop"
+    class="fixed inset-0 z-40 bg-bg-dark/60 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm md:hidden"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Mobile Sidebar Drawer -->
+  <aside
+    id="mobile-sidebar"
+    class="fixed top-0 right-0 z-50 h-full w-72 translate-x-full border-l border-border-light bg-bg-light/95 p-6 shadow-2xl backdrop-blur-md transition-transform duration-300 ease-in-out dark:border-border-dark dark:bg-bg-dark/95 md:hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="drawer-title"
+    aria-hidden="true"
+  >
+    <div class="flex h-full flex-col justify-between">
+      <!-- Drawer Header -->
+      <div>
+        <div class="flex items-center justify-between pb-4">
+          <div id="drawer-title">
+            <Logo />
+          </div>
+          <button
+            id="mobile-menu-close"
+            type="button"
+            class="flex h-9 w-9 items-center justify-center rounded-lg text-text-muted-light transition-colors hover:bg-surface-light hover:text-text-main-light focus-visible:outline-2 focus-visible:outline-accent-primary dark:text-text-muted-dark dark:hover:bg-surface-dark dark:hover:text-text-main-dark"
+            aria-label="Close navigation menu"
+          >
+            <svg class="h-5 w-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <!-- Drawer Links -->
+        <nav aria-label="Mobile Navigation">
+          <ul class="flex flex-col gap-2">
+            {items.map((item) => (
+              <li>
+                <NavLink href={item.href} label={item.label} variant="mobile" />
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+  function initMobileMenu() {
+    const toggleBtn = document.getElementById('mobile-menu-toggle') as HTMLButtonElement | null;
+    const closeBtn = document.getElementById('mobile-menu-close') as HTMLButtonElement | null;
+    const sidebar = document.getElementById('mobile-sidebar') as HTMLElement | null;
+    const backdrop = document.getElementById('mobile-backdrop') as HTMLElement | null;
+    const navLinks = document.querySelectorAll('.mobile-nav-link');
+
+    if (!toggleBtn || !sidebar || !backdrop) return;
+
+    let isOpen = false;
+
+    function getFocusableElements(): HTMLElement[] {
+      if (!sidebar) return [];
+      return Array.from(
+        sidebar.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+    }
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
+        closeMenu();
+        toggleBtn?.focus();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const focusables = getFocusableElements();
+        if (focusables.length === 0) return;
+
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    function openMenu() {
+      isOpen = true;
+      toggleBtn?.setAttribute('aria-expanded', 'true');
+      sidebar?.setAttribute('aria-hidden', 'false');
+      backdrop?.setAttribute('aria-hidden', 'false');
+
+      sidebar?.classList.remove('translate-x-full');
+      backdrop?.classList.remove('opacity-0', 'pointer-events-none');
+      backdrop?.classList.add('opacity-100', 'pointer-events-auto');
+
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', handleKeyDown);
+
+      // Focus close button on open
+      setTimeout(() => closeBtn?.focus(), 100);
+    }
+
+    function closeMenu() {
+      isOpen = false;
+      toggleBtn?.setAttribute('aria-expanded', 'false');
+      sidebar?.setAttribute('aria-hidden', 'true');
+      backdrop?.setAttribute('aria-hidden', 'true');
+
+      sidebar?.classList.add('translate-x-full');
+      backdrop?.classList.remove('opacity-100', 'pointer-events-auto');
+      backdrop?.classList.add('opacity-0', 'pointer-events-none');
+
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
+    }
+
+    toggleBtn.addEventListener('click', () => (isOpen ? closeMenu() : openMenu()));
+    closeBtn?.addEventListener('click', () => {
+      closeMenu();
+      toggleBtn.focus();
+    });
+    backdrop.addEventListener('click', closeMenu);
+    navLinks.forEach((link) => link.addEventListener('click', closeMenu));
+  }
+
+  initMobileMenu();
+  document.addEventListener('astro:page-load', initMobileMenu);
+</script>
