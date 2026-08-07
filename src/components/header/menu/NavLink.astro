@@ -1,0 +1,20 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  variant?: 'desktop' | 'mobile';
+}
+
+const { href, label, variant = 'desktop' } = Astro.props;
+
+const styles = {
+  desktop:
+    'text-sm font-medium text-text-muted-light transition-colors hover:text-accent-primary dark:text-text-muted-dark dark:hover:text-accent-primary',
+  mobile:
+    'mobile-nav-link block rounded-lg px-4 py-3 text-base font-semibold text-text-main-light transition-colors hover:bg-surface-light hover:text-accent-primary dark:text-text-main-dark dark:hover:bg-surface-dark dark:hover:text-accent-primary',
+};
+---
+
+<a href={href} class={styles[variant]}>
+  {label}
+</a>

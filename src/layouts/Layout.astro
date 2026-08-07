@@ -1,5 +1,12 @@
 ---
 import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = 'aitorias.dev', description = 'Front End Developer with more than 10 years of experience in web development' } = Astro.props;
 ---
 
 <!doctype html>
@@ -7,11 +14,12 @@ import "../styles/global.css";
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content={description} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<link rel="sitemap" href="/sitemap-index.xml" />
-		<title>Front End Developer - Aitorias</title>
+		<title>{title}</title>
 		<script is:inline>
 			const theme = localStorage.getItem('theme') || 'system';
 			const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -20,6 +28,12 @@ import "../styles/global.css";
 		</script>
 	</head>
 	<body class="bg-bg-light text-text-main-light transition-colors dark:bg-bg-dark dark:text-text-main-dark">
+		<a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-accent-primary focus:px-4 focus:py-2 focus:text-bg-light focus:outline-none focus:ring-2 focus:ring-accent-primary dark:focus:text-bg-dark"
+    >
+      Skip to main content
+    </a>
 		<slot />
 	</body>
 </html>

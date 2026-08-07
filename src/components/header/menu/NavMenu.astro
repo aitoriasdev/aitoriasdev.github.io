@@ -1,0 +1,17 @@
+---
+import NavLink from './NavLink.astro';
+import MenuToggleButton from './MenuToggleButton.astro';
+import { NAV_ITEMS } from '../../../config/navigation';
+---
+
+<nav aria-label="Main Navigation">
+  <ul class="hidden items-center gap-8 md:flex">
+    {NAV_ITEMS.map((item) => (
+      <li>
+        <NavLink href={item.href} label={item.label} variant="desktop" />
+      </li>
+    ))}
+  </ul>
+
+  <MenuToggleButton />
+</nav>
