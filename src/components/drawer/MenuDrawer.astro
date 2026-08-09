@@ -1,7 +1,8 @@
 ---
-import NavLink from '../header/menu/NavLink.astro';
+import Icon from './../ui/Icon.astro'
 import Logo from '../header/Logo.astro';
-import { NAV_ITEMS, type NavItem } from '../../config/navigation';
+import NavLink from '../header/menu/NavLink.astro';
+import { NAV_ITEMS, type NavItem } from '../../config/navigation';;
 
 interface Props {
   items?: NavItem[];
@@ -39,12 +40,10 @@ const { items = NAV_ITEMS } = Astro.props;
         <button
           id="mobile-menu-close"
           type="button"
-          class="flex h-9 w-9 items-center justify-center rounded-xl bg-surface-light text-text-muted-light transition-colors hover:text-text-main-light focus-visible:outline-2 focus-visible:outline-accent-primary dark:bg-surface-dark dark:text-text-muted-dark dark:hover:text-text-main-dark"
+          class="flex h-9 w-9 items-center justify-center rounded-xl text-text-muted-light transition-colors hover:text-text-main-light focus-visible:outline-2 focus-visible:outline-accent-primary  dark:text-text-muted-dark dark:hover:text-text-main-dark"
           aria-label="Close navigation menu"
         >
-          <svg class="h-5 w-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+         <Icon name="close" class="h-5 w-5" />
         </button>
       </div>
 

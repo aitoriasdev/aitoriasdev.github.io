@@ -1,0 +1,83 @@
+---
+import ProjectCard from './../projects/project-card/ProjectCard.astro';
+import { PROJECTS } from '../../config/projects';
+import { ALL_TAGS } from '../../config/tags';
+---
+
+<section id="projects" class="mx-auto max-w-5xl px-6 py-20" aria-labelledby="projects-heading">
+  <!-- Section Title -->
+  <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <h2 id="projects-heading" class="text-2xl font-extrabold tracking-tight text-text-main-light sm:text-3xl dark:text-text-main-dark">
+        My Projects
+      </h2>
+      <p class="mt-1 text-sm text-text-muted-light dark:text-text-muted-dark">
+        Selected open-source work and applications.
+      </p>
+    </div>
+
+    <!-- Filter Tag Buttons -->
+    <div class="mt-6 flex flex-wrap gap-2 sm:mt-0" role="group" aria-label="Filter projects by technology">
+      {ALL_TAGS.map((tag, index) => (
+        <button
+          type="button"
+          data-filter={tag}
+          class:list={[
+            'filter-btn rounded-xl px-3.5 py-1.5 text-xs font-semibold shadow-sm transition-all focus-visible:outline-2 focus-visible:outline-accent-primary',
+            index === 0
+              ? 'bg-accent-primary text-bg-light dark:text-bg-dark'
+              : 'bg-surface-light text-text-muted-light hover:text-text-main-light dark:bg-surface-dark dark:text-text-muted-dark dark:hover:text-text-main-dark'
+          ]}
+          aria-pressed={index === 0 ? 'true' : 'false'}
+        >
+          {tag}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <!-- Projects Grid -->
+  <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {PROJECTS.map((project) => (
+      <ProjectCard project={project} />
+    ))}
+  </div>
+</section>
+
+<script>
+  function initProjectFilters() {
+    const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+    const cards = document.querySelectorAll<HTMLElement>('.project-card');
+
+    if (!filterBtns.length || !cards.length) return;
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const selectedTag = btn.getAttribute('data-filter');
+
+        // Update active button state
+        filterBtns.forEach((b) => {
+          b.setAttribute('aria-pressed', 'false');
+          b.className = 'filter-btn rounded-xl px-3.5 py-1.5 text-xs font-semibold shadow-sm transition-all focus-visible:outline-2 focus-visible:outline-accent-primary bg-surface-light text-text-muted-light hover:text-text-main-light dark:bg-surface-dark dark:text-text-muted-dark dark:hover:text-text-main-dark';
+        });
+
+        btn.setAttribute('aria-pressed', 'true');
+        btn.className = 'filter-btn rounded-xl px-3.5 py-1.5 text-xs font-semibold shadow-sm transition-all focus-visible:outline-2 focus-visible:outline-accent-primary bg-accent-primary text-bg-light dark:text-bg-dark';
+
+        // Filter cards
+        cards.forEach((card) => {
+          const cardTags = JSON.parse(card.getAttribute('data-tags') || '[]');
+
+          if (selectedTag === 'All' || cardTags.includes(selectedTag)) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+  }
+
+  initProjectFilters();
+  document.addEventListener('astro:page-load', initProjectFilters);
+</script>
