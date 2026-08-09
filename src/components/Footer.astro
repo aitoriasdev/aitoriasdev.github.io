@@ -13,7 +13,7 @@ const SOCIAL_LINKS: SocialLink[] = [
 ];
 ---
 
-<footer class="bg-surface-light/50 py-12 dark:bg-surface-dark/50">
+<footer class="bg-surface-light/50 py-10 dark:bg-surface-dark/50">
   <div class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 px-6 sm:flex-row">
 
     <div class="flex flex-col items-center gap-1 sm:items-start">
@@ -21,7 +21,7 @@ const SOCIAL_LINKS: SocialLink[] = [
         aitorias<span class="text-accent-primary">.dev</span>
       </a>
       <div class="flex gap-1 text-xs text-text-muted-light dark:text-text-muted-dark">
-        <span>&copy; {currentYear} Aitor. Built with</span>
+        <span>&copy; {currentYear} aitorias.dev. Built with</span>
         <a
           href="https://astro.build"
           target="_blank"
@@ -30,7 +30,15 @@ const SOCIAL_LINKS: SocialLink[] = [
         >
           Astro<span class="sr-only"> (opens in a new tab)</span>
         </a>
-        <span>& Tailwind CSS.</span>
+        <span>&</span>
+        <a
+          href="https://tailwindcss.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline hover:text-accent-primary focus-visible:outline-2 focus-visible:outline-accent-primary"
+        >
+          Tailwind CSS<span class="sr-only"> (opens in a new tab)</span>
+        </a>
       </div>
     </div>
 

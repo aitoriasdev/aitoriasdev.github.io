@@ -7,57 +7,69 @@ interface Props {
   items?: NavItem[];
 }
 
+const currentYear = new Date().getFullYear();
 const { items = NAV_ITEMS } = Astro.props;
 ---
-<div role="presentation">
-  <!-- Mobile Backdrop Overlay -->
-  <div
-    id="mobile-backdrop"
-    class="fixed inset-0 z-2 bg-bg-dark/60 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm md:hidden"
-    aria-hidden="true"
-  ></div>
 
-  <!-- Mobile Sidebar Drawer -->
-  <aside
-    id="mobile-sidebar"
-    class="fixed top-0 right-0 z-50 h-full w-72 translate-x-full border-l border-border-light bg-bg-light/95 p-6 shadow-2xl backdrop-blur-md transition-transform duration-300 ease-in-out dark:border-border-dark dark:bg-bg-dark/95 md:hidden"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="drawer-title"
-    aria-hidden="true"
-  >
-    <div class="flex h-full flex-col justify-between">
-      <!-- Drawer Header -->
-      <div>
-        <div class="flex items-center justify-between pb-4">
-          <div id="drawer-title">
-            <Logo />
-          </div>
-          <button
-            id="mobile-menu-close"
-            type="button"
-            class="flex h-9 w-9 items-center justify-center rounded-lg text-text-muted-light transition-colors hover:bg-surface-light hover:text-text-main-light focus-visible:outline-2 focus-visible:outline-accent-primary dark:text-text-muted-dark dark:hover:bg-surface-dark dark:hover:text-text-main-dark"
-            aria-label="Close navigation menu"
-          >
-            <svg class="h-5 w-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+<!-- Mobile Backdrop Overlay -->
+<div
+  id="mobile-backdrop"
+  class="fixed inset-0 z-40 bg-bg-dark/60 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm md:hidden"
+  aria-hidden="true"
+></div>
+
+<!-- Mobile Sidebar Drawer -->
+<aside
+  id="mobile-sidebar"
+  class="fixed top-0 right-0 z-50 h-full w-72 translate-x-full bg-bg-light/95 p-6 shadow-2xl backdrop-blur-md transition-transform duration-300 ease-in-out dark:bg-bg-dark/95 md:hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="drawer-title"
+  aria-hidden="true"
+>
+  <div class="flex h-full flex-col justify-between">
+
+    <!-- Drawer Header -->
+    <div>
+      <div class="flex items-center justify-between pb-6">
+        <div id="drawer-title">
+          <Logo />
         </div>
-        <!-- Drawer Links -->
-        <nav aria-label="Mobile Navigation">
-          <ul class="flex flex-col gap-2">
-            {items.map((item) => (
-              <li>
-                <NavLink href={item.href} label={item.label} variant="mobile" />
-              </li>
-            ))}
-          </ul>
-        </nav>
+
+        <button
+          id="mobile-menu-close"
+          type="button"
+          class="flex h-9 w-9 items-center justify-center rounded-xl bg-surface-light text-text-muted-light transition-colors hover:text-text-main-light focus-visible:outline-2 focus-visible:outline-accent-primary dark:bg-surface-dark dark:text-text-muted-dark dark:hover:text-text-main-dark"
+          aria-label="Close navigation menu"
+        >
+          <svg class="h-5 w-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
+
+      <!-- Drawer Links -->
+      <nav aria-label="Mobile Navigation">
+        <ul class="flex flex-col gap-3 pt-2">
+          {items.map((item) => (
+            <li>
+              <NavLink href={item.href} label={item.label} variant="mobile" />
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
-  </aside>
-</div>
+
+    <!-- Drawer Footer -->
+    <div>
+      <p class="text-xs text-text-muted-light dark:text-text-muted-dark">
+        <span>&copy; {currentYear}</span> aitorias<span class="text-accent-primary font-semibold">.dev</span>
+      </p>
+
+    </div>
+
+  </div>
+</aside>
 
 <script>
   function initMobileMenu() {
@@ -119,7 +131,6 @@ const { items = NAV_ITEMS } = Astro.props;
       document.body.style.overflow = 'hidden';
       document.addEventListener('keydown', handleKeyDown);
 
-      // Focus close button on open
       setTimeout(() => closeBtn?.focus(), 100);
     }
 
