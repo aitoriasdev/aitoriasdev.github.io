@@ -1,11 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "typescript",
-    "import",
-    "unicorn",
-    "oxc"
-  ],
+  "plugins": ["typescript", "import", "unicorn", "oxc"],
   "categories": {
     "correctness": "warn",
     "perf": "warn"
@@ -13,11 +8,7 @@
   "env": {
     "builtin": true
   },
-  "ignorePatterns": [
-    "dist/**",
-    "node_modules/**",
-    ".astro/**"
-  ],
+  "ignorePatterns": ["dist/**", "node_modules/**", ".astro/**"],
   "rules": {
     "eqeqeq": ["error", "always", { "null": "ignore" }],
     "eslint/no-unused-vars": "error",
@@ -46,7 +37,7 @@
       }
     ],
     "no-var": "error",
-    "prefer-const": ["error", { "destructuring": "all" }],
+    "prefer-const": ["error", { "destructuring": "all" }]
   },
   "overrides": [
     {
