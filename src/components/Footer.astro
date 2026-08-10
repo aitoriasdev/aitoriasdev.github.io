@@ -1,66 +1,28 @@
 ---
-import Icon from './ui/Icon.astro';
+import Link from './ui/Link.astro';
+import Logo from './ui/Logo.astro';
+import SocialLinks from './SocialLinks.astro';
 
 const currentYear = new Date().getFullYear();
-
-interface SocialLink {
-  label: string;
-  href: string;
-  icon: 'github' | 'linkedin';
-}
-
-const SOCIAL_LINKS: SocialLink[] = [
-  { label: 'GitHub', href: 'https://github.com/aitoriasdev', icon: 'github' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/aitordediego', icon: 'linkedin' },
-];
 ---
 
 <footer class="bg-surface-light/50 py-10 dark:bg-surface-dark/50">
   <div class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 px-6 sm:flex-row">
-    <div class="flex flex-col items-center gap-1 sm:items-start">
-      <a href="/" class="text-base font-bold tracking-tight text-text-main-light focus-visible:outline-2 focus-visible:outline-accent-primary dark:text-text-main-dark">
-        aitorias<span class="text-accent-primary">.dev</span>
-      </a>
-      <div class="flex gap-1 text-xs text-text-muted-light dark:text-text-muted-dark">
-        <span>&copy; {currentYear} aitorias.dev. Built with</span>
-        <a
-          href="https://astro.build"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="underline hover:text-accent-primary focus-visible:outline-2 focus-visible:outline-accent-primary"
-        >
-          Astro<span class="sr-only"> (opens in a new tab)</span>
-        </a>
-        <span>&</span>
-        <a
-          href="https://tailwindcss.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="underline hover:text-accent-primary focus-visible:outline-2 focus-visible:outline-accent-primary"
-        >
-          Tailwind CSS<span class="sr-only"> (opens in a new tab)</span>
-        </a>
+      <!-- Brand & Copyright -->
+      <div class="flex flex-col items-center gap-1 sm:items-start">
+        <Logo />
+        <div class="flex gap-1 text-xs text-text-muted-light dark:text-text-muted-dark">
+          <span>&copy; {currentYear} aitorias.dev. Built with</span>
+          <Link href="https://astro.build" isExternal class="underline hover:text-accent-primary">
+            Astro
+          </Link>
+          <span>&</span>
+          <Link href="https://tailwindcss.com/" isExternal class="underline hover:text-accent-primary">
+            Tailwind CSS
+          </Link>
+        </div>
       </div>
+      <!-- Social Links -->
+      <SocialLinks />
     </div>
-    <!-- Social Links -->
-      <nav aria-label="Social Links">
-        <ul class="flex flex-wrap items-center justify-center gap-6">
-          {SOCIAL_LINKS.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-text-muted-light transition-colors hover:bg-bg-light hover:text-accent-primary focus-visible:outline-2 focus-visible:outline-accent-primary dark:text-text-muted-dark dark:hover:bg-bg-dark dark:hover:text-accent-primary"
-              >
-                <Icon name={link.icon} class="h-4 w-4" />
-                <span>{link.label}</span>
-                <span class="sr-only"> (opens in a new tab)</span>
-                <Icon name="external" class="h-3 w-3 opacity-70" />
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-  </div>
 </footer>

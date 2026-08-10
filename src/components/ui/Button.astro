@@ -1,0 +1,45 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'button'> {
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg' | 'icon';
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const baseStyles =
+  'inline-flex items-center justify-center text-md gap-2 rounded-xl font-semibold transition-all duration-200 focus-visible:outline-2 focus-visible:outline-accent-primary disabled:pointer-events-none disabled:opacity-50';
+
+const variants = {
+  primary:
+    'bg-accent-primary text-bg-light shadow-sm hover:opacity-90 dark:text-bg-dark',
+  secondary:
+    'bg-surface-light text-text-main-light shadow-sm hover:bg-bg-light dark:bg-surface-dark dark:text-text-main-dark dark:hover:bg-bg-dark',
+  ghost:
+    'bg-transparent text-text-muted-light hover:bg-surface-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:bg-surface-dark dark:hover:text-text-main-dark',
+};
+
+const sizes = {
+  sm: 'px-3 py-1.5',
+  md: 'px-4 py-2',
+  lg: 'px-5 py-3',
+  icon: 'h-9 w-9 p-0',
+};
+---
+
+<button
+  type={type}
+  class:list={[baseStyles, variants[variant], sizes[size], className]}
+  {...rest}
+>
+  <slot />
+</button>
