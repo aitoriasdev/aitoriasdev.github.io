@@ -1,0 +1,27 @@
+---
+interface Props {
+  variant?: 'surface' | 'accent-soft' | 'status';
+  class?: string;
+}
+
+const { variant = 'surface', class: className = '' } = Astro.props;
+
+const variants = {
+  surface:
+    'bg-surface-light text-text-main-light shadow-2xs dark:bg-surface-dark dark:text-text-main-dark',
+  'accent-soft':
+    'bg-accent-primary/10 text-text-main-light dark:text-text-main-dark',
+  status:
+    'inline-flex items-center gap-2 rounded-full bg-accent-primary/10 px-3 py-1 text-xs font-semibold text-text-main-light dark:text-text-main-dark',
+};
+---
+
+<span
+  class:list={[
+    'rounded-lg px-2.5 py-1 text-sm font-medium',
+    variants[variant],
+    className,
+  ]}
+>
+  <slot />
+</span>

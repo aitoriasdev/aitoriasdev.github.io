@@ -1,8 +1,9 @@
 ---
-import Icon from './../ui/Icon.astro'
-import Logo from '../header/Logo.astro';
+import Icon from '../ui/Icon.astro';
+import Logo from '../ui/Logo.astro';
+import Button from '../ui/Button.astro';
 import NavLink from '../header/menu/NavLink.astro';
-import { NAV_ITEMS, type NavItem } from '../../config/navigation';;
+import { NAV_ITEMS, type NavItem } from '../../config/navigation';
 
 interface Props {
   items?: NavItem[];
@@ -12,14 +13,12 @@ const currentYear = new Date().getFullYear();
 const { items = NAV_ITEMS } = Astro.props;
 ---
 
-<!-- Mobile Backdrop Overlay -->
 <div
   id="mobile-backdrop"
   class="fixed inset-0 z-40 bg-bg-dark/60 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm md:hidden"
   aria-hidden="true"
 ></div>
 
-<!-- Mobile Sidebar Drawer -->
 <aside
   id="mobile-sidebar"
   class="fixed top-0 right-0 z-50 h-full w-72 translate-x-full bg-bg-light/95 p-6 shadow-2xl backdrop-blur-md transition-transform duration-300 ease-in-out dark:bg-bg-dark/95 md:hidden"
@@ -29,25 +28,20 @@ const { items = NAV_ITEMS } = Astro.props;
   aria-hidden="true"
 >
   <div class="flex h-full flex-col justify-between">
-
-    <!-- Drawer Header -->
     <div>
       <div class="flex items-center justify-between pb-6">
         <div id="drawer-title">
           <Logo />
         </div>
-
-        <button
+        <Button
           id="mobile-menu-close"
-          type="button"
-          class="flex h-9 w-9 items-center justify-center rounded-xl text-text-muted-light transition-colors hover:text-text-main-light focus-visible:outline-2 focus-visible:outline-accent-primary  dark:text-text-muted-dark dark:hover:text-text-main-dark"
+          variant="ghost"
+          size="icon"
           aria-label="Close navigation menu"
         >
-         <Icon name="close" class="h-5 w-5" />
-        </button>
+          <Icon name="close" class="h-5 w-5" />
+        </Button>
       </div>
-
-      <!-- Drawer Links -->
       <nav aria-label="Mobile Navigation">
         <ul class="flex flex-col gap-3 pt-2">
           {items.map((item) => (
@@ -58,15 +52,11 @@ const { items = NAV_ITEMS } = Astro.props;
         </ul>
       </nav>
     </div>
-
-    <!-- Drawer Footer -->
-    <div>
-      <p class="text-xs text-text-muted-light dark:text-text-muted-dark">
-        <span>&copy; {currentYear}</span> aitorias<span class="text-accent-primary font-semibold">.dev</span>
-      </p>
-
-    </div>
-
+      <div class="text-xs flex gap-1 items-center text-text-muted-light dark:text-text-muted-dark">
+        <span>&copy;</span>
+        <span>{currentYear}</span>
+        <Logo />
+      </div>
   </div>
 </aside>
 
@@ -147,11 +137,21 @@ const { items = NAV_ITEMS } = Astro.props;
       document.removeEventListener('keydown', handleKeyDown);
     }
 
-    toggleBtn.addEventListener('click', () => (isOpen ? closeMenu() : openMenu()));
+    toggleBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
     closeBtn?.addEventListener('click', () => {
       closeMenu();
       toggleBtn.focus();
     });
+
     backdrop.addEventListener('click', closeMenu);
     navLinks.forEach((link) => link.addEventListener('click', closeMenu));
   }

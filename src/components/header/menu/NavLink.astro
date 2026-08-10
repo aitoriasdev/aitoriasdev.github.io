@@ -1,4 +1,6 @@
 ---
+import Link from '../../ui/Link.astro';
+
 interface Props {
   href: string;
   label: string;
@@ -6,15 +8,36 @@ interface Props {
 }
 
 const { href, label, variant = 'desktop' } = Astro.props;
-
-const styles = {
-  desktop:
-    'text-sm font-medium text-text-muted-light transition-colors hover:text-accent-primary dark:text-text-muted-dark dark:hover:text-accent-primary',
-  mobile:
-    'mobile-nav-link block rounded-lg px-4 py-3 text-base font-semibold text-text-main-light transition-colors hover:bg-surface-light hover:text-accent-primary dark:text-text-main-dark dark:hover:bg-surface-dark dark:hover:text-accent-primary',
-};
+const pathname = Astro.url.pathname;
+const isActive = pathname === href || (href !== '/' && pathname.startsWith(href));
 ---
 
-<a href={href} class={styles[variant]}>
-  {label}
-</a>
+{
+  variant === 'mobile' ? (
+    <a
+      href={href}
+      aria-current={isActive ? 'page' : undefined}
+      class:list={[
+        'mobile-nav-link block w-full rounded-xl px-4 py-3 text-sm font-semibold transition-all',
+        isActive
+          ? 'bg-accent-primary text-bg-light dark:text-bg-dark'
+          : 'text-text-muted-light hover:bg-surface-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:bg-surface-dark dark:hover:text-text-main-dark',
+      ]}
+    >
+      {label}
+    </a>
+  ) : (
+    <Link
+      href={href}
+      aria-current={isActive ? 'page' : undefined}
+      class:list={[
+        'relative py-1 text-xs font-medium',
+        isActive
+          ? 'font-semibold text-accent-primary'
+          : 'text-text-muted-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:text-text-main-dark',
+      ]}
+    >
+      {label}
+    </Link>
+  )
+}
