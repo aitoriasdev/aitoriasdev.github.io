@@ -1,14 +1,23 @@
 ---
+import { getCollection, type CollectionEntry } from 'astro:content';
 import ProjectCard from './project-card/ProjectCard.astro';
 import ProjectFilters from './ProjectFilters.astro';
-import { PROJECTS } from '../../config/projects';
+import Link from '../ui/Link.astro';
+import Icon from '../ui/Icon.astro';
 
-const projectCount = PROJECTS.length;
+interface Props {
+  showViewAll?: boolean;
+}
+
+const { showViewAll = false } = Astro.props;
+
+const projects = await getCollection('projects');
+const projectCount = projects.length;
 ---
 
 <section id="projects" class="mx-auto max-w-5xl px-6 py-10 lg:py-20" aria-labelledby="projects-heading">
   <!-- Section Title & Filters -->
-  <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
     <div>
       <h2 id="projects-heading" class="text-3xl font-extrabold tracking-tight text-text-main-light sm:text-3xl dark:text-text-main-dark">
         My Projects
@@ -17,22 +26,29 @@ const projectCount = PROJECTS.length;
         Selected open-source work and applications.
       </p>
     </div>
-    <ProjectFilters />
+    <div class="flex items-center gap-4">
+      <ProjectFilters />
+    </div>
   </div>
   <!-- Dynamic Adaptive Grid Container -->
   <div
     class:list={[
       'mt-10 grid gap-6',
-      // If 1 project: Single centered max-width card
       projectCount === 1 && 'grid-cols-1 max-w-lg mx-auto',
-      // If 2 projects: 2-column balanced grid
       projectCount === 2 && 'grid-cols-1 md:grid-cols-2',
-      // If 3+ projects: Responsive 3-column grid
       projectCount >= 3 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
     ]}
   >
-    {PROJECTS.map((project) => (
+    {projects.map((project: CollectionEntry<'projects'>) => (
       <ProjectCard project={project} />
     ))}
+  </div>
+  <div class="mt-5">
+    {/* Conditionally render the "View All" link */}
+      {showViewAll && (
+        <Link href="/projects" variant="button-secondary">
+          <span>View all projects</span>
+        </Link>
+      )}
   </div>
 </section>
