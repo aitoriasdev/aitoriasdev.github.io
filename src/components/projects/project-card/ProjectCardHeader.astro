@@ -2,17 +2,20 @@
 import Badge from '../../ui/Badge.astro';
 
 interface Props {
+  id: string;
   title: string;
   description: string;
   tags: string[];
 }
 
-const { title, description, tags } = Astro.props;
+const { id, title, description, tags } = Astro.props;
 ---
 
 <div class="pt-5">
   <h3 class="text-lg font-bold text-text-main-light dark:text-text-main-dark">
-    {title}
+    <a href={`/projects/${id}`} class="hover:underline">
+      {title}
+    </a>
   </h3>
   <p class="mt-2 text-md leading-relaxed text-text-muted-light dark:text-text-muted-dark">
     {description}

@@ -1,4 +1,7 @@
 ---
+import Footer from '../components/Footer.astro';
+import Header from '../components/header/Header.astro';
+import MenuDrawer from '../components/drawer/MenuDrawer.astro';
 import "../styles/global.css";
 
 interface Props {
@@ -34,6 +37,11 @@ const { title = 'aitorias.dev', description = 'Front End Developer with more tha
     >
       Skip to main content
     </a>
-		<slot />
+    <Header />
+		<main id="main-content" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <MenuDrawer />
 	</body>
 </html>
