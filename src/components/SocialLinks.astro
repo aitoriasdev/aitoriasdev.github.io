@@ -1,0 +1,33 @@
+---
+import Icon from './ui/Icon.astro';
+import Link from './ui/Link.astro';
+
+interface SocialLink {
+  label: string;
+  href: string;
+  icon: 'github' | 'linkedin';
+}
+
+const SOCIAL_LINKS: SocialLink[] = [
+  { label: 'GitHub', href: 'https://github.com/aitoriasdev', icon: 'github' },
+  { label: 'LinkedIn', href: 'https://linkedin.com/in/aitordediego', icon: 'linkedin' },
+];
+---
+
+<nav aria-label="Social Links">
+  <ul class="flex flex-wrap items-center justify-center gap-4">
+  {SOCIAL_LINKS.map((link) => (
+    <li>
+      <Link
+      href={link.href}
+      isExternal
+      class="inline-flex items-center gap-1.5 rounded-xl bg-bg-light/80 px-3 py-1.5 text-xs font-medium text-text-muted-light shadow-2xs hover:text-accent-primary dark:bg-bg-dark/80 dark:text-text-muted-dark"
+      >
+        <Icon name={link.icon} class="h-4 w-4" />
+        <span>{link.label}</span>
+        <Icon name="external" class="h-3 w-3 opacity-70" />
+      </Link>
+    </li>
+  ))}
+  </ul>
+</nav>

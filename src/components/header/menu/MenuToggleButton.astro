@@ -1,13 +1,22 @@
-<button
+---
+import Button from '../../ui/Button.astro';
+---
+
+<Button
   id="mobile-menu-toggle"
-  type="button"
-  class="relative z-50 flex h-10 w-10 items-center justify-center rounded-lg p-2 text-text-main-light transition-colors hover:bg-surface-light focus:outline-none dark:text-text-main-dark dark:hover:bg-surface-dark md:hidden"
+  variant="ghost"
+  size="sm"
+  class="relative z-50 flex items-center gap-2 md:hidden"
   aria-label="Toggle Navigation Menu"
   aria-expanded="false"
 >
-  <div class="relative flex h-5 w-5 flex-col justify-between">
-    <span id="bar-top" class="h-0.5 w-full rounded-full bg-current transition-all duration-300 origin-center"></span>
+  <span class="text-sm font-semibold tracking-wide text-text-main-light dark:text-text-main-dark">
+    Menu
+  </span>
+
+  <div class="relative flex h-4 w-4 flex-col justify-between" aria-hidden="true">
+    <span id="bar-top" class="h-0.5 w-full origin-center rounded-full bg-current transition-all duration-300"></span>
     <span id="bar-mid" class="h-0.5 w-full rounded-full bg-current transition-all duration-300"></span>
-    <span id="bar-bot" class="h-0.5 w-full rounded-full bg-current transition-all duration-300 origin-center"></span>
+    <span id="bar-bot" class="h-0.5 w-full origin-center rounded-full bg-current transition-all duration-300"></span>
   </div>
-</button>
+</Button>
