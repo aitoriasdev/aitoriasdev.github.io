@@ -1,0 +1,98 @@
+---
+import Button from '../ui/Button.astro';
+import { ALL_TAGS } from '../../config/tags';
+---
+
+<div
+  class="custom-scrollbar mt-6 -mx-6 flex items-center gap-2 overflow-x-auto px-6 pb-3 pt-1 sm:mx-0 sm:mt-0 sm:flex-wrap sm:overflow-x-visible sm:px-0 sm:pb-0 sm:pt-0"
+  role="group"
+  aria-label="Filter projects by technology"
+>
+  {ALL_TAGS.map((tag, index) => (
+    <Button
+      data-filter={tag}
+      data-active={index === 0 ? 'true' : 'false'}
+      variant="ghost"
+      size="sm"
+      class:list={[
+        'filter-btn shrink-0 transition-all duration-200',
+        'data-[active=true]:bg-accent-primary data-[active=true]:text-bg-light data-[active=true]:shadow-sm dark:data-[active=true]:text-bg-dark',
+        'data-[active=false]:bg-surface-light data-[active=false]:text-text-muted-light data-[active=false]:hover:text-text-main-light dark:data-[active=false]:bg-surface-dark data-[active=false]:dark:text-text-muted-dark data-[active=false]:dark:hover:text-text-main-dark'
+      ]}
+      aria-pressed={index === 0 ? 'true' : 'false'}
+    >
+      {tag}
+    </Button>
+  ))}
+</div>
+
+<script>
+  function initProjectFilters() {
+    const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+    const cards = document.querySelectorAll<HTMLElement>('.project-card');
+
+    if (!filterBtns.length || !cards.length) return;
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const selectedTag = btn.getAttribute('data-filter');
+
+        filterBtns.forEach((b) => {
+          b.setAttribute('data-active', 'false');
+          b.setAttribute('aria-pressed', 'false');
+        });
+
+        btn.setAttribute('data-active', 'true');
+        btn.setAttribute('aria-pressed', 'true');
+
+        cards.forEach((card) => {
+          const cardTags = JSON.parse(card.getAttribute('data-tags') || '[]');
+
+          if (selectedTag === 'All' || cardTags.includes(selectedTag)) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+  }
+
+  initProjectFilters();
+  document.addEventListener('astro:page-load', initProjectFilters);
+</script>
+
+<style>
+  @media (max-width: 639px) {
+    /* Standard CSS Scrollbar (Firefox/Modern Browsers) */
+    .custom-scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-accent-primary, #888) rgba(0, 0, 0, 0.05);
+    }
+
+    /* WebKit Custom Scrollbar (Chrome, Safari, Brave, Edge) */
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 4px;
+      display: block;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 9999px;
+    }
+
+    :global(.dark) .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: var(--color-accent-primary, #888);
+      border-radius: 9999px;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      opacity: 0.8;
+    }
+  }
+</style>
