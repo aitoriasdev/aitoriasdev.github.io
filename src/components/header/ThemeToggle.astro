@@ -34,6 +34,7 @@ import Icon from '../ui/Icon.astro';
 
   function initThemeToggle() {
     const buttons = document.querySelectorAll<HTMLButtonElement>('.theme-btn');
+
     if (!buttons.length) return;
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -44,25 +45,27 @@ import Icon from '../ui/Icon.astro';
 
     function applyTheme(theme: Theme) {
       const isDark = theme === 'dark' || (theme === 'system' && mediaQuery.matches);
+
       document.documentElement.classList.toggle('dark', isDark);
 
-      buttons.forEach((btn) => {
-        const val = btn.getAttribute('data-theme-value');
+      buttons.forEach((button) => {
+        const val = button.getAttribute('data-theme-value');
         const isActive = val === theme;
 
-        btn.classList.toggle('bg-bg-light', isActive);
-        btn.classList.toggle('dark:bg-bg-dark', isActive);
-        btn.classList.toggle('text-accent-primary', isActive);
-        btn.classList.toggle('shadow-sm', isActive);
+        button.classList.toggle('bg-bg-light', isActive);
+        button.classList.toggle('dark:bg-bg-dark', isActive);
+        button.classList.toggle('text-accent-primary', isActive);
+        button.classList.toggle('shadow-sm', isActive);
 
-        btn.classList.toggle('text-text-muted-light', !isActive);
-        btn.classList.toggle('dark:text-text-muted-dark', !isActive);
+        button.classList.toggle('text-text-muted-light', !isActive);
+        button.classList.toggle('dark:text-text-muted-dark', !isActive);
       });
     }
 
-    buttons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const val = btn.getAttribute('data-theme-value') as Theme;
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const val = button.getAttribute('data-theme-value') as Theme;
+
         localStorage.setItem('theme', val);
         applyTheme(val);
       });

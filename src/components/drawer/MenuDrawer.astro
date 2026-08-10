@@ -74,6 +74,7 @@ const { items = NAV_ITEMS } = Astro.props;
 
     function getFocusableElements(): HTMLElement[] {
       if (!sidebar) return [];
+
       return Array.from(
         sidebar.querySelectorAll<HTMLElement>(
           'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
@@ -92,6 +93,7 @@ const { items = NAV_ITEMS } = Astro.props;
 
       if (e.key === 'Tab') {
         const focusables = getFocusableElements();
+
         if (focusables.length === 0) return;
 
         const first = focusables[0];
