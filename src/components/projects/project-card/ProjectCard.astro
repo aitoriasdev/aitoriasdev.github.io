@@ -1,38 +1,43 @@
 ---
 import { type CollectionEntry } from 'astro:content';
 import ProjectCardActions from './ProjectCardActions.astro';
-import ProjectCardHeader from './ProjectCardHeader.astro';
+import ProjectCardBody from './ProjectCardBody.astro';
 import ProjectCardImage from './ProjectCardImage.astro';
 
 interface Props {
   project: CollectionEntry<'projects'>;
+  isLcp?: boolean;
 }
 
-const { project } = Astro.props;
+const { project, isLcp = false } = Astro.props;
 ---
 
 <article
-  class="project-card group flex flex-col justify-between overflow-hidden rounded-2xl bg-surface-light/60 p-5 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-surface-light hover:shadow-xl dark:bg-surface-dark/60 dark:shadow-md dark:shadow-black/20 dark:hover:bg-surface-dark dark:hover:shadow-black/40"
+  class="project-card group flex flex-col justify-between overflow-hidden rounded-2xl bg-surface-light/60 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-surface-light hover:shadow-xl dark:bg-surface-dark/60 dark:shadow-md dark:shadow-black/20 dark:hover:bg-surface-dark dark:hover:shadow-black/40"
   data-tags={JSON.stringify(project.data.techStack)}
 >
-  <div>
-    <ProjectCardImage
-      src={project.data.thumbnail}
-      alt={`Screenshot of ${project.data.title}`}
-    />
-    <ProjectCardHeader
+  <!-- Full Width Image Container at Top -->
+  <ProjectCardImage
+    src={project.data.thumbnail}
+    alt={`Screenshot of ${project.data.title}`}
+    isLcp={isLcp}
+  />
+
+  <!-- Padded Body Content -->
+  <div class="flex flex-1 flex-col justify-between p-5">
+    <ProjectCardBody
       id={project.id}
       title={project.data.title}
       description={project.data.tagline}
       tags={project.data.techStack}
     />
-  </div>
-  <div class="mt-6">
-    <ProjectCardActions
-      id={project.id}
-      gitHubUrl={project.data.gitHubUrl}
-      liveUrl={project.data.liveUrl}
-      title={project.data.title}
-    />
+    <div class="mt-6">
+      <ProjectCardActions
+        id={project.id}
+        gitHubUrl={project.data.gitHubUrl}
+        liveUrl={project.data.liveUrl}
+        title={project.data.title}
+      />
+    </div>
   </div>
 </article>
