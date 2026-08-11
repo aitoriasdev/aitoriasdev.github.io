@@ -14,6 +14,7 @@ const projects = defineCollection({
       liveUrl: z.url().optional(),
       gitHubUrl: z.url().optional(),
       featured: z.boolean().default(false),
+      lang: z.enum(["en", "es"]).default("en"),
     }),
 });
 

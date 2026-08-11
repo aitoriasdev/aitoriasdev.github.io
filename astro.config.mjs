@@ -29,7 +29,9 @@ export default defineConfig({
             style: "italic",
           },
           {
-            src: ["./src/assets/fonts/OpenDyslexic/OpenDyslexic-BoldItalic.otf"],
+            src: [
+              "./src/assets/fonts/OpenDyslexic/OpenDyslexic-BoldItalic.otf",
+            ],
             weight: "bold",
             style: "italic",
           },
@@ -37,6 +39,13 @@ export default defineConfig({
       },
     },
   ],
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "es"],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   integrations: [
     partytown({
       config: {
