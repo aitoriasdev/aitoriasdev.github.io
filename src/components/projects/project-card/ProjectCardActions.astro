@@ -12,13 +12,12 @@ interface Props {
 const { id, gitHubUrl, liveUrl, title } = Astro.props;
 ---
 
-<div class="flex items-center justify-between gap-2 pt-2">
+<div class="flex items-center justify-between gap-2">
   <!-- Left Side: Details Link -->
-  <Link href={`/projects/${id}`}>
+  <Link href={`/projects/${id}`} aria-label={`View details for ${title}`}>
     <span>Project details</span>
   </Link>
-
-  <!-- Right Side: External Navigation Links (Styled as visual buttons) -->
+  <!-- Right Side: External Navigation Links -->
   <div class="flex items-center gap-2">
     {gitHubUrl && (
       <Link href={gitHubUrl} isExternal variant="button-secondary">

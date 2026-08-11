@@ -24,20 +24,18 @@ const { project, isLcp = false } = Astro.props;
   />
 
   <!-- Padded Body Content -->
-  <div class="flex flex-1 flex-col justify-between p-5">
+  <div class="flex flex-1 flex-col gap-6 justify-between p-5">
     <ProjectCardBody
       id={project.id}
       title={project.data.title}
       description={project.data.tagline}
       tags={project.data.techStack}
     />
-    <div class="mt-6">
-      <ProjectCardActions
-        id={project.id}
-        gitHubUrl={project.data.gitHubUrl}
-        liveUrl={project.data.liveUrl}
-        title={project.data.title}
-      />
-    </div>
+    <ProjectCardActions
+      id={project.id}
+      gitHubUrl={project.data.gitHubUrl}
+      liveUrl={project.data.liveUrl}
+      title={project.data.title}
+    />
   </div>
 </article>

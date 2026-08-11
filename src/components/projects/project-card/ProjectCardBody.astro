@@ -1,5 +1,6 @@
 ---
 import Badge from '../../shared/Badge.astro';
+import Link from '../../shared/Link.astro';
 
 interface Props {
   id: string;
@@ -11,20 +12,20 @@ interface Props {
 const { id, title, description, tags } = Astro.props;
 ---
 
-<div>
-  <h3 class="text-lg font-bold text-text-main-light dark:text-text-main-dark">
-    <a href={`/projects/${id}`} class="hover:underline">
-      {title}
-    </a>
-  </h3>
-  <p class="mt-2 text-md leading-relaxed text-text-muted-light dark:text-text-muted-dark">
-    {description}
-  </p>
-  <ul class="mt-4 flex flex-wrap gap-1.5" aria-label="Technologies used">
+<div class="flex flex-col gap-4">
+  <ul class="flex flex-wrap gap-1.5" aria-label="Technologies used">
     {tags.map((tag) => (
       <li>
         <Badge variant="surface">{tag}</Badge>
       </li>
     ))}
   </ul>
+  <h3 class="text-lg font-bold">
+    <Link href={`/projects/${id}`} aria-label={`View details for ${title}`}>
+      {title}
+    </Link>
+  </h3>
+  <p class="text-md leading-relaxed text-text-muted-light dark:text-text-muted-dark">
+    {description}
+  </p>
 </div>

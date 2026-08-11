@@ -1,9 +1,9 @@
 ---
-import Icon from '../shared/Icon.astro';
-import Logo from '../shared/Logo.astro';
-import Button from '../shared/Button.astro';
-import NavLink from '../shared/header/menu/NavLink.astro';
-import { NAV_ITEMS, type NavItem } from '../../config/navigation';
+import Icon from '../Icon.astro';
+import Logo from '../Logo.astro';
+import Button from '../Button.astro';
+import NavLink from '../header/menu/NavLink.astro';
+import { NAV_ITEMS, type NavItem } from '../../../config/navigation';
 
 interface Props {
   items?: NavItem[];
@@ -19,13 +19,14 @@ const { items = NAV_ITEMS } = Astro.props;
   aria-hidden="true"
 ></div>
 
-<aside
+<div
   id="mobile-sidebar"
   class="fixed top-0 right-0 z-50 h-full w-72 translate-x-full bg-bg-light/95 p-6 shadow-2xl backdrop-blur-md transition-transform duration-300 ease-in-out dark:bg-bg-dark/95 md:hidden"
   role="dialog"
   aria-modal="true"
   aria-labelledby="drawer-title"
   aria-hidden="true"
+  inert
 >
   <div class="flex h-full flex-col justify-between">
     <div>
@@ -52,13 +53,8 @@ const { items = NAV_ITEMS } = Astro.props;
         </ul>
       </nav>
     </div>
-      <div class="text-xs flex gap-1 items-center text-text-muted-light dark:text-text-muted-dark">
-        <span>&copy;</span>
-        <span>{currentYear}</span>
-        <Logo />
-      </div>
   </div>
-</aside>
+</div>
 
 <script>
   function initMobileMenu() {
@@ -113,6 +109,7 @@ const { items = NAV_ITEMS } = Astro.props;
       isOpen = true;
       toggleBtn?.setAttribute('aria-expanded', 'true');
       sidebar?.setAttribute('aria-hidden', 'false');
+      sidebar?.removeAttribute('inert');
       backdrop?.setAttribute('aria-hidden', 'false');
 
       sidebar?.classList.remove('translate-x-full');
@@ -129,6 +126,7 @@ const { items = NAV_ITEMS } = Astro.props;
       isOpen = false;
       toggleBtn?.setAttribute('aria-expanded', 'false');
       sidebar?.setAttribute('aria-hidden', 'true');
+      sidebar?.setAttribute('inert', '');
       backdrop?.setAttribute('aria-hidden', 'true');
 
       sidebar?.classList.add('translate-x-full');
