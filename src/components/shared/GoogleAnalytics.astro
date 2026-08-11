@@ -23,20 +23,17 @@ const isDev = import.meta.env.DEV;
         type="text/partytown"
         set:html={`
           window.dataLayer = window.dataLayer || [];
+          function gtag(){ dataLayer.push(arguments); }
+          window.gtag = gtag;
 
-          function gtag(){
-            dataLayer.push(arguments);
-          }
+          var savedConsent = localStorage.getItem('analytics-consent') || 'denied';
 
-          gtag('js', new Date());
-
-          gtag("consent", "default", {
-            ad_storage: "denied",
-            ad_user_data: "denied",
-            ad_personalization: "denied",
-            analytics_storage: "denied",
+          gtag('consent', 'default', {
+            'analytics_storage': savedConsent,
+            'ad_storage': 'denied'
           });
 
+          gtag('js', new Date());
           gtag('config', '${measurementId}');
         `}
       />
