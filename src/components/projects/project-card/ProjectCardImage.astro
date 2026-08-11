@@ -6,19 +6,23 @@ import type { ImageMetadata } from 'astro';
 interface Props {
   src?: ImageMetadata;
   alt: string;
+  isLcp?: boolean;
 }
 
-const { src, alt } = Astro.props;
+const { src, alt, isLcp = false } = Astro.props;
 ---
 
-<div class="relative aspect-video w-full overflow-hidden rounded-xl bg-bg-light shadow-inner dark:bg-bg-dark">
+<div class="relative aspect-2/1 lg:aspect-3/2 w-full overflow-hidden bg-bg-light shadow-inner dark:bg-bg-dark">
   {
     src ? (
       <Image
         src={src}
         alt={alt}
-        loading="lazy"
-        decoding="async"
+        widths={[600, 900, 1200, 1600]}
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        loading={isLcp ? 'eager' : 'lazy'}
+        fetchpriority={isLcp ? 'high' : 'auto'}
+        decoding={isLcp ? 'sync' : 'async'}
         class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
     ) : (
