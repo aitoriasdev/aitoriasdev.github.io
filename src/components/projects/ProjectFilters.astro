@@ -15,9 +15,13 @@ import { ALL_TAGS } from '../../config/tags';
       variant="ghost"
       size="sm"
       class:list={[
-        'filter-btn shrink-0 transition-all duration-200',
+        'filter-btn shrink-0 transition-all duration-200 cursor-pointer',
+        // Active state
         'data-[active=true]:bg-accent-primary data-[active=true]:text-bg-light data-[active=true]:shadow-sm dark:data-[active=true]:text-bg-dark',
-        'data-[active=false]:bg-surface-light data-[active=false]:text-text-muted-light data-[active=false]:hover:text-text-main-light dark:data-[active=false]:bg-surface-dark data-[active=false]:dark:text-text-muted-dark data-[active=false]:dark:hover:text-text-main-dark'
+        // Inactive state + enhanced hover feedback
+        'data-[active=false]:bg-surface-light/70 data-[active=false]:text-text-muted-light dark:data-[active=false]:bg-surface-dark/70 dark:data-[active=false]:text-text-muted-dark',
+        'data-[active=false]:hover:bg-accent-primary/10 data-[active=false]:hover:text-accent-primary data-[active=false]:hover:border-accent-primary/30',
+        'dark:data-[active=false]:hover:bg-accent-primary-dark/15 dark:data-[active=false]:hover:text-accent-primary-dark'
       ]}
       aria-pressed={index === 0 ? 'true' : 'false'}
     >
