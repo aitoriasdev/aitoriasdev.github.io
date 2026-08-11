@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Icon from '../../shared/Icon.astro';
 import type { ImageMetadata } from 'astro';
+import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
 
 interface Props {
   src?: ImageMetadata;
@@ -10,6 +11,8 @@ interface Props {
 }
 
 const { src, alt, isLcp = false } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <div class="relative aspect-2/1 lg:aspect-3/2 w-full overflow-hidden bg-bg-light shadow-inner dark:bg-bg-dark">
@@ -28,7 +31,7 @@ const { src, alt, isLcp = false } = Astro.props;
     ) : (
       <div class="flex h-full w-full flex-col items-center justify-center gap-2 bg-surface-light/40 text-text-muted-light dark:bg-surface-dark/40 dark:text-text-muted-dark">
         <Icon name="broken-image" class="h-8 w-8 opacity-50" />
-        <span class="text-xs font-medium tracking-wide">No preview available</span>
+        <span class="text-xs font-medium tracking-wide">{t('projects.noPreview')}</span>
       </div>
     )
   }

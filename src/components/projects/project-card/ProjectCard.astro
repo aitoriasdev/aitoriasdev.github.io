@@ -3,6 +3,7 @@ import ProjectCardActions from './ProjectCardActions.astro';
 import ProjectCardBody from './ProjectCardBody.astro';
 import ProjectCardImage from './ProjectCardImage.astro';
 import { type CollectionEntry } from 'astro:content';
+import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -10,6 +11,8 @@ interface Props {
 }
 
 const { project, isLcp = false } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <article
@@ -19,7 +22,7 @@ const { project, isLcp = false } = Astro.props;
   <!-- Full Width Image Container at Top -->
   <ProjectCardImage
     src={project.data.thumbnail}
-    alt={`Screenshot of ${project.data.title}`}
+    alt={`${t('projects.screenshotAlt')} ${project.data.title}`}
     isLcp={isLcp}
   />
 

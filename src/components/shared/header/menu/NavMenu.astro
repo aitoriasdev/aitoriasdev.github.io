@@ -1,12 +1,19 @@
 ---
-import { NAV_ITEMS } from '../../../../config/navigation';
 import NavLink from './NavLink.astro';
 import MenuToggleButton from './MenuToggleButton.astro';
+import { getLangFromUrl, useTranslations } from '../../../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const navItems = [
+  { href: '/projects', label: t('nav.projects') },
+];
 ---
 
-<nav aria-label="Main Navigation">
+<nav aria-label="Main Navigation" class="flex items-center">
   <ul class="hidden items-center gap-8 md:flex">
-    {NAV_ITEMS.map((item) => (
+    {navItems.map((item) => (
       <li>
         <NavLink href={item.href} label={item.label} variant="desktop" />
       </li>

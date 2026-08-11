@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import ProjectCard from './project-card/ProjectCard.astro';
 import ProjectFilters from './ProjectFilters.astro';
 import Link from '../shared/Link.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
 
 interface Props {
   showViewAll?: boolean;
@@ -10,7 +11,13 @@ interface Props {
 
 const { showViewAll = false } = Astro.props;
 
-const projects = await getCollection('projects');
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+const allProjects = await getCollection('projects');
+// Filter projects matching current language
+const projects = allProjects.filter((p) => p.data.lang === lang);
 const projectCount = projects.length;
 ---
 
@@ -19,10 +26,10 @@ const projectCount = projects.length;
   <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
     <div>
       <h2 id="projects-heading" class="text-3xl font-extrabold tracking-tight text-text-main-light sm:text-3xl dark:text-text-main-dark">
-        My Projects
+        {t('projects.title')}
       </h2>
-      <p class="mt-1 text-sm text-text-muted-light dark:text-text-muted-dark">
-        Selected open-source work and applications.
+      <p class="mt-1 text-md text-text-muted-light dark:text-text-muted-dark">
+        {t('projects.subtitle')}
       </p>
     </div>
     <div class="flex items-center gap-4">
@@ -39,14 +46,14 @@ const projectCount = projects.length;
     ]}
   >
     {projects.map((project: CollectionEntry<'projects'>, index: number) => (
-    <ProjectCard project={project} isLcp={index === 0} />
+      <ProjectCard project={project} isLcp={index === 0} />
     ))}
   </div>
   <div class="mt-5">
-    {/* Conditionally render the "View All" link */}
+    {/* Conditionally render the "View All" link with localized route */}
       {showViewAll && (
-        <Link href="/projects" variant="button-secondary">
-          <span>View all projects</span>
+        <Link href={translatePath('/projects')} variant="button-secondary">
+          <span>{t('projects.viewAll')}</span>
         </Link>
       )}
   </div>

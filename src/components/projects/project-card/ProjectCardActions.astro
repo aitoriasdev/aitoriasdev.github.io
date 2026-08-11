@@ -1,6 +1,7 @@
 ---
 import Icon from '../../shared/Icon.astro';
 import Link from '../../shared/Link.astro';
+import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
 
 interface Props {
   id: string;
@@ -9,30 +10,24 @@ interface Props {
   title: string;
 }
 
-const { id, gitHubUrl, liveUrl, title } = Astro.props;
+const { gitHubUrl, liveUrl, title } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<div class="flex w-full flex-wrap items-center justify-between gap-4 sm:flex-nowrap">
-  <!-- Left Side: Details Link -->
-  <Link href={`/projects/${id}`} aria-label={`View details for ${title}`}>
-    <span>Project details</span>
-  </Link>
-
-  <!-- Right Side: External Navigation Links -->
-  <div class="flex w-full flex-wrap items-center justify-between gap-2 sm:w-auto">
-    {gitHubUrl && (
-      <Link href={gitHubUrl} isExternal variant="button-secondary">
-        <Icon name="github" class="h-3.5 w-3.5" />
-        <span>GitHub</span>
-        <span class="sr-only"> repository for {title}</span>
-        <Icon name="external" class="h-3.5 w-3.5" />
-      </Link>
-    )}
-    {liveUrl && (
-      <Link href={liveUrl} isExternal variant="button-primary">
-        <span>Live demo</span>
-        <Icon name="external" class="h-3.5 w-3.5" />
-      </Link>
-    )}
-  </div>
+<div class="flex w-full items-center gap-2">
+  {gitHubUrl && (
+    <Link href={gitHubUrl} isExternal variant="button-secondary">
+      <Icon name="github" class="h-3.5 w-3.5" />
+      <span>GitHub</span>
+      <span class="sr-only"> {t('projects.repoSrOnly')} {title}</span>
+      <Icon name="external" class="h-3.5 w-3.5" />
+    </Link>
+  )}
+  {liveUrl && (
+    <Link href={liveUrl} isExternal variant="button-primary">
+      <span>{t('projects.liveDemo')}</span>
+      <Icon name="external" class="h-3.5 w-3.5" />
+    </Link>
+  )}
 </div>

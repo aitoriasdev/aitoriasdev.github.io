@@ -1,13 +1,17 @@
 ---
+import LanguagePicker from '../LanguagePicker.astro';
 import Logo from '../../shared/Logo.astro';
 import NavMenu from './menu/NavMenu.astro';
 import ThemeToggle from './ThemeToggle.astro';
 ---
 
-<header class="sticky top-0 z-30 w-full bg-bg-light/85 shadow-sm backdrop-blur-md transition-shadow duration-200 motion-reduce:transition-none dark:bg-bg-dark/85 dark:shadow-md dark:shadow-black/20">
+<header class="sticky top-0 z-10 w-full bg-bg-light/85 shadow-sm backdrop-blur-md transition-shadow duration-200 motion-reduce:transition-none dark:bg-bg-dark/85 dark:shadow-md dark:shadow-black/20">
   <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
     <Logo />
     <NavMenu />
-    <ThemeToggle />
+    <div class="flex gap-1">
+      <ThemeToggle />
+      <LanguagePicker />
+    </div>
   </div>
 </header>

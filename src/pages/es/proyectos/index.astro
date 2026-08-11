@@ -1,0 +1,11 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import ProjectsSection from '../../../components/projects/ProjectsSection.astro';
+import { useTranslations } from '../../../i18n/utils';
+
+const t = useTranslations('es');
+---
+
+<Layout title={`Aitorias - ${t('nav.projects')}`}>
+  <ProjectsSection />
+</Layout>

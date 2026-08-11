@@ -1,6 +1,7 @@
 ---
 import Badge from '../../shared/Badge.astro';
 import Link from '../../shared/Link.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../../i18n/utils';
 
 interface Props {
   id: string;
@@ -10,10 +11,16 @@ interface Props {
 }
 
 const { id, title, description, tags } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+// Extract clean ID if it contains folder prefix like 'es/aitorias-dev'
+const cleanId = id.includes('/') ? id.split('/').pop() : id;
 ---
 
 <div class="flex flex-col gap-4">
-  <ul class="flex flex-wrap gap-1.5" aria-label="Technologies used">
+  <ul class="flex flex-wrap gap-1.5" aria-label={t('projects.techUsedAria')}>
     {tags.map((tag) => (
       <li>
         <Badge variant="surface">{tag}</Badge>
@@ -21,7 +28,7 @@ const { id, title, description, tags } = Astro.props;
     ))}
   </ul>
   <h3 class="text-lg font-bold">
-    <Link href={`/projects/${id}`} aria-label={`View details for ${title}`}>
+    <Link href={translatePath(`/projects/${cleanId}`)} aria-label={`${t('projects.viewDetailsAria')} ${title}`}>
       {title}
     </Link>
   </h3>

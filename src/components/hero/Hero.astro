@@ -2,6 +2,10 @@
 import Badge from './../shared/Badge.astro';
 import HeroImage from './HeroImage.astro';
 import HeroLinks from './HeroLinks.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 interface TechTag {
   name: string;
@@ -24,18 +28,18 @@ const STACK: TechTag[] = [
           <span class="absolute inline-flex h-full w-full animate-ping motion-reduce:animate-none rounded-full bg-accent-primary opacity-75"></span>
           <span class="relative inline-flex h-2 w-2 rounded-full bg-accent-primary"></span>
         </span>
-        Available for new opportunities
+        {t('hero.status')}
       </Badge>
       <h1 class="text-4xl font-bold tracking-tight text-text-main-light sm:text-5xl lg:text-6xl dark:text-text-main-dark">
-        Front-End Developer crafting web experiences.
+        {t('title')}
       </h1>
       <p class="text-lg leading-relaxed text-text-muted-light dark:text-text-muted-dark">
-        Hi, I'm <strong class="font-semibold text-text-main-light dark:text-text-main-dark">Aitor</strong>. I specialize in building accessible, high-performance web applications with clean, modern code architectures.
+        {t('hero.bio')}
       </p>
       <!-- Tech Stack Badges -->
       <div class="flex flex-wrap items-center gap-2 pt-2">
         <span class="text-md font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark">
-          Core Stack:
+          {t('hero.stackLabel')}
         </span>
         {STACK.map((tech) => (
           <Badge variant="surface">{tech.name}</Badge>

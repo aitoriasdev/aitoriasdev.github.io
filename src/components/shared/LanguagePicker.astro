@@ -1,0 +1,39 @@
+---
+import { languages } from '../../i18n/ui';
+import { getLangFromUrl, getRouteFromUrl, useTranslatedPath } from "../../i18n/utils";
+
+const currentLanguage = getLangFromUrl(Astro.url);
+const route = getRouteFromUrl(Astro.url);
+const translatePath = useTranslatedPath(currentLanguage);
+---
+
+<div
+  class="relative inline-flex items-center rounded-full bg-surface-light p-1 shadow-inner dark:bg-surface-dark"
+  role="group"
+  aria-label="Language selection"
+>
+  {
+    Object.entries(languages).map(([lang, label]) => {
+      const isActive = lang === currentLanguage;
+      const targetHref = translatePath(route, lang);
+
+      return (
+        <a
+          href={targetHref}
+          aria-label={`Switch language to ${label}`}
+          aria-current={isActive ? 'page' : undefined}
+          class:list={[
+            'flex h-7 px-2.5 items-center justify-center rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-200 no-underline',
+            'focus-visible:outline-2 focus-visible:outline-accent-primary',
+            'motion-reduce:transition-none motion-reduce:transform-none in-[.reduce-motion]:transition-none in-[.reduce-motion]:transform-none',
+            isActive
+              ? 'bg-bg-light text-accent-primary shadow-sm dark:bg-bg-dark dark:text-accent-primary'
+              : 'text-text-muted-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:text-text-main-dark',
+          ]}
+        >
+          {lang}
+        </a>
+      );
+    })
+  }
+</div>

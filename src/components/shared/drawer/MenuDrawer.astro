@@ -3,25 +3,25 @@ import Icon from '../Icon.astro';
 import Logo from '../Logo.astro';
 import Button from '../Button.astro';
 import NavLink from '../header/menu/NavLink.astro';
-import { NAV_ITEMS, type NavItem } from '../../../config/navigation';
+import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
 
-interface Props {
-  items?: NavItem[];
-}
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
-const currentYear = new Date().getFullYear();
-const { items = NAV_ITEMS } = Astro.props;
+const navItems = [
+  { href: '/projects', label: t('nav.projects') },
+];
 ---
 
 <div
   id="mobile-backdrop"
-  class="fixed inset-0 z-40 bg-bg-dark/60 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm md:hidden"
+  class="fixed inset-0 z-20 bg-bg-dark/60 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm md:hidden"
   aria-hidden="true"
 ></div>
 
 <div
   id="mobile-sidebar"
-  class="fixed top-0 right-0 z-50 h-full w-72 translate-x-full bg-bg-light/95 p-6 shadow-2xl backdrop-blur-md transition-transform duration-300 ease-in-out dark:bg-bg-dark/95 md:hidden"
+  class="fixed top-0 right-0 z-20 h-full w-72 translate-x-full bg-bg-light/95 p-6 shadow-2xl backdrop-blur-md transition-transform duration-300 ease-in-out dark:bg-bg-dark/95 md:hidden"
   role="dialog"
   aria-modal="true"
   aria-labelledby="drawer-title"
@@ -38,14 +38,14 @@ const { items = NAV_ITEMS } = Astro.props;
           id="mobile-menu-close"
           variant="ghost"
           size="icon"
-          aria-label="Close navigation menu"
+          aria-label={t('nav.closeMenu')}
         >
           <Icon name="close" class="h-5 w-5" />
         </Button>
       </div>
-      <nav aria-label="Mobile Navigation">
+      <nav aria-label={t('nav.mobileNav')}>
         <ul class="flex flex-col gap-3 pt-2">
-          {items.map((item) => (
+          {navItems.map((item) => (
             <li>
               <NavLink href={item.href} label={item.label} variant="mobile" />
             </li>

@@ -1,13 +1,17 @@
 ---
 import { Image } from 'astro:assets';
 import profileImage from '../../assets/images/aitorias.png';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <div class="relative shrink-0">
   <div class="absolute -inset-1 rounded-full bg-linear-to-r from-accent-primary to-accent-secondary opacity-40 blur-lg dark:opacity-30"></div>
   <Image
     src={profileImage}
-    alt="Aitor - Front End Developer"
+    alt={t('hero.imageAlt')}
     width={192}
     height={192}
     loading="eager"
