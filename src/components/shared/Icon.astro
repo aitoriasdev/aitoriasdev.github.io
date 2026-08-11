@@ -1,4 +1,5 @@
 ---
+// Icon.astro
 export type IconName =
   | 'github'
   | 'linkedin'
@@ -10,7 +11,8 @@ export type IconName =
   | 'moon'
   | 'system'
   | 'broken-image'
-  | 'cookie';
+  | 'cookie'
+  | 'accessibility';
 
 interface Props {
   name: IconName;
@@ -78,5 +80,11 @@ const { name, class: className = 'h-4 w-4', 'aria-hidden': ariaHidden = true } =
 {name === 'cookie' && (
   <svg class:list={['fill-current', className]} viewBox="0 0 24 24" aria-hidden={ariaHidden}>
     <path d="M21.598 11.064a1.006 1.006 0 0 0-.854-.172A3.993 3.993 0 0 1 15 7a3.993 3.993 0 0 1-3.892-5.744 1.006 1.006 0 0 0-.172-.854A10.001 10.001 0 1 0 21.598 11.064zM8.5 15.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm2-6a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm4.5 7.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm1-5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+  </svg>
+)}
+
+{name === 'accessibility' && (
+  <svg class:list={['fill-current', className]} viewBox="0 0 24 24" aria-hidden={ariaHidden}>
+    <path d="M12 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/>
   </svg>
 )}

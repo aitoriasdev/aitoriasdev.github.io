@@ -23,7 +23,7 @@ const { src, alt, isLcp = false } = Astro.props;
         loading={isLcp ? 'eager' : 'lazy'}
         fetchpriority={isLcp ? 'high' : 'auto'}
         decoding={isLcp ? 'sync' : 'async'}
-        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:transform-none motion-reduce:group-hover:scale-100 motion-reduce:hover:scale-100 [.reduce-motion_&]:transition-none [.reduce-motion_&]:transform-none [.reduce-motion_&]:group-hover:scale-100 [.reduce-motion_&]:hover:scale-100"
       />
     ) : (
       <div class="flex h-full w-full flex-col items-center justify-center gap-2 bg-surface-light/40 text-text-muted-light dark:bg-surface-dark/40 dark:text-text-muted-dark">

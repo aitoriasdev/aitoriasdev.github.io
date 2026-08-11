@@ -1,4 +1,6 @@
 ---
+import { Font } from "astro:assets";
+import AccessibilityMenu from '../components/shared/AccessibilityMenu.astro';
 import CookieBanner from '../components/shared/CookieBanner.astro';
 import Footer from '../components/shared/footer/Footer.astro';
 import GoogleAnalytics from '../components/shared/GoogleAnalytics.astro';
@@ -26,6 +28,7 @@ const { title = 'aitorias.dev', description = 'Front End Developer with more tha
 		<meta name="generator" content={Astro.generator} />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<title>{title}</title>
+    <Font cssVariable="--font-open-dyslexic" />
 		<script is:inline>
 			const theme = localStorage.getItem('theme') || 'system';
 			const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -48,5 +51,6 @@ const { title = 'aitorias.dev', description = 'Front End Developer with more tha
     <Footer />
     <MenuDrawer />
     <CookieBanner />
+    <AccessibilityMenu />
 	</body>
 </html>
