@@ -17,7 +17,6 @@ const { id, gitHubUrl, liveUrl, title } = Astro.props;
   <Link href={`/projects/${id}`}>
     <span>Project details</span>
   </Link>
-
   <!-- Right Side: External Navigation Links (Styled as visual buttons) -->
   <div class="flex items-center gap-2">
     {gitHubUrl && (
