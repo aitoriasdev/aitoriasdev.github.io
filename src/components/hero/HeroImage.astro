@@ -1,0 +1,16 @@
+---
+import { Image } from 'astro:assets';
+import profileImage from '../../assets/images/aitorias.png';
+---
+
+<div class="relative shrink-0">
+  <div class="absolute -inset-1 rounded-full bg-linear-to-r from-accent-primary to-accent-secondary opacity-40 blur-lg dark:opacity-30"></div>
+  <Image
+    src={profileImage}
+    alt="Aitor - Front End Developer"
+    width={192}
+    height={192}
+    loading="eager"
+    class="relative h-36 w-36 rounded-full object-cover shadow-xl sm:h-48 sm:w-48"
+  />
+</div>
