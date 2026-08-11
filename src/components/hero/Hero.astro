@@ -1,9 +1,7 @@
 ---
-import { Image } from 'astro:assets';
-import Badge from './shared/Badge.astro';
-import Icon from './shared/Icon.astro';
-import Link from './shared/Link.astro';
-import profileImage from '../assets/images/aitorias.png';
+import Badge from './../shared/Badge.astro';
+import HeroImage from './HeroImage.astro';
+import HeroLinks from './HeroLinks.astro';
 
 interface TechTag {
   name: string;
@@ -44,30 +42,9 @@ const STACK: TechTag[] = [
         ))}
       </div>
       <!-- Action Links -->
-      <div class="flex flex-wrap gap-4 pt-4">
-        <Link href="https://github.com/aitoriasdev" isExternal variant="button-primary">
-          <Icon name="github" class="h-5 w-5" />
-          <span>GitHub Profile</span>
-          <Icon name="external" class="h-4 w-4" />
-        </Link>
-        <Link href="https://linkedin.com/in/aitorias" isExternal variant="button-primary">
-          <Icon name="linkedin" class="h-5 w-5" />
-          <span>LinkedIn</span>
-          <Icon name="external" class="h-4 w-4" />
-        </Link>
-      </div>
+      <HeroLinks />
     </div>
     <!-- Hero Image -->
-    <div class="relative shrink-0">
-      <div class="absolute -inset-1 rounded-full bg-linear-to-r from-accent-primary to-accent-secondary opacity-40 blur-lg dark:opacity-30"></div>
-      <Image
-        src={profileImage}
-        alt="Aitor - Front End Developer"
-        width={192}
-        height={192}
-        loading="eager"
-        class="relative h-36 w-36 rounded-full object-cover shadow-xl sm:h-48 sm:w-48"
-      />
-    </div>
+    <HeroImage />
   </div>
 </section>
