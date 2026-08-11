@@ -1,18 +1,22 @@
 ---
+import LanguagePicker from '../LanguagePicker.astro';
 import Link from './../../shared/Link.astro';
 import Logo from './../../shared/Logo.astro';
 import FooterSocialLinks from './FooterSocialLinks.astro';
+import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
 
 const currentYear = new Date().getFullYear();
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <footer class="bg-surface-light/50 py-10 dark:bg-surface-dark/50">
-  <div class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 px-6 sm:flex-row">
+  <div class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 px-6 md:flex-row">
       <!-- Brand & Copyright -->
-      <div class="flex flex-col items-center gap-1 sm:items-start">
+      <div class="flex flex-col items-center gap-1 md:items-start">
         <Logo />
         <div class="flex gap-1 text-xs text-text-muted-light dark:text-text-muted-dark">
-          <span>&copy; {currentYear} aitorias.dev. Built with</span>
+          <span>&copy; {currentYear} aitorias.dev. {t('footer.builtWith')}</span>
           <Link href="https://astro.build" isExternal class="underline hover:text-accent-primary">
             Astro
           </Link>
@@ -22,7 +26,9 @@ const currentYear = new Date().getFullYear();
           </Link>
         </div>
       </div>
-      <!-- Social Links -->
-      <FooterSocialLinks />
+      <div class="flex flex-col items-center gap-2 md:flex-row">
+        <FooterSocialLinks />
+        <LanguagePicker />
+      </div>
     </div>
 </footer>

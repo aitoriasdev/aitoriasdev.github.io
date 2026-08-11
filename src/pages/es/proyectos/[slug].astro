@@ -1,0 +1,51 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import type { InferGetStaticPropsType } from 'astro';
+import { useTranslations, useTranslatedPath } from '../../../i18n/utils';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+
+  // Filter for Spanish entries only
+  const esProjects = projects.filter((p) => p.data.lang === 'es');
+
+  return esProjects.map((project: CollectionEntry<'projects'>) => {
+    // Clean up folder prefix if id contains 'es/project-id'
+    const slug = project.id.includes('/') ? project.id.split('/').pop() : project.id;
+
+    return {
+      params: { slug },
+      props: { project },
+    };
+  });
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const lang = 'es';
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+---
+
+<Layout title={`${project.data.title} | Aitorias.dev`} description={project.data.tagline}>
+  <div class="mx-auto max-w-3xl px-6 py-12">
+    <a href={translatePath('/projects')} class="inline-block text-sm font-medium text-accent-primary hover:underline mb-6">
+      ← {t('projects.viewAll')}
+    </a>
+
+    {project.data.thumbnail && (
+      <div class="mb-6 aspect-video overflow-hidden rounded-2xl bg-surface-light dark:bg-surface-dark">
+        <Image src={project.data.thumbnail} alt={project.data.title} class="h-full w-full object-cover" />
+      </div>
+    )}
+
+    <article class="prose dark:prose-invert max-w-none">
+      <Content />
+    </article>
+  </div>
+</Layout>

@@ -1,6 +1,10 @@
 ---
 import Icon from './../../shared/Icon.astro';
 import Link from './../../shared/Link.astro';
+import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 interface SocialLink {
   label: string;
@@ -9,12 +13,12 @@ interface SocialLink {
 }
 
 const SOCIAL_LINKS: SocialLink[] = [
-  { label: 'GitHub Profile', href: 'https://github.com/aitoriasdev', icon: 'github' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/aitordediego', icon: 'linkedin' },
+  { label: t('hero.github'), href: 'https://github.com/aitoriasdev', icon: 'github' },
+  { label: t('hero.linkedin'), href: 'https://linkedin.com/in/aitordediego', icon: 'linkedin' },
 ];
 ---
 
-<nav aria-label="Social Links">
+<nav aria-label={t('footer.socialAria')}>
   <ul class="flex flex-wrap items-center justify-center gap-4">
   {SOCIAL_LINKS.map((link) => (
     <li>

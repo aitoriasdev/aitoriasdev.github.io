@@ -1,0 +1,62 @@
+---
+import { languages } from '../../i18n/ui';
+import { getLangFromUrl, getRouteFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
+import Icon from '../shared/Icon.astro';
+
+const currentLanguage = getLangFromUrl(Astro.url);
+const route = getRouteFromUrl(Astro.url);
+const t = useTranslations(currentLanguage);
+const translatePath = useTranslatedPath(currentLanguage);
+---
+
+<div class="relative inline-block text-left">
+  <label for="language-select" class="sr-only">Select language</label>
+  <div class="relative flex items-center">
+    <select
+      id="language-select"
+      class:list={[
+        'appearance-none rounded-xl bg-surface-light py-2.5 pl-3.5 pr-8 text-xs font-semibold tracking-wide text-text-main-light shadow-sm transition-colors cursor-pointer',
+        'hover:bg-bg-light focus-visible:outline-2 focus-visible:outline-accent-primary',
+        'dark:bg-surface-dark dark:text-text-main-dark dark:hover:bg-bg-dark',
+      ]}
+    >
+      {
+        Object.keys(languages).map((lang) => {
+          const isSelected = lang === currentLanguage;
+          const targetHref = translatePath(route, lang);
+          const localizedLabel = t(`lang.${lang}` as any);
+
+          return (
+            <option
+              value={targetHref}
+              selected={isSelected}
+              class="bg-surface-light text-text-main-light dark:bg-surface-dark dark:text-text-main-dark"
+            >
+              {localizedLabel}
+            </option>
+          );
+        })
+      }
+    </select>
+    <div class="pointer-events-none absolute right-2.5 flex items-center text-text-muted-light dark:text-text-muted-dark">
+      <Icon name="chevron-down" class="h-3.5 w-3.5" />
+    </div>
+  </div>
+</div>
+
+<script>
+  function initLanguageSelect() {
+    const select = document.getElementById('language-select') as HTMLSelectElement | null;
+    if (!select) return;
+
+    select.addEventListener('change', (event) => {
+      const target = event.target as HTMLSelectElement;
+      if (target.value) {
+        window.location.href = target.value;
+      }
+    });
+  }
+
+  initLanguageSelect();
+  document.addEventListener('astro:page-load', initLanguageSelect);
+</script>

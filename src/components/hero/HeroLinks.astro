@@ -1,17 +1,21 @@
 ---
 import Icon from './../shared/Icon.astro';
 import Link from './../shared/Link.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <div class="flex flex-wrap gap-4 pt-4">
   <Link href="https://github.com/aitoriasdev" isExternal variant="button-primary">
     <Icon name="github" class="h-5 w-5" />
-    <span>GitHub Profile</span>
+    <span>{t('hero.github')}</span>
     <Icon name="external" class="h-4 w-4" />
   </Link>
   <Link href="https://linkedin.com/in/aitordediego" isExternal variant="button-primary">
     <Icon name="linkedin" class="h-5 w-5" />
-    <span>LinkedIn</span>
+    <span>{t('hero.linkedin')}</span>
     <Icon name="external" class="h-4 w-4" />
   </Link>
 </div>

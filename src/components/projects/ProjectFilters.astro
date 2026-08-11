@@ -1,12 +1,16 @@
 ---
 import Button from '../shared/Button.astro';
 import { ALL_TAGS } from '../../config/tags';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <div
   class="custom-scrollbar mt-6 -mx-6 flex items-center gap-2 overflow-x-auto px-6 pb-3 pt-1 sm:mx-0 sm:mt-0 sm:flex-wrap sm:overflow-x-visible sm:px-0 sm:pb-0 sm:pt-0"
   role="group"
-  aria-label="Filter projects by technology"
+  aria-label={t('projects.filterAria')}
 >
   {ALL_TAGS.map((tag, index) => (
     <Button
@@ -16,9 +20,7 @@ import { ALL_TAGS } from '../../config/tags';
       size="sm"
       class:list={[
         'filter-btn shrink-0 transition-all duration-200 motion-reduce:transition-none cursor-pointer',
-        // Active state
         'data-[active=true]:bg-accent-primary data-[active=true]:text-bg-light data-[active=true]:shadow-sm dark:data-[active=true]:text-bg-dark',
-        // Inactive state + enhanced hover feedback
         'data-[active=false]:bg-surface-light/70 data-[active=false]:text-text-muted-light dark:data-[active=false]:bg-surface-dark/70 dark:data-[active=false]:text-text-muted-dark',
         'data-[active=false]:hover:bg-accent-primary/10 data-[active=false]:hover:text-accent-primary data-[active=false]:hover:border-accent-primary/30',
         'dark:data-[active=false]:hover:bg-accent-primary-dark/15 dark:data-[active=false]:hover:text-accent-primary-dark'
@@ -68,13 +70,11 @@ import { ALL_TAGS } from '../../config/tags';
 
 <style>
   @media (max-width: 639px) {
-    /* Standard CSS Scrollbar (Firefox/Modern Browsers) */
     .custom-scrollbar {
       scrollbar-width: thin;
       scrollbar-color: var(--color-accent-primary, #888) rgba(0, 0, 0, 0.05);
     }
 
-    /* WebKit Custom Scrollbar (Chrome, Safari, Brave, Edge) */
     .custom-scrollbar::-webkit-scrollbar {
       height: 4px;
       display: block;

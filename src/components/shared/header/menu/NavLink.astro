@@ -1,5 +1,6 @@
 ---
 import Link from '../../../shared/Link.astro';
+import { getLangFromUrl, useTranslatedPath } from '../../../../i18n/utils';
 
 interface Props {
   href: string;
@@ -8,31 +9,43 @@ interface Props {
 }
 
 const { href, label, variant = 'desktop' } = Astro.props;
-const pathname = Astro.url.pathname;
-const isActive = pathname === href || (href !== '/' && pathname.startsWith(href));
+const lang = getLangFromUrl(Astro.url);
+const translatePath = useTranslatedPath(lang);
+
+const localizedHref = translatePath(href);
+
+const normalizePath = (path: string) => path.replace(/\/+$/, '') || '/';
+
+const currentPath = normalizePath(Astro.url.pathname);
+const targetPath = normalizePath(localizedHref);
+
+const isActive =
+  currentPath === targetPath ||
+  (targetPath !== '/' && currentPath.startsWith(`${targetPath}/`));
 ---
 
 {
   variant === 'mobile' ? (
-    <a
-      href={href}
+    <Link
+      href={localizedHref}
+      variant="subtle"
       aria-current={isActive ? 'page' : undefined}
       class:list={[
-        'mobile-nav-link block w-full rounded-xl px-4 py-3 text-lg font-semibold transition-all motion-reduce:transition-none no-underline',
+        'mobile-nav-link block w-full rounded-xl px-4 py-3 text-lg font-semibold transition-all motion-reduce:transition-none no-underline hover:no-underline',
         isActive
-          ? 'bg-accent-primary text-bg-light dark:text-bg-dark'
+          ? 'bg-accent-primary text-white hover:text-white dark:text-bg-dark dark:hover:text-bg-dark'
           : 'text-text-main-light hover:bg-surface-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:bg-surface-dark dark:hover:text-text-main-dark',
       ]}
     >
       {label}
-    </a>
+    </Link>
   ) : (
     <Link
-      href={href}
-      variant="menu"
+      href={localizedHref}
+      variant={isActive ? 'default' : 'menu'}
       aria-current={isActive ? 'page' : undefined}
       class:list={[
-        isActive && 'font-semibold text-accent-primary dark:text-accent-primary',
+        isActive && 'text-lg font-bold no-underline',
       ]}
     >
       {label}

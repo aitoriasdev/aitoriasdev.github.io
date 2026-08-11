@@ -1,0 +1,13 @@
+---
+import Hero from '../../components/hero/Hero.astro';
+import ProjectsSection from '../../components/projects/ProjectsSection.astro';
+import Layout from '../../layouts/Layout.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const t = useTranslations('es');
+---
+
+<Layout title={`Aitorias - ${t('title')}`}>
+  <Hero />
+  <ProjectsSection showViewAll={true} />
+</Layout>
