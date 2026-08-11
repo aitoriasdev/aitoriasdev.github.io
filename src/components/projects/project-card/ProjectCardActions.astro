@@ -12,13 +12,14 @@ interface Props {
 const { id, gitHubUrl, liveUrl, title } = Astro.props;
 ---
 
-<div class="flex items-center justify-between gap-2">
+<div class="flex w-full flex-wrap items-center justify-between gap-4 sm:flex-nowrap">
   <!-- Left Side: Details Link -->
   <Link href={`/projects/${id}`} aria-label={`View details for ${title}`}>
     <span>Project details</span>
   </Link>
+
   <!-- Right Side: External Navigation Links -->
-  <div class="flex items-center gap-2">
+  <div class="flex w-full flex-wrap items-center justify-between gap-2 sm:w-auto">
     {gitHubUrl && (
       <Link href={gitHubUrl} isExternal variant="button-secondary">
         <Icon name="github" class="h-3.5 w-3.5" />
