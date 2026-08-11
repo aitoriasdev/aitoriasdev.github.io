@@ -1,5 +1,6 @@
 ---
 import Footer from '../components/shared/footer/Footer.astro';
+import GoogleAnalytics from '../components/shared/GoogleAnalytics.astro';
 import Header from '../components/shared/header/Header.astro';
 import MenuDrawer from '../components/shared/drawer/MenuDrawer.astro';
 import "../styles/global.css";
@@ -9,6 +10,7 @@ interface Props {
   description?: string;
 }
 
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const { title = 'aitorias.dev', description = 'Front End Developer with more than 10 years of experience in web development' } = Astro.props;
 ---
 
@@ -29,6 +31,7 @@ const { title = 'aitorias.dev', description = 'Front End Developer with more tha
 
 			document.documentElement.classList.toggle('dark', isDark);
 		</script>
+    {gaId && <GoogleAnalytics measurementId={gaId} />}
 	</head>
 	<body class="bg-bg-light text-text-main-light transition-colors dark:bg-bg-dark dark:text-text-main-dark">
 		<a
