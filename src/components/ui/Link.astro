@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'astro/types';
 interface Props extends HTMLAttributes<'a'> {
   href: string;
   isExternal?: boolean;
-  variant?: 'default' | 'subtle' | 'button-primary' | 'button-secondary';
+  variant?: 'default' | 'menu' | 'subtle' | 'button-primary' | 'button-secondary';
   class?: string;
 }
 
@@ -20,13 +20,15 @@ const isOutbound = isExternal || href.startsWith('http');
 
 const variants = {
   default:
-    'font-medium text-text-main-light hover:text-accent-primary dark:text-text-main-dark dark:hover:text-accent-primary',
+    'text-md font-medium underline text-text-main-light hover:text-accent-primary dark:text-text-main-dark dark:hover:text-accent-primary',
+  menu:
+    'relative py-1 text-lg font-medium no-underline text-text-main-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:text-text-main-dark',
   subtle:
-    'text-text-muted-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:text-text-main-dark',
+    'text-md text-text-muted-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:text-text-main-dark',
   'button-primary':
-    'inline-flex items-center justify-center gap-2 rounded-xl bg-accent-primary px-5 py-3 text-md font-semibold text-bg-light shadow-sm hover:opacity-90 dark:text-bg-dark',
+    'inline-flex items-center justify-center gap-2 rounded-xl bg-accent-primary px-5 py-3 text-md font-semibold text-bg-light shadow-sm hover:opacity-90 dark:text-bg-dark cursor-default select-none',
   'button-secondary':
-    'inline-flex items-center justify-center gap-2 rounded-xl bg-surface-light px-5 py-3 text-md font-semibold text-text-main-light shadow-sm hover:bg-bg-light dark:bg-surface-dark dark:text-text-main-dark dark:hover:bg-bg-dark',
+    'inline-flex items-center justify-center gap-2 rounded-xl bg-surface-light px-5 py-3 text-md font-semibold text-text-main-light shadow-sm hover:bg-bg-light dark:bg-surface-dark dark:text-text-main-dark dark:hover:bg-bg-dark cursor-default select-none',
 };
 ---
 
