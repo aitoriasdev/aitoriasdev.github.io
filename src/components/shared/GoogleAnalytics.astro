@@ -4,20 +4,42 @@ interface Props {
 }
 
 const { measurementId } = Astro.props;
+const isDev = import.meta.env.DEV;
 ---
 
-<!-- Google tag (gtag.js) via Partytown -->
-<script
-  type="text/partytown"
-  is:inline
-  src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
-></script>
+{
+  !isDev && measurementId && (
+    <>
+      <script
+        data-category="analytics"
+        is:inline
+        type="text/partytown"
+        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
+      ></script>
 
-<script type="text/partytown" is:inline define:vars={{ measurementId }}>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag('js', new Date());
-  gtag('config', measurementId);
-</script>
+      <script
+        data-category="analytics"
+        is:inline
+        type="text/partytown"
+        set:html={`
+          window.dataLayer = window.dataLayer || [];
+
+          function gtag(){
+            dataLayer.push(arguments);
+          }
+
+          gtag('js', new Date());
+
+          gtag("consent", "default", {
+            ad_storage: "denied",
+            ad_user_data: "denied",
+            ad_personalization: "denied",
+            analytics_storage: "denied",
+          });
+
+          gtag('config', '${measurementId}');
+        `}
+      />
+    </>
+  )
+}
