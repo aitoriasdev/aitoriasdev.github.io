@@ -12,23 +12,27 @@ interface Props {
 const { id, gitHubUrl, liveUrl, title } = Astro.props;
 ---
 
-<div class="flex items-center gap-2 pt-2 flex-wrap">
-  <!-- Detail Page Link -->
-  <Link href={`/projects/${id}`} variant="button-secondary">
-    <span>Details</span>
+<div class="flex items-center justify-between gap-2 pt-2">
+  <!-- Left Side: Details Link -->
+  <Link href={`/projects/${id}`}>
+    <span>Project details</span>
   </Link>
-  {gitHubUrl && (
-    <Link href={gitHubUrl} isExternal variant="button-secondary">
-      <Icon name="github" class="h-3.5 w-3.5" />
-      <span>GitHub</span>
-      <span class="sr-only"> repository for {title}</span>
-      <Icon name="external" class="h-3.5 w-3.5" />
-    </Link>
-  )}
-  {liveUrl && (
-    <Link href={liveUrl} isExternal variant="button-primary">
-      <span>Live demo</span>
-      <Icon name="external" class="h-3.5 w-3.5" />
-    </Link>
-  )}
+
+  <!-- Right Side: External Navigation Links (Styled as visual buttons) -->
+  <div class="flex items-center gap-2">
+    {gitHubUrl && (
+      <Link href={gitHubUrl} isExternal variant="button-secondary">
+        <Icon name="github" class="h-3.5 w-3.5" />
+        <span>GitHub</span>
+        <span class="sr-only"> repository for {title}</span>
+        <Icon name="external" class="h-3.5 w-3.5" />
+      </Link>
+    )}
+    {liveUrl && (
+      <Link href={liveUrl} isExternal variant="button-primary">
+        <span>Live demo</span>
+        <Icon name="external" class="h-3.5 w-3.5" />
+      </Link>
+    )}
+  </div>
 </div>
