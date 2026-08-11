@@ -12,7 +12,6 @@ export async function getStaticPaths() {
   const esProjects = projects.filter((p) => p.data.lang === 'es');
 
   return esProjects.map((project: CollectionEntry<'projects'>) => {
-    // Clean up folder prefix if id contains 'es/project-id'
     const slug = project.id.includes('/') ? project.id.split('/').pop() : project.id;
 
     return {

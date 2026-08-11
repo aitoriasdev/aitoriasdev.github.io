@@ -6,10 +6,19 @@ import type { InferGetStaticPropsType } from 'astro';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
-  return projects.map((project: CollectionEntry<'projects'>) => ({
-    params: { slug: project.id },
-    props: { project },
-  }));
+
+  // Filter for English entries only (or entries without language prefix)
+  const enProjects = projects.filter((p) => p.data.lang === 'en' || !p.data.lang);
+
+  return enProjects.map((project: CollectionEntry<'projects'>) => {
+    // Strip folder prefix if project.id contains 'en/slug' or 'es/slug'
+    const slug = project.id.includes('/') ? project.id.split('/').pop() : project.id;
+
+    return {
+      params: { slug },
+      props: { project },
+    };
+  });
 }
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
