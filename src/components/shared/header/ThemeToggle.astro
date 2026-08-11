@@ -7,7 +7,7 @@ import Icon from '../../shared/Icon.astro';
     type="button"
     data-theme-value="light"
     aria-label="Light theme"
-    class="theme-btn flex h-7 w-7 items-center justify-center rounded-full text-text-muted-light transition-all hover:text-text-main-light focus-visible:outline-2 focus-visible:outline-accent-primary dark:text-text-muted-dark dark:hover:text-text-main-dark"
+    class="theme-btn flex h-7 w-7 items-center justify-center rounded-full text-text-muted-light transition-all motion-reduce:transition-none hover:text-text-main-light focus-visible:outline-2 focus-visible:outline-accent-primary dark:text-text-muted-dark dark:hover:text-text-main-dark"
   >
     <Icon name="sun" class="h-4 w-4" />
   </button>
@@ -15,7 +15,7 @@ import Icon from '../../shared/Icon.astro';
     type="button"
     data-theme-value="dark"
     aria-label="Dark theme"
-    class="theme-btn flex h-7 w-7 items-center justify-center rounded-full text-text-muted-light transition-all hover:text-text-main-light focus-visible:outline-2 focus-visible:outline-accent-primary dark:text-text-muted-dark dark:hover:text-text-main-dark"
+    class="theme-btn flex h-7 w-7 items-center justify-center rounded-full text-text-muted-light transition-all motion-reduce:transition-none hover:text-text-main-light focus-visible:outline-2 focus-visible:outline-accent-primary dark:text-text-muted-dark dark:hover:text-text-main-dark"
   >
     <Icon name="moon" class="h-4 w-4" />
   </button>
@@ -23,7 +23,7 @@ import Icon from '../../shared/Icon.astro';
     type="button"
     data-theme-value="system"
     aria-label="System theme"
-    class="theme-btn flex h-7 w-7 items-center justify-center rounded-full text-text-muted-light transition-all hover:text-text-main-light focus-visible:outline-2 focus-visible:outline-accent-primary dark:text-text-muted-dark dark:hover:text-text-main-dark"
+    class="theme-btn flex h-7 w-7 items-center justify-center rounded-full text-text-muted-light transition-all motion-reduce:transition-none hover:text-text-main-light focus-visible:outline-2 focus-visible:outline-accent-primary dark:text-text-muted-dark dark:hover:text-text-main-dark"
   >
     <Icon name="system" class="h-4 w-4" />
   </button>
@@ -50,6 +50,7 @@ import Icon from '../../shared/Icon.astro';
 
       buttons.forEach((button) => {
         const val = button.getAttribute('data-theme-value');
+
         const isActive = val === theme;
 
         button.classList.toggle('bg-bg-light', isActive);

@@ -15,7 +15,7 @@ import { ALL_TAGS } from '../../config/tags';
       variant="ghost"
       size="sm"
       class:list={[
-        'filter-btn shrink-0 transition-all duration-200 cursor-pointer',
+        'filter-btn shrink-0 transition-all duration-200 motion-reduce:transition-none cursor-pointer',
         // Active state
         'data-[active=true]:bg-accent-primary data-[active=true]:text-bg-light data-[active=true]:shadow-sm dark:data-[active=true]:text-bg-dark',
         // Inactive state + enhanced hover feedback
@@ -93,6 +93,12 @@ import { ALL_TAGS } from '../../config/tags';
       background: var(--color-accent-primary, #888);
       border-radius: 9999px;
       transition: background-color 0.2s ease-in-out;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        transition: none;
+      }
     }
 
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {

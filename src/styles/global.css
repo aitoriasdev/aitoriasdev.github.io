@@ -1,11 +1,12 @@
+/* global.css */
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* High-Contrast Accessible Palette (WCAG AA Compliant) */
-  --color-accent-primary: #3d603a; /* Light Mode Green (5.8:1 against light bg) */
-  --color-accent-primary-dark: #9eb199; /* Dark Mode Green (7.2:1 against dark bg) */
+  --color-accent-primary: #3d603a;
+  --color-accent-primary-dark: #9eb199;
   --color-accent-secondary: #c87a78;
 
   --color-bg-light: #fbf9f5;
@@ -20,6 +21,52 @@
   --color-text-main-light: #25282e;
   --color-text-main-dark: #eceff4;
 
-  --color-text-muted-light: #4c535e; /* Deepened for 5.5:1 contrast on light mode */
-  --color-text-muted-dark: #a1adbd; /* Lightened for 5.2:1 contrast on dark mode */
+  --color-text-muted-light: #4c535e;
+  --color-text-muted-dark: #a1adbd;
+
+  /* WCAG fonts */
+  --font-open-dyslexic: var(--font-open-dyslexic), sans-serif;
+}
+
+/* --- Absolute Zero Motion Overrides --- */
+
+/* Target OS settings & manual .reduce-motion toggle */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation: none;
+    transition: none;
+    scroll-behavior: auto;
+  }
+}
+
+html.reduce-motion *,
+html.reduce-motion ::before,
+html.reduce-motion ::after {
+  animation: none;
+  transition: none;
+  scroll-behavior: auto;
+}
+
+/* --- Remaining Accessibility Rules --- */
+
+html.high-contrast {
+  --color-bg-light: #ffffff;
+  --color-bg-dark: #000000;
+  --color-surface-light: #ffffff;
+  --color-surface-dark: #111111;
+  --color-text-main-light: #000000;
+  --color-text-main-dark: #ffffff;
+  --color-border-light: #000000;
+  --color-border-dark: #ffffff;
+}
+
+html.large-text {
+  font-size: 112.5%;
+}
+
+html.dyslexic-font,
+html.dyslexic-font * {
+  font-family: var(--font-open-dyslexic) !important;
 }

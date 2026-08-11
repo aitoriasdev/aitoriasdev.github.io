@@ -37,7 +37,7 @@ const variants = {
   target={isOutbound ? '_blank' : undefined}
   rel={isOutbound ? 'noopener noreferrer' : undefined}
   class:list={[
-    'transition-colors focus-visible:outline-2 focus-visible:outline-accent-primary',
+    'transition-colors motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-accent-primary',
     variants[variant],
     className,
   ]}

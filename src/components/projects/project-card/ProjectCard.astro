@@ -1,8 +1,8 @@
 ---
-import { type CollectionEntry } from 'astro:content';
 import ProjectCardActions from './ProjectCardActions.astro';
 import ProjectCardBody from './ProjectCardBody.astro';
 import ProjectCardImage from './ProjectCardImage.astro';
+import { type CollectionEntry } from 'astro:content';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -13,7 +13,7 @@ const { project, isLcp = false } = Astro.props;
 ---
 
 <article
-  class="project-card group flex flex-col justify-between overflow-hidden rounded-2xl bg-surface-light/60 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-surface-light hover:shadow-xl dark:bg-surface-dark/60 dark:shadow-md dark:shadow-black/20 dark:hover:bg-surface-dark dark:hover:shadow-black/40"
+  class="project-card group flex flex-col justify-between overflow-hidden rounded-2xl bg-surface-light/60 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-surface-light hover:shadow-xl dark:bg-surface-dark/60 dark:shadow-md dark:shadow-black/20 dark:hover:bg-surface-dark dark:hover:shadow-black/40 motion-reduce:transition-none motion-reduce:hover:translate-y-0 in-[.reduce-motion]:transition-none in-[.reduce-motion]:hover:translate-y-0"
   data-tags={JSON.stringify(project.data.techStack)}
 >
   <!-- Full Width Image Container at Top -->
