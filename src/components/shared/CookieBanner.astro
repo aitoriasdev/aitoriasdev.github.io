@@ -13,10 +13,10 @@ import Icon from './Icon.astro';
   <Icon name="cookie" class="h-5 w-5" />
 </button>
 
-<!-- Main Cookie Banner -->
+<!-- Main Cookie Banner (Positioned on the Left) -->
 <div
   id="cookie-banner"
-  class="fixed bottom-4 right-4 left-4 z-50 hidden max-w-md rounded-2xl border border-surface-light bg-bg-light/95 p-5 shadow-2xl backdrop-blur-md dark:border-surface-dark dark:bg-bg-dark/95 md:left-auto"
+  class="fixed bottom-4 left-4 right-4 z-50 hidden max-w-md rounded-2xl border border-surface-light bg-bg-light/95 p-5 shadow-2xl backdrop-blur-md dark:border-surface-dark dark:bg-bg-dark/95 md:right-auto"
   role="region"
   aria-label="Cookie consent banner"
 >
@@ -117,9 +117,12 @@ import Icon from './Icon.astro';
           statusBadge.classList.add('bg-rose-100', 'text-rose-800', 'dark:bg-rose-950', 'dark:text-rose-300');
         }
 
+        // Show floating button and hide main banner when consent is already recorded
+        banner.classList.add('hidden');
         reopenBtn.classList.remove('hidden');
         reopenBtn.classList.add('flex');
       } else {
+        // First visit: Display banner only
         banner.classList.remove('hidden');
         reopenBtn.classList.add('hidden');
         reopenBtn.classList.remove('flex');
@@ -129,7 +132,6 @@ import Icon from './Icon.astro';
 
     function setConsent(value) {
       localStorage.setItem('analytics-consent', value);
-      banner?.classList.add('hidden');
       updateUI(value);
 
       if (typeof window.gtag === 'function') {
@@ -142,11 +144,22 @@ import Icon from './Icon.astro';
     acceptBtn?.addEventListener('click', () => setConsent('granted'));
     denyBtn?.addEventListener('click', () => setConsent('denied'));
 
+    // Closing the banner switches back to the floating button state if a decision exists
     closeBtn?.addEventListener('click', () => {
-      banner?.classList.add('hidden');
+      const currentConsent = localStorage.getItem('analytics-consent');
+      if (currentConsent) {
+        banner?.classList.add('hidden');
+        reopenBtn?.classList.remove('hidden');
+        reopenBtn?.classList.add('flex');
+      } else {
+        banner?.classList.add('hidden');
+      }
     });
 
+    // Opening banner hides the floating button
     reopenBtn?.addEventListener('click', () => {
+      reopenBtn.classList.add('hidden');
+      reopenBtn.classList.remove('flex');
       banner?.classList.remove('hidden');
     });
 
