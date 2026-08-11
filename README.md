@@ -50,7 +50,7 @@ The site features a custom Japanese Pastel palette declared inside `src/styles/g
 │   │   ├── drawer/            # Navigation mobile drawer
 │   │   ├── header/            # Header, NavMenu, ThemeToggle
 │   │   ├── projects/          # Dynamic project section & filter cards
-│   │   └── ui/                # Base atomic UI elements (Button, Badge, Icon, Link)
+│   │   └── shared/            # Base atomic UI shared elements (Button, Badge, Icon, Link)
 │   ├── layouts/
 │   │   └── Layout.astro       # Encapsulated site shell (Header, Main, Footer, Drawer)
 │   ├── pages/
