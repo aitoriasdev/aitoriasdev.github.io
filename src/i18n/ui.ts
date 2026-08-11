@@ -1,7 +1,7 @@
 export const languages = {
-  en: "English",
-  es: "Español",
-};
+  en: "en",
+  es: "es",
+} as const;
 
 export const defaultLang = "en";
 
@@ -18,6 +18,8 @@ export const routes = {
 
 export const ui = {
   en: {
+    "lang.en": "English",
+    "lang.es": "Spanish",
     title: "Front-End Developer crafting web experiences.",
     "nav.projects": "Projects",
     "nav.menu": "Menu",
@@ -49,6 +51,8 @@ export const ui = {
     "footer.socialAria": "Social Links",
   },
   es: {
+    "lang.en": "Inglés",
+    "lang.es": "Español",
     title: "Desarrollador Front-End creando experiencias web.",
     "nav.projects": "Proyectos",
     "nav.menu": "Menú",
