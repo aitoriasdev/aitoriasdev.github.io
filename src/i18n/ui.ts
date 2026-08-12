@@ -57,6 +57,7 @@ export const ui = {
     "a11y.contrast": "High Contrast",
     "a11y.text": "Larger Text",
     "a11y.dyslexic": "Dyslexia Friendly Font",
+    "a11y.useLabel": "Use {label}",
     "a11y.on": "On",
     "a11y.off": "Off",
     /* Cookie Banner */
@@ -120,6 +121,7 @@ export const ui = {
     "a11y.contrast": "Alto contraste",
     "a11y.text": "Texto más grande",
     "a11y.dyslexic": "Fuente para dislexia",
+    "a11y.useLabel": "Utilizar {label}",
     "a11y.on": "Activado",
     "a11y.off": "Desactivado",
     /* Cookie Banner */
