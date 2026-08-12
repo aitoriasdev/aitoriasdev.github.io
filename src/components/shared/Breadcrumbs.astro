@@ -12,7 +12,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 
-// Extract current canonical route (e.g., 'projects' or 'projects/my-slug')
+// Extract current canonical route
 const canonicalRoute = getRouteFromUrl(Astro.url);
 
 // Hide on home page
@@ -45,33 +45,39 @@ if (customCrumbs && customCrumbs.length > 0) {
 
 {
   !isHomePage && (
-    <nav aria-label="Breadcrumb" class="mx-auto max-w-5xl px-6 pt-6 pb-2">
-      <ol class="flex items-center gap-2 text-md font-medium text-text-muted-light dark:text-text-muted-dark">
+    <nav aria-label={t('nav.breadcrumbs' as any) || 'Breadcrumb'} class="mx-auto max-w-5xl px-6 pt-6 pb-2">
+      <ol class="flex flex-wrap items-center gap-2 text-md font-medium text-text-muted-light dark:text-text-muted-dark">
         {/* Home Link */}
         <li>
           <Link
             href={translatePath('/')}
-            class="flex items-center gap-1 transition-colors hover:text-text-main-light dark:hover:text-text-main-dark"
+            class="transition-colors hover:text-text-main-light dark:hover:text-text-main-dark"
           >
-            <span>Home</span>
+            Home
           </Link>
         </li>
 
         {/* Dynamic Segments */}
         {breadcrumbs.map((crumb) => (
           <li class="flex items-center gap-2">
-            <span class="text-surface-dark/40 dark:text-surface-light/40" aria-hidden="true">/</span>
+            <span class="select-none text-surface-dark/40 dark:text-surface-light/40" aria-hidden="true">
+              /
+            </span>
             {crumb.href ? (
               <Link
                 href={crumb.href}
-                class="text-md transition-colors hover:text-text-main-light dark:hover:text-text-main-dark"
+                class="transition-colors hover:text-text-main-light dark:hover:text-text-main-dark"
               >
                 {crumb.label}
               </Link>
             ) : (
-              <span class="text-md font-semibold text-text-main-light dark:text-text-main-dark" aria-current="page">
+              <a
+                href={Astro.url.pathname}
+                aria-current="page"
+                class="font-semibold text-text-main-light dark:text-text-main-dark no-underline cursor-default"
+              >
                 {crumb.label}
-              </span>
+              </a>
             )}
           </li>
         ))}
