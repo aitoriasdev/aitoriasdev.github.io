@@ -58,9 +58,10 @@ const t = useTranslations(lang);
         const isActive = val === theme;
 
         button.classList.toggle('bg-bg-light', isActive);
-        button.classList.toggle('dark:bg-bg-dark', isActive);
         button.classList.toggle('text-accent-primary', isActive);
         button.classList.toggle('shadow-sm', isActive);
+        button.classList.toggle('dark:bg-bg-dark', isActive);
+        button.classList.toggle('dark:text-accent-primary-dark', isActive);
 
         button.classList.toggle('text-text-muted-light', !isActive);
         button.classList.toggle('dark:text-text-muted-dark', !isActive);
