@@ -2,16 +2,29 @@
 import LanguagePicker from '../LanguagePicker.astro';
 import Logo from '../../shared/Logo.astro';
 import NavMenu from './menu/NavMenu.astro';
+import MenuToggleButton from './menu/MenuToggleButton.astro';
 import ThemeToggle from './ThemeToggle.astro';
 ---
 
 <header class="sticky top-0 z-10 w-full bg-bg-light/85 shadow-sm backdrop-blur-md transition-shadow duration-200 motion-reduce:transition-none dark:bg-bg-dark/85 dark:shadow-md dark:shadow-black/20">
-  <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-    <Logo />
-    <NavMenu />
-    <div class="flex gap-1">
-      <ThemeToggle />
-      <LanguagePicker />
+  <div class="mx-auto grid max-w-5xl grid-cols-2 items-center px-6 py-4 md:grid-cols-3">
+    <!-- Left: Logo -->
+    <div class="flex items-center justify-start">
+      <Logo />
+    </div>
+    <!-- Center: Desktop Navigation -->
+    <div class="hidden items-center justify-center md:flex">
+      <NavMenu />
+    </div>
+    <!-- Right: Desktop Theme/Lang + Mobile Hamburger Button -->
+    <div class="flex items-center justify-end gap-2">
+      <div class="hidden md:flex md:items-center md:gap-2">
+        <LanguagePicker />
+        <ThemeToggle />
+      </div>
+      <div class="flex md:hidden">
+        <MenuToggleButton />
+      </div>
     </div>
   </div>
 </header>

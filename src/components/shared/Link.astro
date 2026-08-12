@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'astro/types';
 interface Props extends HTMLAttributes<'a'> {
   href: string;
   isExternal?: boolean;
-  variant?: 'default' | 'menu' | 'subtle' | 'button-primary' | 'button-secondary';
+  variant?: 'default' | 'menu' | 'subtle' | 'button-primary' | 'button-secondary' | 'button-outline';
   class?: string;
 }
 
@@ -22,13 +22,15 @@ const variants = {
   default:
     'text-md font-medium text-accent-primary hover:underline dark:text-accent-primary-dark',
   menu:
-    'relative py-1 text-lg font-medium no-underline text-text-main-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:text-text-main-dark',
+    'relative py-1 text-lg font-medium no-underline text-text-main-light hover:text-accent-primary dark:text-text-muted-dark dark:hover:text-accent-primary-dark',
   subtle:
     'text-md text-text-muted-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:text-text-main-dark',
   'button-primary':
-    'inline-flex items-center justify-center gap-2 rounded-xl bg-accent-primary px-5 py-3 text-md font-semibold text-white dark:text-bg-dark shadow-sm hover:opacity-90 cursor-default select-none',
+    'inline-flex items-center justify-center gap-2 rounded-xl bg-accent-primary px-5 py-3 text-md font-semibold text-white shadow-sm hover:opacity-90 dark:bg-accent-primary-dark dark:text-bg-dark dark:hover:bg-accent-primary-dark/90 cursor-pointer select-none no-underline',
   'button-secondary':
-    'inline-flex items-center justify-center gap-2 rounded-xl bg-surface-light px-5 py-3 text-md font-semibold text-text-main-light shadow-sm hover:bg-bg-light dark:bg-surface-dark dark:text-text-main-dark dark:hover:bg-bg-dark cursor-default select-none',
+    'inline-flex items-center justify-center gap-2 rounded-xl bg-surface-light px-5 py-3 text-md font-semibold text-text-main-light shadow-sm hover:bg-bg-light dark:bg-surface-dark dark:text-text-main-dark dark:hover:bg-bg-dark cursor-pointer select-none no-underline',
+  'button-outline':
+    'inline-flex items-center justify-center gap-2 rounded-xl border border-accent-primary bg-transparent px-5 py-3 text-md font-semibold text-accent-primary hover:bg-surface-light dark:border-accent-primary-dark dark:text-accent-primary-dark dark:hover:bg-surface-dark cursor-pointer select-none no-underline',
 };
 ---
 
@@ -37,7 +39,7 @@ const variants = {
   target={isOutbound ? '_blank' : undefined}
   rel={isOutbound ? 'noopener noreferrer' : undefined}
   class:list={[
-    'transition-colors motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-accent-primary',
+    'transition-colors motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-accent-primary dark:focus-visible:outline-accent-primary-dark',
     variants[variant],
     className,
   ]}

@@ -17,7 +17,7 @@ const t = useTranslations(lang);
 
 <div class="flex w-full items-center gap-2">
   {gitHubUrl && (
-    <Link href={gitHubUrl} isExternal variant="button-secondary">
+    <Link href={gitHubUrl} isExternal variant="button-outline">
       <Icon name="github" class="h-3.5 w-3.5" />
       <span>GitHub</span>
       <span class="sr-only"> {t('projects.repoSrOnly')} {title}</span>

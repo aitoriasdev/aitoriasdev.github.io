@@ -20,7 +20,7 @@ const t = useTranslations(lang);
       size="sm"
       class:list={[
         'filter-btn shrink-0 transition-all duration-200 motion-reduce:transition-none cursor-pointer',
-        'data-[active=true]:bg-accent-primary data-[active=true]:text-bg-light data-[active=true]:shadow-sm dark:data-[active=true]:text-bg-dark',
+        'data-[active=true]:bg-accent-primary data-[active=true]:text-white dark:data-[active=true]:bg-accent-primary-dark dark:data-[active=true]:text-bg-dark data-[active=true]:shadow-sm',
         'data-[active=false]:bg-surface-light/70 data-[active=false]:text-text-muted-light dark:data-[active=false]:bg-surface-dark/70 dark:data-[active=false]:text-text-muted-dark',
         'data-[active=false]:hover:bg-accent-primary/10 data-[active=false]:hover:text-accent-primary data-[active=false]:hover:border-accent-primary/30',
         'dark:data-[active=false]:hover:bg-accent-primary-dark/15 dark:data-[active=false]:hover:text-accent-primary-dark'
@@ -67,42 +67,3 @@ const t = useTranslations(lang);
   initProjectFilters();
   document.addEventListener('astro:page-load', initProjectFilters);
 </script>
-
-<style>
-  @media (max-width: 639px) {
-    .custom-scrollbar {
-      scrollbar-width: thin;
-      scrollbar-color: var(--color-accent-primary, #888) rgba(0, 0, 0, 0.05);
-    }
-
-    .custom-scrollbar::-webkit-scrollbar {
-      height: 4px;
-      display: block;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.05);
-      border-radius: 9999px;
-    }
-
-    :global(.dark) .custom-scrollbar::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: var(--color-accent-primary, #888);
-      border-radius: 9999px;
-      transition: background-color 0.2s ease-in-out;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .custom-scrollbar::-webkit-scrollbar-thumb {
-        transition: none;
-      }
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      opacity: 0.8;
-    }
-  }
-</style>

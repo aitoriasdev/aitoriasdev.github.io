@@ -1,28 +1,27 @@
-/* global.css */
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* High-Contrast Accessible Palette (WCAG AA Compliant) */
-  --color-accent-primary: #3d603a;
-  --color-accent-primary-dark: #9eb199;
+  --color-accent-primary: #2d5a27;
+  --color-accent-primary-dark: #a4d09c; /* Boosted for 7+:1 contrast over dark backgrounds */
   --color-accent-secondary: #c87a78;
 
   --color-bg-light: #fbf9f5;
-  --color-bg-dark: #16181d;
+  --color-bg-dark: #121418;
 
   --color-surface-light: #f1ece4;
-  --color-surface-dark: #21252d;
+  --color-surface-dark: #1e222a;
 
   --color-border-light: #e2dad0;
   --color-border-dark: #2e3440;
 
-  --color-text-main-light: #25282e;
-  --color-text-main-dark: #eceff4;
+  --color-text-main-light: #1f2228;
+  --color-text-main-dark: #f3f5f8;
 
   --color-text-muted-light: #4c535e;
-  --color-text-muted-dark: #a1adbd;
+  --color-text-muted-dark: #cbd5e1; /* Boosted contrast against dark background */
 
   /* WCAG fonts */
   --font-open-dyslexic: var(--font-open-dyslexic), sans-serif;
@@ -69,4 +68,50 @@ html.large-text {
 html.dyslexic-font,
 html.dyslexic-font * {
   font-family: var(--font-open-dyslexic) !important;
+}
+
+/* --- Global Scrollbar Utilities --- */
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent-primary) rgba(0, 0, 0, 0.05);
+}
+
+:where(.dark, .dark *) .custom-scrollbar {
+  scrollbar-color: var(--color-accent-primary-dark) rgba(255, 255, 255, 0.05);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+  display: block;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 9999px;
+}
+
+:where(.dark, .dark *) .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-accent-primary);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+:where(.dark, .dark *) .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-accent-primary-dark);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  opacity: 0.8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    transition: none;
+  }
 }

@@ -1,7 +1,8 @@
 ---
+import Icon from '../shared/Icon.astro';
+import Link from '../shared/Link.astro';
 import { languages } from '../../i18n/ui';
 import { getLangFromUrl, getRouteFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
-import Icon from '../shared/Icon.astro';
 
 const currentLanguage = getLangFromUrl(Astro.url);
 const route = getRouteFromUrl(Astro.url);
@@ -9,54 +10,91 @@ const t = useTranslations(currentLanguage);
 const translatePath = useTranslatedPath(currentLanguage);
 ---
 
-<div class="relative inline-block text-left">
-  <label for="language-select" class="sr-only">Select language</label>
-  <div class="relative flex items-center">
-    <select
-      id="language-select"
-      class:list={[
-        'appearance-none rounded-xl bg-surface-light py-2.5 pl-3.5 pr-8 text-xs font-semibold tracking-wide text-text-main-light shadow-sm transition-colors cursor-pointer',
-        'hover:bg-bg-light focus-visible:outline-2 focus-visible:outline-accent-primary',
-        'dark:bg-surface-dark dark:text-text-main-dark dark:hover:bg-bg-dark',
-      ]}
-    >
-      {
-        Object.keys(languages).map((lang) => {
-          const isSelected = lang === currentLanguage;
-          const targetHref = translatePath(route, lang);
-          const localizedLabel = t(`lang.${lang}` as any);
+<div class="lang-picker relative inline-block text-left">
+  <!-- Dropdown Trigger Button -->
+  <button
+    type="button"
+    class="lang-picker-btn flex items-center justify-between gap-2 rounded-xl bg-surface-light py-2.5 pl-3.5 pr-3 text-xs font-semibold tracking-wide text-text-main-light shadow-sm transition-colors hover:bg-bg-light focus-visible:outline-2 focus-visible:outline-accent-primary dark:bg-surface-dark dark:text-text-main-dark dark:hover:bg-bg-dark"
+    aria-expanded="false"
+    aria-haspopup="true"
+  >
+    <span>{t(`lang.${currentLanguage}` as any)}</span>
+    <Icon name="chevron-down" class="h-3.5 w-3.5 text-text-muted-light dark:text-text-muted-dark transition-transform duration-200" />
+  </button>
 
-          return (
-            <option
-              value={targetHref}
-              selected={isSelected}
-              class="bg-surface-light text-text-main-light dark:bg-surface-dark dark:text-text-main-dark"
-            >
-              {localizedLabel}
-            </option>
-          );
-        })
-      }
-    </select>
-    <div class="pointer-events-none absolute right-2.5 flex items-center text-text-muted-light dark:text-text-muted-dark">
-      <Icon name="chevron-down" class="h-3.5 w-3.5" />
-    </div>
+  <!-- Dropdown Menu Options -->
+  <div
+    class="lang-picker-menu absolute right-0 bottom-full mb-2 hidden [&:not(.hidden)]:flex w-36 flex-col gap-1 rounded-xl border border-surface-light bg-bg-light p-1 shadow-xl backdrop-blur-md dark:border-surface-dark dark:bg-bg-dark md:bottom-auto md:top-full md:mt-2 md:mb-0 z-50"
+    role="menu"
+  >
+    {
+      Object.keys(languages).map((lang) => {
+        const isSelected = lang === currentLanguage;
+        const targetHref = translatePath(route, lang);
+        const localizedLabel = t(`lang.${lang}` as any);
+
+        return (
+          <Link
+            href={targetHref}
+            role="menuitem"
+            variant='menu'
+            class:list={[
+              'flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold no-underline transition-colors',
+              isSelected
+                ? 'bg-surface-light text-accent-primary dark:bg-surface-dark'
+                : 'text-text-main-light hover:bg-surface-light dark:text-text-main-dark dark:hover:bg-surface-dark',
+            ]}
+          >
+            <span>{localizedLabel}</span>
+          </Link>
+        );
+      })
+    }
   </div>
 </div>
 
 <script>
-  function initLanguageSelect() {
-    const select = document.getElementById('language-select') as HTMLSelectElement | null;
-    if (!select) return;
+  function initLanguagePickers() {
+    const pickers = document.querySelectorAll('.lang-picker');
 
-    select.addEventListener('change', (event) => {
-      const target = event.target as HTMLSelectElement;
-      if (target.value) {
-        window.location.href = target.value;
+    pickers.forEach((picker) => {
+      const button = picker.querySelector('.lang-picker-btn') as HTMLButtonElement | null;
+      const menu = picker.querySelector('.lang-picker-menu') as HTMLElement | null;
+      const chevron = button?.querySelector('svg');
+
+      if (!button || !menu) return;
+
+      function closeMenu() {
+        menu?.classList.add('hidden');
+        button?.setAttribute('aria-expanded', 'false');
+        chevron?.classList.remove('rotate-180');
       }
+
+      function openMenu() {
+        menu?.classList.remove('hidden');
+        button?.setAttribute('aria-expanded', 'true');
+        chevron?.classList.add('rotate-180');
+      }
+
+      button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isHidden = menu.classList.contains('hidden');
+        if (isHidden) {
+          openMenu();
+        } else {
+          closeMenu();
+        }
+      });
+
+      // Close on click outside
+      document.addEventListener('click', (e) => {
+        if (!picker.contains(e.target as Node)) {
+          closeMenu();
+        }
+      });
     });
   }
 
-  initLanguageSelect();
-  document.addEventListener('astro:page-load', initLanguageSelect);
+  initLanguagePickers();
+  document.addEventListener('astro:page-load', initLanguagePickers);
 </script>

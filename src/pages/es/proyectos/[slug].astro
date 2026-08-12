@@ -1,40 +1,31 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
+import { useTranslations } from '../../../i18n/utils';
 import type { InferGetStaticPropsType } from 'astro';
-import { useTranslations, useTranslatedPath } from '../../../i18n/utils';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects');
+  const projects = await getCollection('projects', (p) => p.data.lang === 'es');
 
-  // Filter for Spanish entries only
-  const esProjects = projects.filter((p) => p.data.lang === 'es');
-
-  return esProjects.map((project: CollectionEntry<'projects'>) => {
-    const slug = project.id.includes('/') ? project.id.split('/').pop() : project.id;
-
-    return {
-      params: { slug },
-      props: { project },
-    };
-  });
+  return projects.map((project) => ({
+    params: { slug: project.id.split('/').pop() },
+    props: { project },
+  }));
 }
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { project } = Astro.props;
 const { Content } = await render(project);
-
-const lang = 'es';
-const t = useTranslations(lang);
-const translatePath = useTranslatedPath(lang);
+const t = useTranslations('es');
 ---
 
 <Layout title={`${project.data.title} | Aitorias.dev`} description={project.data.tagline}>
   <div class="mx-auto max-w-3xl px-6 py-12">
-    <a href={translatePath('/projects')} class="inline-block text-sm font-medium text-accent-primary hover:underline mb-6">
-      ← {t('projects.viewAll')}
+    <a href={getRelativeLocaleUrl('es', 'proyectos')} class="inline-block text-md font-medium text-accent-primary hover:underline mb-6">
+      ← <span>{t('projects.viewAll')}</span>
     </a>
 
     {project.data.thumbnail && (

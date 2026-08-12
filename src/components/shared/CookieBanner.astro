@@ -1,5 +1,9 @@
 ---
 import Icon from './Icon.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <!-- Floating Cookie Trigger Button -->
@@ -7,28 +11,30 @@ import Icon from './Icon.astro';
   id="cookie-reopen-btn"
   type="button"
   class="fixed bottom-5 left-5 z-30 hidden items-center justify-center gap-2 rounded-full border border-surface-light bg-bg-light p-3 text-text-light shadow-xl backdrop-blur-md transition-all duration-300 motion-reduce:transition-none hover:border-accent-primary hover:text-accent-primary dark:border-surface-dark dark:bg-bg-dark dark:text-text-dark"
-  aria-label="Manage cookie settings"
+  aria-label={t('cookies.manage')}
 >
   <Icon name="cookie" class="h-5 w-5" />
-  <span class="sr-only">Cookies</span>
+  <span class="sr-only">{t('cookies.title')}</span>
 </button>
 
 <!-- Main Cookie Banner (Positioned on the Left) -->
 <div
   id="cookie-banner"
-  class="fixed bottom-4 left-4 right-4 z-30 hidden max-w-md rounded-2xl border border-surface-light bg-bg-light/95 p-5 shadow-2xl backdrop-blur-md dark:border-surface-dark dark:bg-bg-dark/95 md:right-auto"
+  class="fixed bottom-4 left-4 right-4 z-40 hidden max-w-md rounded-2xl border border-surface-light bg-bg-light/95 p-5 shadow-2xl backdrop-blur-md dark:border-surface-dark dark:bg-bg-dark/95 md:right-auto"
   role="region"
-  aria-label="Cookie consent banner"
+  aria-label={t('cookies.title')}
 >
   <div class="flex items-start justify-between gap-2">
     <div class="flex items-center gap-2">
       <p class="text-md font-semibold text-text-light dark:text-text-dark">
-        Cookie Settings
+        {t('cookies.title')}
       </p>
       <!-- Live Status Badge -->
       <span
         id="cookie-status-badge"
         class="hidden rounded-full px-2 py-0.5 text-md font-semibold uppercase tracking-wider"
+        data-label-accepted={t('cookies.statusAccepted')}
+        data-label-denied={t('cookies.statusDenied')}
       ></span>
     </div>
     <!-- Banner Close Button -->
@@ -36,36 +42,36 @@ import Icon from './Icon.astro';
       id="btn-close-banner"
       type="button"
       class="rounded-lg p-1 text-text-muted-light transition-colors motion-reduce:transition-none hover:bg-surface-light hover:text-text-light dark:text-text-muted-dark dark:hover:bg-surface-dark dark:hover:text-text-dark"
-      aria-label="Close cookie banner"
+      aria-label={t('cookies.close')}
     >
       <Icon name="close" class="h-4 w-4" />
     </button>
   </div>
   <p class="mt-2 text-md text-text-muted-light dark:text-text-muted-dark">
-    We use cookies to ensure basic site functionality and measure traffic to improve your experience.
+    {t('cookies.description')}
   </p>
   <!-- Cookie Details Section -->
   <details class="group mt-3 border-t border-surface-light pt-3 text-md dark:border-surface-dark">
     <summary class="cursor-pointer font-medium text-accent-primary hover:underline focus:outline-none">
-      View Cookie Details
+      {t('cookies.viewDetails')}
     </summary>
     <div class="mt-2 space-y-2 text-text-muted-light dark:text-text-muted-dark">
       <div class="rounded-lg bg-surface-light/50 p-2 dark:bg-surface-dark/50">
         <div class="flex items-center justify-between font-semibold text-text-light dark:text-text-dark">
-          <span>Essential (Always Active)</span>
-          <span class="text-md text-accent-primary">Required</span>
+          <span>{t('cookies.essentialTitle')}</span>
+          <span class="text-md text-accent-primary">{t('cookies.required')}</span>
         </div>
         <p class="mt-1 text-md">
-          <strong class="font-medium">analytics-consent:</strong> Stores your cookie consent preference locally in your browser.
+          <strong class="font-medium">analytics-consent:</strong> {t('cookies.essentialDesc')}
         </p>
       </div>
       <div class="rounded-lg bg-surface-light/50 p-2 dark:bg-surface-dark/50">
         <div class="flex items-center justify-between font-semibold text-text-light dark:text-text-dark">
-          <span>Analytics (Optional)</span>
-          <span class="text-md text-text-muted-light dark:text-text-muted-dark">Google Analytics</span>
+          <span>{t('cookies.analyticsTitle')}</span>
+          <span class="text-md text-text-muted-light dark:text-text-muted-dark">{t('cookies.analyticsVendor')}</span>
         </div>
         <p class="mt-1 text-md">
-          <strong class="font-medium">_ga, _ga_*:</strong> Used by Google Analytics to collect anonymous information about how visitors use the site.
+          <strong class="font-medium">_ga, _ga_*:</strong> {t('cookies.analyticsDesc')}
         </p>
       </div>
     </div>
@@ -76,14 +82,14 @@ import Icon from './Icon.astro';
       type="button"
       class="rounded-xl px-4 py-2 text-md font-semibold text-text-muted-light transition-colors motion-reduce:transition-none hover:bg-surface-light dark:text-text-muted-dark dark:hover:bg-surface-dark"
     >
-      Deny
+      {t('cookies.deny')}
     </button>
     <button
       id="btn-accept"
       type="button"
       class="rounded-xl bg-accent-primary px-4 py-2 text-md font-semibold text-white transition-opacity motion-reduce:transition-none hover:opacity-90 dark:text-bg-dark"
     >
-      Accept
+      {t('cookies.accept')}
     </button>
   </div>
 </div>
@@ -103,24 +109,37 @@ import Icon from './Icon.astro';
       if (consent) {
         statusBadge.className = 'rounded-full px-2 py-0.5 text-md font-semibold uppercase tracking-wider';
 
+        const labelAccepted = statusBadge.getAttribute('data-label-accepted') || 'Accepted';
+        const labelDenied = statusBadge.getAttribute('data-label-denied') || 'Denied';
+
         if (consent === 'granted') {
-          statusBadge.textContent = 'Accepted';
+          statusBadge.textContent = labelAccepted;
           statusBadge.classList.add('bg-emerald-100', 'text-emerald-800', 'dark:bg-emerald-950', 'dark:text-emerald-300');
         } else {
-          statusBadge.textContent = 'Denied';
+          statusBadge.textContent = labelDenied;
           statusBadge.classList.add('bg-rose-100', 'text-rose-800', 'dark:bg-rose-950', 'dark:text-rose-300');
         }
 
-        // Show floating button and hide main banner when consent is already recorded
         banner.classList.add('hidden');
         reopenBtn.classList.remove('hidden');
         reopenBtn.classList.add('flex');
       } else {
-        // First visit: Display banner only
         banner.classList.remove('hidden');
         reopenBtn.classList.add('hidden');
         reopenBtn.classList.remove('flex');
         statusBadge.classList.add('hidden');
+      }
+    }
+
+    function closeBanner() {
+      const currentConsent = localStorage.getItem('analytics-consent');
+
+      if (currentConsent) {
+        banner?.classList.add('hidden');
+        reopenBtn?.classList.remove('hidden');
+        reopenBtn?.classList.add('flex');
+      } else {
+        banner?.classList.add('hidden');
       }
     }
 
@@ -137,25 +156,25 @@ import Icon from './Icon.astro';
 
     acceptBtn?.addEventListener('click', () => setConsent('granted'));
     denyBtn?.addEventListener('click', () => setConsent('denied'));
+    closeBtn?.addEventListener('click', closeBanner);
 
-    // Closing the banner switches back to the floating button state if a decision exists
-    closeBtn?.addEventListener('click', () => {
-      const currentConsent = localStorage.getItem('analytics-consent');
-
-      if (currentConsent) {
-        banner?.classList.add('hidden');
-        reopenBtn?.classList.remove('hidden');
-        reopenBtn?.classList.add('flex');
-      } else {
-        banner?.classList.add('hidden');
-      }
-    });
-
-    // Opening banner hides the floating button
-    reopenBtn?.addEventListener('click', () => {
+    reopenBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
       reopenBtn.classList.add('hidden');
       reopenBtn.classList.remove('flex');
       banner?.classList.remove('hidden');
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (event) => {
+      if (
+        banner &&
+        !banner.classList.contains('hidden') &&
+        !banner.contains(event.target) &&
+        !reopenBtn?.contains(event.target)
+      ) {
+        closeBanner();
+      }
     });
 
     const currentConsent = localStorage.getItem('analytics-consent');

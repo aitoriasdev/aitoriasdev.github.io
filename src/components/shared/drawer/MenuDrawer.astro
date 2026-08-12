@@ -3,6 +3,8 @@ import Icon from '../Icon.astro';
 import Logo from '../Logo.astro';
 import Button from '../Button.astro';
 import NavLink from '../header/menu/NavLink.astro';
+import ThemeToggle from '../header/ThemeToggle.astro';
+import LanguagePicker from '../LanguagePicker.astro';
 import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
@@ -29,6 +31,7 @@ const navItems = [
   inert
 >
   <div class="flex h-full flex-col justify-between">
+    <!-- Top Content -->
     <div>
       <div class="flex items-center justify-between pb-6">
         <div id="drawer-title">
@@ -53,6 +56,11 @@ const navItems = [
         </ul>
       </nav>
     </div>
+    <!-- Bottom Controls -->
+    <div class="flex items-center justify-between pt-6">
+      <LanguagePicker />
+      <ThemeToggle />
+    </div>
   </div>
 </div>
 
@@ -73,7 +81,7 @@ const navItems = [
 
       return Array.from(
         sidebar.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
         )
       );
     }
