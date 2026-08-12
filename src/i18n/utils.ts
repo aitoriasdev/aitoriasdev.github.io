@@ -9,13 +9,12 @@ export function getLangFromUrl(url: URL) {
   return defaultLang;
 }
 
-
 export async function getProjectStaticPaths() {
   const projects = await getCollection("projects");
 
   // Filter for English entries only (or entries without language prefix)
   const enProjects = projects.filter(
-    (p) => p.data.lang === "en" || !p.data.lang
+    (p) => p.data.lang === "en" || !p.data.lang,
   );
 
   return enProjects.map((project: CollectionEntry<"projects">) => {
@@ -52,7 +51,7 @@ export function getRouteFromUrl(url: URL): string {
   const langRoutes = routes[currentLang as keyof typeof routes] || {};
   const englishBaseKey =
     Object.keys(langRoutes).find(
-      (key) => langRoutes[key as keyof typeof langRoutes] === baseRoute
+      (key) => langRoutes[key as keyof typeof langRoutes] === baseRoute,
     ) || baseRoute;
 
   return restPath ? `${englishBaseKey}/${restPath}` : englishBaseKey;
