@@ -1,0 +1,81 @@
+---
+import Link from './Link.astro';
+import { getLangFromUrl, getRouteFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
+
+interface Props {
+  customCrumbs?: { label: string; href?: string }[];
+}
+
+const { customCrumbs } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+// Extract current canonical route (e.g., 'projects' or 'projects/my-slug')
+const canonicalRoute = getRouteFromUrl(Astro.url);
+
+// Hide on home page
+const isHomePage = !canonicalRoute;
+
+// Split route into canonical segments
+const routeSegments = canonicalRoute.split('/').filter(Boolean);
+
+let breadcrumbs: { label: string; href?: string }[] = [];
+
+if (customCrumbs && customCrumbs.length > 0) {
+  breadcrumbs = customCrumbs;
+} else {
+  let accumulatedPath = '';
+
+  breadcrumbs = routeSegments.map((segment, index) => {
+    accumulatedPath += `/${segment}`;
+    const isLast = index === routeSegments.length - 1;
+
+    const translationKey = `nav.${segment}` as any;
+    const localizedLabel = t(translationKey) !== translationKey ? t(translationKey) : segment;
+
+    return {
+      label: localizedLabel,
+      href: isLast ? undefined : translatePath(accumulatedPath),
+    };
+  });
+}
+---
+
+{
+  !isHomePage && (
+    <nav aria-label="Breadcrumb" class="mx-auto max-w-5xl px-6 pt-6 pb-2">
+      <ol class="flex items-center gap-2 text-md font-medium text-text-muted-light dark:text-text-muted-dark">
+        {/* Home Link */}
+        <li>
+          <Link
+            href={translatePath('/')}
+            class="flex items-center gap-1 transition-colors hover:text-text-main-light dark:hover:text-text-main-dark"
+          >
+            <span>Home</span>
+          </Link>
+        </li>
+
+        {/* Dynamic Segments */}
+        {breadcrumbs.map((crumb) => (
+          <li class="flex items-center gap-2">
+            <span class="text-surface-dark/40 dark:text-surface-light/40" aria-hidden="true">/</span>
+            {crumb.href ? (
+              <Link
+                href={crumb.href}
+                class="text-md transition-colors hover:text-text-main-light dark:hover:text-text-main-dark"
+              >
+                {crumb.label}
+              </Link>
+            ) : (
+              <span class="text-md font-semibold text-text-main-light dark:text-text-main-dark" aria-current="page">
+                {crumb.label}
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}

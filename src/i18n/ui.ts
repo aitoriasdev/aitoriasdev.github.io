@@ -63,14 +63,17 @@ export const ui = {
     "cookies.manage": "Manage cookie settings",
     "cookies.title": "Cookie Settings",
     "cookies.close": "Close cookie banner",
-    "cookies.description": "We use cookies to ensure basic site functionality and measure traffic to improve your experience.",
+    "cookies.description":
+      "We use cookies to ensure basic site functionality and measure traffic to improve your experience.",
     "cookies.viewDetails": "View Cookie Details",
     "cookies.essentialTitle": "Essential (Always Active)",
     "cookies.required": "Required",
-    "cookies.essentialDesc": "Stores your cookie consent preference locally in your browser.",
+    "cookies.essentialDesc":
+      "Stores your cookie consent preference locally in your browser.",
     "cookies.analyticsTitle": "Analytics (Optional)",
     "cookies.analyticsVendor": "Google Analytics",
-    "cookies.analyticsDesc": "Used by Google Analytics to collect anonymous information about how visitors use the site.",
+    "cookies.analyticsDesc":
+      "Used by Google Analytics to collect anonymous information about how visitors use the site.",
     "cookies.deny": "Deny",
     "cookies.accept": "Accept",
     "cookies.statusAccepted": "Accepted",
@@ -123,14 +126,17 @@ export const ui = {
     "cookies.manage": "Gestionar configuración de cookies",
     "cookies.title": "Configuración de Cookies",
     "cookies.close": "Cerrar banner de cookies",
-    "cookies.description": "Utilizamos cookies para garantizar el funcionamiento básico del sitio y medir el tráfico para mejorar tu experiencia.",
+    "cookies.description":
+      "Utilizamos cookies para garantizar el funcionamiento básico del sitio y medir el tráfico para mejorar tu experiencia.",
     "cookies.viewDetails": "Ver detalles de las cookies",
     "cookies.essentialTitle": "Esenciales (Siempre activas)",
     "cookies.required": "Requerido",
-    "cookies.essentialDesc": "Guarda tu preferencia de consentimiento de cookies localmente en tu navegador.",
+    "cookies.essentialDesc":
+      "Guarda tu preferencia de consentimiento de cookies localmente en tu navegador.",
     "cookies.analyticsTitle": "Analítica (Opcional)",
     "cookies.analyticsVendor": "Google Analytics",
-    "cookies.analyticsDesc": "Utilizado por Google Analytics para recopilar información anónima sobre cómo los visitantes usan el sitio.",
+    "cookies.analyticsDesc":
+      "Utilizado por Google Analytics para recopilar información anónima sobre cómo los visitantes usan el sitio.",
     "cookies.deny": "Rechazar",
     "cookies.accept": "Aceptar",
     "cookies.statusAccepted": "Aceptado",

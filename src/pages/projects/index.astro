@@ -1,11 +1,14 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/shared/Breadcrumbs.astro';
 import ProjectsSection from '../../components/projects/ProjectsSection.astro';
-import { useTranslations } from '../../i18n/utils';
+import { useTranslations, getLangFromUrl } from '../../i18n/utils';
 
-const t = useTranslations('es');
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <Layout title={`Aitorias - ${t('nav.projects')}`}>
+  <Breadcrumbs />
   <ProjectsSection />
 </Layout>
