@@ -15,19 +15,19 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<div class="flex w-full items-center gap-2">
+<div class="flex w-full items-stretch gap-2">
   {gitHubUrl && (
-    <Link href={gitHubUrl} isExternal variant="button-outline">
-      <Icon name="github" class="h-3.5 w-3.5" />
+    <Link href={gitHubUrl} isExternal variant="button-outline" class="w-1/2">
+      <Icon name="github" class="h-[1.125em] w-[1.125em] shrink-0" />
       <span>GitHub</span>
       <span class="sr-only"> {t('projects.repoSrOnly')} {title}</span>
-      <Icon name="external" class="h-3.5 w-3.5" />
+      <Icon name="external" class="h-[1.125em] w-[1.125em] shrink-0" />
     </Link>
   )}
   {liveUrl && (
-    <Link href={liveUrl} isExternal variant="button-primary">
+    <Link href={liveUrl} isExternal variant="button-primary" class="w-1/2">
       <span>{t('projects.liveDemo')}</span>
-      <Icon name="external" class="h-3.5 w-3.5" />
+      <Icon name="external" class="h-[1.125em] w-[1.125em] shrink-0" />
     </Link>
   )}
 </div>
