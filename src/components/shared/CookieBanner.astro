@@ -132,15 +132,9 @@ const t = useTranslations(lang);
     }
 
     function closeBanner() {
-      const currentConsent = localStorage.getItem('analytics-consent');
-
-      if (currentConsent) {
-        banner?.classList.add('hidden');
-        reopenBtn?.classList.remove('hidden');
-        reopenBtn?.classList.add('flex');
-      } else {
-        banner?.classList.add('hidden');
-      }
+      banner?.classList.add('hidden');
+      reopenBtn?.classList.remove('hidden');
+      reopenBtn?.classList.add('flex');
     }
 
     function setConsent(value) {
@@ -163,18 +157,6 @@ const t = useTranslations(lang);
       reopenBtn.classList.add('hidden');
       reopenBtn.classList.remove('flex');
       banner?.classList.remove('hidden');
-    });
-
-    // Close on click outside
-    document.addEventListener('click', (event) => {
-      if (
-        banner &&
-        !banner.classList.contains('hidden') &&
-        !banner.contains(event.target) &&
-        !reopenBtn?.contains(event.target)
-      ) {
-        closeBanner();
-      }
     });
 
     const currentConsent = localStorage.getItem('analytics-consent');
