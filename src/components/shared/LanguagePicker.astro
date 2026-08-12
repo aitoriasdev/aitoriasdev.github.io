@@ -4,10 +4,22 @@ import Link from '../shared/Link.astro';
 import { languages } from '../../i18n/ui';
 import { getLangFromUrl, getRouteFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
 
+interface Props {
+  direction?: 'auto' | 'up' | 'down';
+}
+
+const { direction = 'auto' } = Astro.props;
+
 const currentLanguage = getLangFromUrl(Astro.url);
 const route = getRouteFromUrl(Astro.url);
 const t = useTranslations(currentLanguage);
 const translatePath = useTranslatedPath(currentLanguage);
+
+const menuDirectionClasses = {
+  up: 'bottom-full mb-2 top-auto mt-0',
+  down: 'top-full mt-2 bottom-auto mb-0',
+  auto: 'bottom-full mb-2 md:bottom-auto md:top-full md:mt-2 md:mb-0',
+}[direction];
 ---
 
 <div class="lang-picker relative inline-block text-left">
@@ -24,7 +36,10 @@ const translatePath = useTranslatedPath(currentLanguage);
 
   <!-- Dropdown Menu Options -->
   <div
-    class="lang-picker-menu absolute right-0 bottom-full mb-2 hidden [&:not(.hidden)]:flex w-36 flex-col gap-1 rounded-xl border border-surface-light bg-bg-light p-1 shadow-xl backdrop-blur-md dark:border-surface-dark dark:bg-bg-dark md:bottom-auto md:top-full md:mt-2 md:mb-0 z-50"
+    class:list={[
+      'lang-picker-menu absolute right-0 hidden [&:not(.hidden)]:flex w-36 flex-col gap-1 rounded-xl border border-surface-light bg-bg-light p-1 shadow-xl backdrop-blur-md dark:border-surface-dark dark:bg-bg-dark z-50',
+      menuDirectionClasses,
+    ]}
     role="menu"
   >
     {

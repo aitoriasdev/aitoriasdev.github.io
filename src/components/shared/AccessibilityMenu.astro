@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import Toggle from './Toggle.astro';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
@@ -21,11 +22,11 @@ const t = useTranslations(lang);
 <!-- Accessibility Controls Panel -->
 <div
   id="a11y-panel"
-  class="fixed bottom-20 left-4 right-4 z-40 hidden w-full max-w-md rounded-2xl border border-surface-light bg-bg-light/95 p-5 shadow-2xl backdrop-blur-md dark:border-surface-dark dark:bg-bg-dark/95 md:right-auto"
+  class="fixed bottom-20 left-4 right-4 z-40  max-w-md rounded-2xl border border-surface-light bg-bg-light/95 p-5 shadow-2xl backdrop-blur-md dark:border-surface-dark dark:bg-bg-dark/95 md:right-auto"
   role="region"
   aria-label={t('a11y.title')}
 >
-  <div class="flex items-center justify-between border-b border-surface-light pb-2 dark:border-surface-dark">
+  <div class="flex items-center gap-4 justify-between border-b border-surface-light pb-2 dark:border-surface-dark">
     <h3 class="text-md font-bold uppercase tracking-wider text-text-main-light dark:text-text-main-dark">
       {t('a11y.title')}
     </h3>
@@ -40,93 +41,47 @@ const t = useTranslations(lang);
   </div>
 
   <div class="mt-3 flex flex-col gap-2">
-    <!-- Reduce Motion Toggle -->
-    <button
-      id="toggle-motion"
-      type="button"
-      class="a11y-btn flex items-center justify-between rounded-xl bg-surface-light/60 p-2 text-md font-semibold text-text-main-light transition-colors motion-reduce:transition-none hover:bg-surface-light dark:bg-surface-dark/60 dark:text-text-main-dark dark:hover:bg-surface-dark"
-    >
-      <span>{t('a11y.motion')}</span>
-      <span class="status-indicator text-md uppercase font-bold text-rose-500 dark:text-rose-400" data-label-on={t('a11y.on')} data-label-off={t('a11y.off')}>{t('a11y.off')}</span>
-    </button>
-
-    <!-- High Contrast Toggle -->
-    <button
-      id="toggle-contrast"
-      type="button"
-      class="a11y-btn flex items-center justify-between rounded-xl bg-surface-light/60 p-2 text-md font-semibold text-text-main-light transition-colors motion-reduce:transition-none hover:bg-surface-light dark:bg-surface-dark/60 dark:text-text-main-dark dark:hover:bg-surface-dark"
-    >
-      <span>{t('a11y.contrast')}</span>
-      <span class="status-indicator text-md uppercase font-bold text-rose-500 dark:text-rose-400" data-label-on={t('a11y.on')} data-label-off={t('a11y.off')}>{t('a11y.off')}</span>
-    </button>
-
-    <!-- Large Text Toggle -->
-    <button
-      id="toggle-text"
-      type="button"
-      class="a11y-btn flex items-center justify-between rounded-xl bg-surface-light/60 p-2 text-md font-semibold text-text-main-light transition-colors motion-reduce:transition-none hover:bg-surface-light dark:bg-surface-dark/60 dark:text-text-main-dark dark:hover:bg-surface-dark"
-    >
-      <span>{t('a11y.text')}</span>
-      <span class="status-indicator text-md uppercase font-bold text-rose-500 dark:text-rose-400" data-label-on={t('a11y.on')} data-label-off={t('a11y.off')}>{t('a11y.off')}</span>
-    </button>
-
-    <!-- Dyslexic Font Toggle -->
-    <button
-      id="toggle-dyslexic"
-      type="button"
-      class="a11y-btn flex items-center justify-between rounded-xl bg-surface-light/60 p-2 text-md font-semibold text-text-main-light transition-colors motion-reduce:transition-none hover:bg-surface-light dark:bg-surface-dark/60 dark:text-text-main-dark dark:hover:bg-surface-dark"
-    >
-      <span>{t('a11y.dyslexic')}</span>
-      <span class="status-indicator text-md uppercase font-bold text-rose-500 dark:text-rose-400" data-label-on={t('a11y.on')} data-label-off={t('a11y.off')}>{t('a11y.off')}</span>
-    </button>
+    <Toggle id="toggle-motion" label={t('a11y.motion')} />
+    <Toggle id="toggle-contrast" label={t('a11y.contrast')} />
+    <Toggle id="toggle-text" label={t('a11y.text')} />
+    <Toggle id="toggle-dyslexic" label={t('a11y.dyslexic')} />
   </div>
 </div>
 
-<script is:inline>
+<script>
   function initA11yMenu() {
     const trigger = document.getElementById('a11y-trigger');
     const panel = document.getElementById('a11y-panel');
     const closeBtn = document.getElementById('a11y-close');
 
-    const toggles = {
-      'reduce-motion': { btn: document.getElementById('toggle-motion'), class: 'reduce-motion' },
-      'high-contrast': { btn: document.getElementById('toggle-contrast'), class: 'high-contrast' },
-      'large-text': { btn: document.getElementById('toggle-text'), class: 'large-text' },
-      'dyslexic-font': { btn: document.getElementById('toggle-dyslexic'), class: 'dyslexic-font' }
-    };
+    const toggles = [
+      { id: 'toggle-motion', key: 'a11y-reduce-motion', className: 'reduce-motion' },
+      { id: 'toggle-contrast', key: 'a11y-high-contrast', className: 'high-contrast' },
+      { id: 'toggle-text', key: 'a11y-large-text', className: 'large-text' },
+      { id: 'toggle-dyslexic', key: 'a11y-dyslexic-font', className: 'dyslexic-font' },
+    ];
 
-    // Load saved preferences
-    Object.keys(toggles).forEach((key) => {
-      const isEnabled = localStorage.getItem(`a11y-${key}`) === 'true';
+    // Load initial states
+    toggles.forEach(({ id, key, className }) => {
+      const input = document.getElementById(id) as HTMLInputElement | null;
+      const isEnabled = localStorage.getItem(key) === 'true';
 
       if (isEnabled) {
-        document.documentElement.classList.add(toggles[key].class);
+        document.documentElement.classList.add(className);
+      } else {
+        document.documentElement.classList.remove(className);
       }
-      updateBtnUI(toggles[key].btn, isEnabled);
+
+      if (input) {
+        input.checked = isEnabled;
+      }
     });
-
-    function updateBtnUI(button, enabled) {
-      if (!button) return;
-
-      const indicator = button.querySelector('.status-indicator');
-
-      if (indicator) {
-        const labelOn = indicator.getAttribute('data-label-on') || 'On';
-        const labelOff = indicator.getAttribute('data-label-off') || 'Off';
-
-        indicator.textContent = enabled ? labelOn : labelOff;
-        indicator.className = `status-indicator text-md uppercase font-bold ${
-          enabled ? 'text-accent-primary' : 'text-rose-500 dark:text-rose-400'
-        }`;
-      }
-    }
 
     function closePanel() {
       panel?.classList.add('hidden');
       trigger?.setAttribute('aria-expanded', 'false');
     }
 
-    // Toggle menu panel
     trigger?.addEventListener('click', (e) => {
       e.stopPropagation();
       const isHidden = panel?.classList.contains('hidden');
@@ -141,34 +96,31 @@ const t = useTranslations(lang);
 
     closeBtn?.addEventListener('click', closePanel);
 
-    // Close on click outside
     document.addEventListener('click', (event) => {
       if (
         panel &&
         !panel.classList.contains('hidden') &&
-        !panel.contains(event.target) &&
-        !trigger?.contains(event.target)
+        !panel.contains(event.target as Node) &&
+        !trigger?.contains(event.target as Node)
       ) {
         closePanel();
       }
     });
 
-    // Attach listeners for options
-    Object.keys(toggles).forEach((key) => {
-      const item = toggles[key];
+    // Simple event listeners
+    toggles.forEach(({ id, key, className }) => {
+      const input = document.getElementById(id) as HTMLInputElement | null;
 
-      item.btn?.addEventListener('click', () => {
-        const isCurrentlyActive = document.documentElement.classList.contains(item.class);
-        const newState = !isCurrentlyActive;
+      input?.addEventListener('change', (e) => {
+        const isChecked = (e.target as HTMLInputElement).checked;
 
-        if (newState) {
-          document.documentElement.classList.add(item.class);
+        if (isChecked) {
+          document.documentElement.classList.add(className);
         } else {
-          document.documentElement.classList.remove(item.class);
+          document.documentElement.classList.remove(className);
         }
 
-        localStorage.setItem(`a11y-${key}`, String(newState));
-        updateBtnUI(item.btn, newState);
+        localStorage.setItem(key, String(isChecked));
       });
     });
   }

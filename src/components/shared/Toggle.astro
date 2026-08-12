@@ -1,0 +1,43 @@
+---
+import Icon from './Icon.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+interface Props {
+  id: string;
+  label: string;
+  checked?: boolean;
+  class?: string;
+}
+
+const { id, label, checked = false, class: className = '' } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const ariaLabelTemplate = t('a11y.useLabel' as any) || 'Use {label}';
+const ariaLabel = ariaLabelTemplate.replace('{label}', label);
+---
+
+<label for={id} class:list={['flex cursor-pointer items-center justify-between rounded-xl bg-surface-light/60 p-2 text-md font-semibold text-text-main-light transition-colors hover:bg-surface-light dark:bg-surface-dark/60 dark:text-text-main-dark dark:hover:bg-surface-dark', className]}>
+  <span>{label}</span>
+  <div class="group relative inline-flex w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-surface-dark/20 transition-colors duration-200 ease-in-out dark:bg-surface-light/20 has-checked:bg-accent-primary dark:has-checked:bg-accent-primary-dark">
+    <span
+      class="relative inline-block h-5 w-5 transition-transform transition-translate transition-scale transition-rotate rounded-full bg-bg-light shadow ring-0 duration-200 ease-in-out translate-x-0 group-has-checked:translate-x-5 dark:bg-bg-dark"
+    >
+      <span aria-hidden="true" class="absolute inset-0 flex h-full w-full items-center justify-center transition-opacity duration-200 ease-in opacity-100 group-has-checked:opacity-0">
+        <Icon name="close" class="h-3 w-3 text-text-muted-light dark:text-text-muted-dark" />
+      </span>
+      <span aria-hidden="true" class="absolute inset-0 flex h-full w-full items-center justify-center transition-opacity duration-100 ease-out opacity-0 group-has-checked:opacity-100">
+        <Icon name="check" class="h-3 w-3 text-text-muted-light dark:text-text-muted-dark" />
+      </span>
+    </span>
+    <input
+      type="checkbox"
+      id={id}
+      name={label.toLowerCase()}
+      aria-label={ariaLabel}
+      checked={checked}
+      class="appearance-none absolute inset-0 h-full w-full"
+    />
+  </div>
+</label>
