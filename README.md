@@ -1,9 +1,10 @@
-# aitorias.dev
+# aitorias.is-a.dev
 
-> Personal developer portfolio and showcase built with Astro v7, Tailwind CSS v4, TypeScript, Content Collections, i18n, and custom GA4 analytics.
+> Personal developer portfolio and showcase built with Astro v7, React, Tailwind CSS v4, TypeScript, Content Collections, i18n, and custom GA4 analytics.
 
 [![Deploy to GitHub Pages](https://github.com/aitoriasdev/aitoriasdev.github.io/actions/workflows/astro.yml/badge.svg)](https://github.com/aitoriasdev/aitoriasdev.github.io/actions/workflows/astro.yml)
 [![Built with Astro](https://img.shields.io/badge/Astro-v5-orange.svg)](https://astro.build)
+[![React](https://img.shields.io/badge/React-v19-61dafb.svg)](https://react.dev)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8.svg)](https://tailwindcss.com)
 [![Code Quality](https://img.shields.io/badge/Linted_with-Oxlint-ff69b4.svg)](https://oxc.rs)
 
@@ -13,7 +14,7 @@ Live Website: [https://aitorias.is-a.dev](https://aitorias.is-a.dev)
 
 ## Tech Stack & Architecture
 
-- **Framework:** [Astro v7](https://astro.build) (SSG with Content Collections v2 & Content Loader API)
+- **Framework:** [Astro v7](https://astro.build) (SSG with Content Collections v2 & Content Loader API) + [React Integration](https://docs.astro.build/en/guides/integrations-guide/react/) via Islands Architecture
 - **Custom Domain:** Custom sub-domain registration via [is-a.dev](https://is-a.dev) (`aitorias.is-a.dev`)
 - **Internationalization (i18n):** Multi-language support (English & Spanish) with route localization utilities (`translatePath`, `getLangFromUrl`)
 - **Analytics & Tracking:** Google Analytics 4 (GA4) integrated via Partytown web workers, with custom event attribute tracking (`data-track-event`) for link and card interactions
@@ -29,6 +30,8 @@ Live Website: [https://aitorias.is-a.dev](https://aitorias.is-a.dev)
 
 ## Key Features & Custom Behaviors
 
+- **React Islands Hydration:** Interactive project tag filtering built with React (`ProjectFilters.tsx`) and selectively hydrated on view (`client:visible`).
+- **SEO & Canonical URLs:** Dynamic canonical URL generation (`Astro.site` context) for localized routes and project detail pages.
 - **Linked Project Cards:** Entire project cards (including image containers and fallback image placeholders) are fully linked to localized project detail pages with custom event tracking attached.
 - **Offloaded Analytics:** Google Analytics script loading is offloaded from the main thread using `@astrojs/partytown` for improved Core Web Vitals performance.
 - **Granular Interaction Tracking:** Custom click tracking for hero social links, footer technology links, project links (live demo, GitHub, card preview), and navigation elements.
@@ -76,7 +79,7 @@ The application fully adheres to modern Web Content Accessibility Guidelines (WC
 │   ├── i18n/                  # Localization dictionaries and helper utilities (translatePath, etc.)
 │   ├── components/
 │   │   ├── hero/              # Hero banner & status indicators
-│   │   ├── projects/          # Dynamic project section, cards & tag filters
+│   │   ├── projects/          # Dynamic project section, cards & React tag filters (ProjectFilters.tsx)
 │   │   └── shared/            # Shared UI components & layout shell elements
 │   │       ├── drawer/        # Navigation mobile drawer
 │   │       ├── footer/        # Shared site footer
@@ -87,11 +90,11 @@ The application fully adheres to modern Web Content Accessibility Guidelines (WC
 │   │   ├── index.astro        # Homepage entrypoint
 │   │   └── projects/
 │   │       ├── index.astro    # Dedicated projects gallery page
-│   │       └── [id].astro     # Dynamic project detail page generator with localized slugs
+│   │       └── [slug].astro   # Dynamic project detail page generator with localized slugs
 │   ├── styles/
 │   │   └── global.css         # Tailwind v4 theme variables, dyslexic font rules & typography scaling
 │   └── content.config.ts      # Zod schema definitions for Content Collections
-├── astro.config.mjs            # Astro configuration, Partytown setup, and local font provider
+├── astro.config.mjs            # Astro configuration, React integration, Partytown setup, local font provider
 └── package.json
 ```
 
@@ -99,7 +102,8 @@ The application fully adheres to modern Web Content Accessibility Guidelines (WC
 
 ## Version History
 
-| Readme Version | Description                                                                                                                              | Author         | Date       |
-| :------------- | :--------------------------------------------------------------------------------------------------------------------------------------- | :------------- | :--------- |
-| `v1.0.0`       | Initial release with Astro v7, Tailwind CSS v4, Accessibility controls, and Content Collections.                                         | Aitor de Diego | 2026-08-10 |
-| `v1.1.0`       | Updated setup for `aitorias.is-a.dev` custom domain, Partytown GA4 integration, i18n routing, and complete image/fallback link tracking. | Aitor de Diego | 2026-08-14 |
+| Readme Version | Description                                                                                                                                               | Author         | Date       |
+| :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------- | :--------- |
+| `v1.0.0`       | Initial release with Astro v7, Tailwind CSS v4, Accessibility controls, and Content Collections.                                                          | Aitor de Diego | 2026-08-10 |
+| `v1.1.0`       | Updated setup for `aitorias.is-a.dev` custom domain, Partytown GA4 integration, i18n routing, and complete image/fallback link tracking.                  | Aitor de Diego | 2026-08-14 |
+| `v1.2.0`       | Integrated `@astrojs/react` for interactive state components, added dynamic canonical URL headers, localized breadcrumb home links, and updated metadata. | Aitor de Diego | 2026-08-14 |
