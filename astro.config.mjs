@@ -54,7 +54,7 @@ export default defineConfig({
     }),
     sitemap(),
   ],
-  site: "https://aitoriasdev.github.io",
+  site: "https://aitorias.is-a.dev",
   vite: {
     plugins: [tailwindcss()],
   },
