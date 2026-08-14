@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig, fontProviders } from "astro/config";
 import partytown from "@astrojs/partytown";
+import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -52,6 +53,7 @@ export default defineConfig({
         forward: ["dataLayer.push"],
       },
     }),
+    react(),
     sitemap(),
   ],
   site: "https://aitorias.is-a.dev",
