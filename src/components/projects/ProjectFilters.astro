@@ -1,6 +1,6 @@
 ---
 import Button from '../shared/Button.astro';
-import { ALL_TAGS } from '../../config/tags';
+import { TECH_STACK } from '../../config/tech-stack';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
@@ -12,10 +12,28 @@ const t = useTranslations(lang);
   role="group"
   aria-label={t('projects.filterAria')}
 >
-  {ALL_TAGS.map((tag, index) => (
+  {/* Static "ALL" Filter Button */}
+  <Button
+    data-filter="All"
+    data-active="true"
+    variant="ghost"
+    size="sm"
+    class:list={[
+      'filter-btn shrink-0 transition-all duration-200 motion-reduce:transition-none cursor-pointer',
+      'data-[active=true]:bg-accent-primary data-[active=true]:text-white dark:data-[active=true]:bg-accent-primary-dark dark:data-[active=true]:text-bg-dark data-[active=true]:shadow-sm',
+      'data-[active=false]:bg-surface-light/70 data-[active=false]:text-text-muted-light dark:data-[active=false]:bg-surface-dark/70 dark:data-[active=false]:text-text-muted-dark',
+      'data-[active=false]:hover:bg-accent-primary/10 data-[active=false]:hover:text-accent-primary data-[active=false]:hover:border-accent-primary/30',
+      'dark:data-[active=false]:hover:bg-accent-primary-dark/15 dark:data-[active=false]:hover:text-accent-primary-dark'
+    ]}
+    aria-pressed="true"
+  >
+    {t('projects.filterAll')}
+  </Button>
+  {/* Tech Stack Filter Buttons */}
+  {TECH_STACK.map((tech) => (
     <Button
-      data-filter={tag}
-      data-active={index === 0 ? 'true' : 'false'}
+      data-filter={tech}
+      data-active="false"
       variant="ghost"
       size="sm"
       class:list={[
@@ -25,9 +43,9 @@ const t = useTranslations(lang);
         'data-[active=false]:hover:bg-accent-primary/10 data-[active=false]:hover:text-accent-primary data-[active=false]:hover:border-accent-primary/30',
         'dark:data-[active=false]:hover:bg-accent-primary-dark/15 dark:data-[active=false]:hover:text-accent-primary-dark'
       ]}
-      aria-pressed={index === 0 ? 'true' : 'false'}
+      aria-pressed="false"
     >
-      {tag}
+      {tech}
     </Button>
   ))}
 </div>
@@ -41,20 +59,20 @@ const t = useTranslations(lang);
 
     filterButtons.forEach((button) => {
       button.addEventListener('click', () => {
-        const selectedTag = button.getAttribute('data-filter');
+        const selectedTech = button.getAttribute('data-filter');
 
-        filterButtons.forEach((button) => {
-          button.setAttribute('data-active', 'false');
-          button.setAttribute('aria-pressed', 'false');
+        filterButtons.forEach((btn) => {
+          btn.setAttribute('data-active', 'false');
+          btn.setAttribute('aria-pressed', 'false');
         });
 
         button.setAttribute('data-active', 'true');
         button.setAttribute('aria-pressed', 'true');
 
         cards.forEach((card) => {
-          const cardTags = JSON.parse(card.getAttribute('data-tags') || '[]');
+          const cardTechs = JSON.parse(card.getAttribute('data-tags') || '[]');
 
-          if (selectedTag === 'All' || cardTags.includes(selectedTag)) {
+          if (selectedTech === 'All' || cardTechs.includes(selectedTech)) {
             card.classList.remove('hidden');
           } else {
             card.classList.add('hidden');

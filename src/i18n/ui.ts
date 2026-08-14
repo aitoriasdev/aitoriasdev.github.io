@@ -30,6 +30,7 @@ export const ui = {
     "projects.title": "My Projects",
     "projects.subtitle": "Selected open-source work and applications.",
     "projects.viewAll": "View all projects",
+    "projects.filterAll": "All",
     "projects.filterAria": "Filter projects by technology",
     "projects.details": "Project details",
     "projects.viewDetailsAria": "View details for",
@@ -95,6 +96,7 @@ export const ui = {
     "projects.subtitle":
       "Trabajos seleccionados de código abierto y aplicaciones.",
     "projects.viewAll": "Ver todos los proyectos",
+    "projects.filterAll": "Todos",
     "projects.filterAria": "Filtrar proyectos por tecnología",
     "projects.details": "Detalles del proyecto",
     "projects.viewDetailsAria": "Ver detalles de",
