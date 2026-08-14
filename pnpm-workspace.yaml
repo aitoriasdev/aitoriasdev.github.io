@@ -2,7 +2,7 @@ allowBuilds:
   esbuild: true
   sharp: true
 minimumReleaseAgeExclude:
-  - astro@7.2.0
+  - astro@7.2.2
   - "@oxfmt/binding-android-arm-eabi@0.63.0"
   - "@oxfmt/binding-android-arm64@0.63.0"
   - "@oxfmt/binding-darwin-arm64@0.63.0"
