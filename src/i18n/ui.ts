@@ -21,6 +21,8 @@ export const ui = {
     "lang.en": "English",
     "lang.es": "Spanish",
     title: "Front-End Developer crafting web experiences.",
+    description:
+      "Front End Developer with more than 10 years of experience in web development.",
     "nav.projects": "Projects",
     "nav.home": "Home",
     "nav.menu": "Menu",
@@ -86,6 +88,8 @@ export const ui = {
     "lang.en": "Inglés",
     "lang.es": "Español",
     title: "Desarrollador Front-End creando experiencias web.",
+    description:
+      "Desarrollador Front End con más de 10 años de experiencia en desarrollo web.",
     "nav.home": "Inicio",
     "nav.projects": "Proyectos",
     "nav.menu": "Menú",

@@ -1,6 +1,5 @@
 ---
 import { Font } from "astro:assets";
-import { getLangFromUrl } from "../i18n/utils";
 import AccessibilityMenu from '../components/shared/AccessibilityMenu.astro';
 import CookieBanner from '../components/shared/CookieBanner.astro';
 import Footer from '../components/shared/footer/Footer.astro';
@@ -8,6 +7,7 @@ import GoogleAnalytics from '../components/shared/analytics/GoogleAnalytics.astr
 import GoogleAnalyticsTracker from '../components/shared/analytics/GoogleAnalyticsTracker.astro';
 import Header from '../components/shared/header/Header.astro';
 import MenuDrawer from '../components/shared/drawer/MenuDrawer.astro';
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import "../styles/global.css";
 
 interface Props {
@@ -16,11 +16,12 @@ interface Props {
 }
 
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 
 const {
   title = 'aitorias.is-a.dev',
-  description = 'Front End Developer with more than 10 years of experience in web development'
+  description = t('description')
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
