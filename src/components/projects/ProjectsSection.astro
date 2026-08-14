@@ -1,7 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import ProjectCard from './project-card/ProjectCard.astro';
-import ProjectFilters from './ProjectFilters.astro';
+import ProjectFilters from './ProjectFilters.tsx';
 import Link from '../shared/Link.astro';
 import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
 
@@ -33,7 +33,11 @@ const projectCount = projects.length;
       </p>
     </div>
     <div class="flex items-center gap-4">
-      <ProjectFilters />
+      <ProjectFilters
+        client:visible
+        filterAriaLabel={t('projects.filterAria')}
+        allLabel={t('projects.filterAll')}
+      />
     </div>
   </div>
   <!-- Dynamic Adaptive Grid Container -->
