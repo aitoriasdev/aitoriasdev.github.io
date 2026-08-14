@@ -28,7 +28,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "aitorias-dev",
-    title: "Aitorias.dev Portfolio",
+    title: "Aitorias.is-a.dev Portfolio",
     description:
       "My personal space on the web. I built this from scratch to showcase my work, experiments, and thoughts using Astro v5 and Tailwind CSS v4.",
     tags: ["Astro", "TypeScript", "Tailwind"],

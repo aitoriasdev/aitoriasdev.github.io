@@ -2,9 +2,10 @@
 import Hero from '../../components/hero/Hero.astro';
 import ProjectsSection from '../../components/projects/ProjectsSection.astro';
 import Layout from '../../layouts/Layout.astro';
-import { useTranslations } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
-const t = useTranslations('es');
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <Layout title={`Aitorias - ${t('title')}`}>
