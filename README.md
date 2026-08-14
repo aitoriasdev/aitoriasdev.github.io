@@ -76,11 +76,11 @@ The application fully adheres to modern Web Content Accessibility Guidelines (WC
 │   ├── components/            # UI components
 │   │   ├── hero/              # Hero banner component
 │   │   ├── projects/          # Project list, card & filter components
-│   │   └── shared/            # Common UI elements & layout modules
+│   │   └── shared/            # Common UI elements & layout modules (Accessibility, Button, Breadcrumbs, LanguagePicker, ThemeToggle, etc.)
 │   │       ├── analytics/     # GA4 tracking components
 │   │       ├── drawer/        # Navigation mobile drawer
 │   │       ├── footer/        # Shared site footer
-│   │       └── header/        # Header, language picker & theme components
+│   │       └── header/        # Header and menu components
 │   ├── config/                # Site configs (navigation.ts, projects.ts, tech-stack.ts)
 │   ├── content/               # Content Collections
 │   │   └── projects/          # English project entries (*.md)
@@ -97,7 +97,7 @@ The application fully adheres to modern Web Content Accessibility Guidelines (WC
 │   │   ├── index.astro        # Main English homepage
 │   │   └── robots.txt.ts      # Dynamic robots.txt endpoint
 │   ├── styles/                # Global styles (global.css)
-│   ├── utils/                 # Analytics tracking helper utilities
+│   ├── utils/                 # Helper utilities
 │   ├── content.config.ts      # Zod schema definitions for Content Collections
 │   └── env.d.ts               # Global TypeScript declarations (Window, gtag, etc.)
 ├── test/                      # Test suites and setup files
