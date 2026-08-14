@@ -6,6 +6,7 @@ interface Props extends HTMLAttributes<'button'> {
   size?: 'sm' | 'md' | 'lg' | 'icon';
   type?: 'button' | 'submit' | 'reset';
   class?: string;
+  trackName?: string;
 }
 
 const {
@@ -13,6 +14,7 @@ const {
   size = 'md',
   type = 'button',
   class: className = '',
+  trackName,
   ...rest
 } = Astro.props;
 
@@ -41,6 +43,7 @@ const sizes = {
 <button
   type={type}
   class:list={[baseStyles, variants[variant], sizes[size], className]}
+  data-track-event={trackName}
   {...rest}
 >
   <slot />

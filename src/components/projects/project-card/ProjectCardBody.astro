@@ -28,7 +28,11 @@ const cleanId = id.includes('/') ? id.split('/').pop() : id;
     ))}
   </ul>
   <h3 class="text-lg font-bold">
-    <Link href={translatePath(`/projects/${cleanId}`)} aria-label={`${t('projects.viewDetailsAria')} ${title}`}>
+    <Link
+      href={translatePath(`/projects/${cleanId}`)}
+      aria-label={`${t('projects.viewDetailsAria')} ${title}`}
+      data-track-event={`project_details_click_${cleanId}`}
+    >
       {title}
     </Link>
   </h3>

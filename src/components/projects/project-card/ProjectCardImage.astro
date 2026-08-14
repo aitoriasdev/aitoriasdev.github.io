@@ -1,38 +1,49 @@
 ---
 import { Image } from 'astro:assets';
 import Icon from '../../shared/Icon.astro';
+import Link from '../../shared/Link.astro';
 import type { ImageMetadata } from 'astro';
 import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
 
 interface Props {
   src?: ImageMetadata;
   alt: string;
+  href: string;
+  cleanId?: string;
+  title?: string;
   isLcp?: boolean;
 }
 
-const { src, alt, isLcp = false } = Astro.props;
+const { src, alt, href, cleanId, title, isLcp = false } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
 <div class="relative aspect-2/1 lg:aspect-3/2 w-full overflow-hidden bg-bg-light shadow-inner dark:bg-bg-dark">
-  {
-    src ? (
-      <Image
-        src={src}
-        alt={alt}
-        widths={[600, 900, 1200, 1600]}
-        sizes="(min-width: 1024px) 50vw, 100vw"
-        loading={isLcp ? 'eager' : 'lazy'}
-        fetchpriority={isLcp ? 'high' : 'auto'}
-        decoding={isLcp ? 'sync' : 'async'}
-        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:transform-none motion-reduce:group-hover:scale-100 motion-reduce:hover:scale-100 [.reduce-motion_&]:transition-none [.reduce-motion_&]:transform-none [.reduce-motion_&]:group-hover:scale-100 [.reduce-motion_&]:hover:scale-100"
-      />
-    ) : (
-      <div class="flex h-full w-full flex-col items-center justify-center gap-2 bg-surface-light/40 text-text-muted-light dark:bg-surface-dark/40 dark:text-text-muted-dark">
-        <Icon name="broken-image" class="h-8 w-8 opacity-50" />
-        <span class="text-xs font-medium tracking-wide">{t('projects.noPreview')}</span>
-      </div>
-    )
-  }
+  <Link
+    href={href}
+    aria-label={`${t('projects.viewDetailsAria')} ${title || ''}`}
+    data-track-event={`project_image_click_${cleanId || 'unknown'}`}
+    class="block h-full w-full"
+  >
+    {
+      src ? (
+        <Image
+          src={src}
+          alt={alt}
+          widths={[600, 900, 1200, 1600]}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          loading={isLcp ? 'eager' : 'lazy'}
+          fetchpriority={isLcp ? 'high' : 'auto'}
+          decoding={isLcp ? 'sync' : 'async'}
+          class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:transform-none motion-reduce:group-hover:scale-100 motion-reduce:hover:scale-100 [.reduce-motion_&]:transition-none [.reduce-motion_&]:transform-none [.reduce-motion_&]:group-hover:scale-100 [.reduce-motion_&]:hover:scale-100"
+        />
+      ) : (
+        <div class="flex h-full w-full flex-col items-center justify-center gap-2 bg-surface-light/40 text-text-muted-light transition-colors group-hover:bg-surface-light dark:bg-surface-dark/40 dark:text-text-muted-dark dark:group-hover:bg-surface-dark">
+          <Icon name="broken-image" class="h-8 w-8 opacity-50" />
+          <span class="text-xs font-medium tracking-wide">{t('projects.noPreview')}</span>
+        </div>
+      )
+    }
+  </Link>
 </div>
