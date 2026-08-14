@@ -17,7 +17,13 @@ interface Props {
 
 const lang = getLangFromUrl(Astro.url);
 const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
-const { title = 'aitorias.dev', description = 'Front End Developer with more than 10 years of experience in web development' } = Astro.props;
+
+const {
+  title = 'aitorias.is-a.dev',
+  description = 'Front End Developer with more than 10 years of experience in web development'
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -30,6 +36,10 @@ const { title = 'aitorias.dev', description = 'Front End Developer with more tha
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<link rel="sitemap" href="/sitemap-index.xml" />
+
+		<!-- Canonical URL Tag -->
+		<link rel="canonical" href={canonicalURL} />
+
 		<title>{title}</title>
     <Font cssVariable="--font-open-dyslexic" />
 		<script is:inline>

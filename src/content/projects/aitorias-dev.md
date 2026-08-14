@@ -1,5 +1,5 @@
 ---
-title: "Aitorias.dev Portfolio"
+title: "Aitorias.is-a.dev Portfolio"
 tagline: "My personal space on the web built with Astro v5 and Tailwind CSS."
 completedDate: "2026-02-01"
 techStack: ["Astro", "TypeScript", "Tailwind"]
