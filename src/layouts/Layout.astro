@@ -13,6 +13,7 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
+  author?: string;
 }
 
 const lang = getLangFromUrl(Astro.url);
@@ -20,8 +21,9 @@ const t = useTranslations(lang);
 const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 
 const {
-  title = 'aitorias.is-a.dev',
-  description = t('description')
+  title = `Aitorias - ${t('title')}`,
+  description = t('description'),
+  author = 'Aitor'
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -32,7 +34,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
+		<title>{title}</title>
 		<meta name="description" content={description} />
+		<meta name="author" content={author} />
+
+		<!-- Open Graph / Social Media Meta Tags -->
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalURL} />
+
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
@@ -41,7 +52,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<!-- Canonical URL Tag -->
 		<link rel="canonical" href={canonicalURL} />
 
-		<title>{title}</title>
     <Font cssVariable="--font-open-dyslexic" />
 		<script is:inline>
 			const theme = localStorage.getItem('theme') || 'system';

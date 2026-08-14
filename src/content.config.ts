@@ -8,6 +8,7 @@ const projects = defineCollection({
     z.object({
       title: z.string().min(3, "Title must be at least 3 chars"),
       tagline: z.string().max(255, "Keep tagline under 255 chars"),
+      author: z.string().default("Aitor"),
       completedDate: z.coerce.date(),
       techStack: z.array(z.string()),
       thumbnail: image().optional(),
