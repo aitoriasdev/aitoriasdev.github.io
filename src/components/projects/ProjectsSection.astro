@@ -52,7 +52,11 @@ const projectCount = projects.length;
   <div class="mt-5">
     {/* Conditionally render the "View All" link with localized route */}
       {showViewAll && (
-        <Link href={translatePath('/projects')} variant="button-secondary">
+        <Link
+          href={translatePath('/projects')}
+          variant="button-secondary"
+          data-track-event="view_all_projects_click"
+        >
           <span>{t('projects.viewAll')}</span>
         </Link>
       )}

@@ -4,7 +4,8 @@ import { getLangFromUrl } from "../i18n/utils";
 import AccessibilityMenu from '../components/shared/AccessibilityMenu.astro';
 import CookieBanner from '../components/shared/CookieBanner.astro';
 import Footer from '../components/shared/footer/Footer.astro';
-import GoogleAnalytics from '../components/shared/GoogleAnalytics.astro';
+import GoogleAnalytics from '../components/shared/analytics/GoogleAnalytics.astro';
+import GoogleAnalyticsTracker from '../components/shared/analytics/GoogleAnalyticsTracker.astro';
 import Header from '../components/shared/header/Header.astro';
 import MenuDrawer from '../components/shared/drawer/MenuDrawer.astro';
 import "../styles/global.css";
@@ -38,6 +39,7 @@ const { title = 'aitorias.dev', description = 'Front End Developer with more tha
 			document.documentElement.classList.toggle('dark', isDark);
 		</script>
     {gaId && <GoogleAnalytics measurementId={gaId} />}
+    {gaId && <GoogleAnalyticsTracker />}
 	</head>
 	<body class="bg-bg-light text-text-main-light transition-colors dark:bg-bg-dark dark:text-text-main-dark">
 		<a

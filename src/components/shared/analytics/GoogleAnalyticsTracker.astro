@@ -1,0 +1,41 @@
+<script>
+  import { trackEvent } from "../../../utils/analytics-track-event";
+
+  let isInitialized = false;
+
+  function initGlobalAnalytics() {
+    if (isInitialized) return;
+
+    isInitialized = true;
+
+    document.addEventListener('click', (event) => {
+      const target = (event.target as HTMLElement)?.closest('button, a') as HTMLElement | null;
+
+      if (!target) return;
+
+      const trackName = target.getAttribute('data-track-event');
+
+      if (trackName) {
+        trackEvent(trackName, {
+          element_id: target.id || 'unnamed',
+          element_text: target.innerText.trim(),
+        });
+        return;
+      }
+
+      const isOutbound = target.getAttribute('data-track-link') === 'outbound';
+      const href = target.getAttribute('href');
+
+      if (isOutbound && href) {
+        trackEvent('click_outbound_link', {
+          destination_url: href,
+          link_text: target.innerText.trim(),
+        });
+      }
+    });
+  }
+
+  // Initialize safely on load or view transitions
+  initGlobalAnalytics();
+  document.addEventListener('astro:page-load', initGlobalAnalytics);
+</script>

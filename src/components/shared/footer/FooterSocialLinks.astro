@@ -10,11 +10,22 @@ interface SocialLink {
   label: string;
   href: string;
   icon: 'github' | 'linkedin';
+  trackEvent: string;
 }
 
 const SOCIAL_LINKS: SocialLink[] = [
-  { label: t('hero.github'), href: 'https://github.com/aitoriasdev', icon: 'github' },
-  { label: t('hero.linkedin'), href: 'https://linkedin.com/in/aitordediego', icon: 'linkedin' },
+  {
+    label: t('hero.github'),
+    href: 'https://github.com/aitoriasdev',
+    icon: 'github',
+    trackEvent: 'footer_social_github'
+  },
+  {
+    label: t('hero.linkedin'),
+    href: 'https://linkedin.com/in/aitordediego',
+    icon: 'linkedin',
+    trackEvent: 'footer_social_linkedin'
+  },
 ];
 ---
 
@@ -26,6 +37,7 @@ const SOCIAL_LINKS: SocialLink[] = [
         href={link.href}
         isExternal
         variant="menu"
+        data-track-event={link.trackEvent}
         class="inline-flex items-center gap-1.5 rounded-xl bg-bg-light/80 px-3 py-2.5 text-xs font-medium text-text-muted-light shadow-2xs hover:text-accent-primary dark:bg-bg-dark/80 dark:text-text-muted-dark"
       >
         <Icon name={link.icon} class="h-4 w-4" />

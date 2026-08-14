@@ -17,7 +17,13 @@ const t = useTranslations(lang);
 
 <div class="flex w-full items-stretch gap-2">
   {gitHubUrl && (
-    <Link href={gitHubUrl} isExternal variant="button-outline" class="w-1/2">
+    <Link
+      href={gitHubUrl}
+      isExternal
+      variant="button-outline"
+      class="w-1/2"
+      data-track-event={`project_github_click_${title.toLowerCase().replace(/\s+/g, '_')}`}
+    >
       <Icon name="github" class="h-[1.125em] w-[1.125em] shrink-0" />
       <span>GitHub</span>
       <span class="sr-only"> {t('projects.repoSrOnly')} {title}</span>
@@ -25,7 +31,13 @@ const t = useTranslations(lang);
     </Link>
   )}
   {liveUrl && (
-    <Link href={liveUrl} isExternal variant="button-primary" class="w-1/2">
+    <Link
+      href={liveUrl}
+      isExternal
+      variant="button-primary"
+      class="w-1/2"
+      data-track-event={`project_demo_click_${title.toLowerCase().replace(/\s+/g, '_')}`}
+    >
       <span>{t('projects.liveDemo')}</span>
       <Icon name="external" class="h-[1.125em] w-[1.125em] shrink-0" />
     </Link>

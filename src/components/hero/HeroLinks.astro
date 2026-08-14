@@ -8,12 +8,22 @@ const t = useTranslations(lang);
 ---
 
 <div class="flex flex-wrap gap-4 pt-4">
-  <Link href="https://github.com/aitoriasdev" isExternal variant="button-primary">
+  <Link
+    href="https://github.com/aitoriasdev"
+    isExternal
+    variant="button-primary"
+    data-track-event="hero_social_github"
+  >
     <Icon name="github" class="h-5 w-5" />
     <span>{t('hero.github')}</span>
     <Icon name="external" class="h-4 w-4" />
   </Link>
-  <Link href="https://linkedin.com/in/aitordediego" isExternal variant="button-primary">
+  <Link
+    href="https://linkedin.com/in/aitordediego"
+    isExternal
+    variant="button-primary"
+    data-track-event="hero_social_linkedin"
+  >
     <Icon name="linkedin" class="h-5 w-5" />
     <span>{t('hero.linkedin')}</span>
     <Icon name="external" class="h-4 w-4" />

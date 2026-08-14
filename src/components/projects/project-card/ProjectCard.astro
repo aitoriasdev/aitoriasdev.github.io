@@ -3,7 +3,7 @@ import ProjectCardActions from './ProjectCardActions.astro';
 import ProjectCardBody from './ProjectCardBody.astro';
 import ProjectCardImage from './ProjectCardImage.astro';
 import { type CollectionEntry } from 'astro:content';
-import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../../i18n/utils';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -13,19 +13,26 @@ interface Props {
 const { project, isLcp = false } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+// Extract clean ID if it contains folder prefix like 'es/aitorias-dev'
+const cleanId = project.id.includes('/') ? project.id.split('/').pop() : project.id;
+const projectHref = translatePath(`/projects/${cleanId}`);
 ---
 
 <article
-  class="project-card group flex flex-col justify-between overflow-hidden rounded-2xl bg-surface-light/60 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-surface-light hover:shadow-xl dark:bg-surface-dark/60 dark:shadow-md dark:shadow-black/20 dark:hover:bg-surface-dark dark:hover:shadow-black/40 motion-reduce:transition-none motion-reduce:hover:translate-y-0 in-[.reduce-motion]:transition-none in-[.reduce-motion]:hover:translate-y-0"
+  class="project-card group flex flex-col justify-between overflow-hidden rounded-2xl bg-surface-light/60 shadow-sm backdrop-blur-sm transition-all duration-300 hover:bg-surface-light hover:shadow-xl dark:bg-surface-dark/60 dark:shadow-md dark:shadow-black/20 dark:hover:bg-surface-dark dark:hover:shadow-black/40 motion-reduce:transition-none [.reduce-motion]:transition-none"
   data-tags={JSON.stringify(project.data.techStack)}
 >
   <!-- Full Width Image Container at Top -->
   <ProjectCardImage
     src={project.data.thumbnail}
     alt={`${t('projects.screenshotAlt')} ${project.data.title}`}
+    href={projectHref}
+    cleanId={cleanId}
+    title={project.data.title}
     isLcp={isLcp}
   />
-
   <!-- Padded Body Content -->
   <div class="flex flex-1 flex-col gap-6 justify-between p-5">
     <ProjectCardBody

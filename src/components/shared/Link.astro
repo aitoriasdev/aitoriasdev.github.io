@@ -8,14 +8,7 @@ interface Props extends HTMLAttributes<'a'> {
   class?: string;
 }
 
-const {
-  href,
-  isExternal = false,
-  variant = 'default',
-  class: className = '',
-  ...rest
-} = Astro.props;
-
+const { href, isExternal = false, variant = 'default', class: className = '', ...rest } = Astro.props;
 const isOutbound = isExternal || href.startsWith('http');
 
 const variants = {
@@ -43,6 +36,7 @@ const variants = {
     variants[variant],
     className,
   ]}
+  data-track-link={isOutbound ? 'outbound' : 'internal'}
   {...rest}
 >
   <slot />
