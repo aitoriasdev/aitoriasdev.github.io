@@ -1,0 +1,31 @@
+---
+import Icon from '../shared/Icon.astro';
+import Link from '../shared/Link.astro';
+import { SOCIAL_LINKS } from '../../config/social';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const t = useTranslations(getLangFromUrl(Astro.url));
+---
+
+<section id="contact" class="mx-auto max-w-5xl scroll-mt-24 px-6 py-10 lg:py-20" aria-labelledby="contact-heading">
+  <div class="rounded-3xl bg-surface-light/70 p-8 shadow-sm sm:p-12 dark:bg-surface-dark/70">
+    <h2 id="contact-heading" class="text-3xl font-extrabold tracking-tight text-text-main-light dark:text-text-main-dark">
+      {t('contact.title')}
+    </h2>
+    <p class="mt-4 max-w-2xl text-lg leading-relaxed text-text-muted-light dark:text-text-muted-dark">
+      {t('contact.body')}
+    </p>
+    <div class="mt-8 flex flex-wrap gap-4">
+      <Link href={SOCIAL_LINKS.linkedin.href} isExternal variant="button-primary" data-track-event="contact_linkedin">
+        <Icon name="linkedin" class="h-5 w-5" />
+        <span>{t('contact.linkedin')}</span>
+        <Icon name="external" class="h-4 w-4" />
+      </Link>
+      <Link href={SOCIAL_LINKS.github.href} isExternal variant="button-outline" data-track-event="contact_github">
+        <Icon name="github" class="h-5 w-5" />
+        <span>{t('contact.github')}</span>
+        <Icon name="external" class="h-4 w-4" />
+      </Link>
+    </div>
+  </div>
+</section>

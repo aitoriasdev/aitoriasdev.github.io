@@ -1,18 +1,5 @@
 ---
-import Hero from '../../components/hero/Hero.astro';
-import ProjectsSection from '../../components/projects/ProjectsSection.astro';
-import Layout from '../../layouts/Layout.astro';
-import { getLangFromUrl, useTranslations } from '../../i18n/utils';
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+import HomePage from '../../components/home/HomePage.astro';
 ---
 
-<Layout
-  title={`Aitorias - ${t('title')}`}
-  description={t('description')}
-  author="Aitor"
->
-  <Hero />
-  <ProjectsSection featuredOnly showViewAll />
-</Layout>
+<HomePage />

@@ -10,6 +10,8 @@ import ProjectCardActions from './project-card/ProjectCardActions.astro';
 import { SOCIAL_LINKS } from '../../config/social';
 import { formatMonthYear, getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
 import { getProjectSlug, type Project } from '../../utils/projects';
+import { getRepoStats } from '../../utils/github';
+import { projectSchema } from '../../utils/structured-data';
 
 interface Props {
   project: Project;
@@ -25,16 +27,28 @@ const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 
 const isActive = data.status === 'active';
+const repoStats = await getRepoStats(data.gitHubUrl);
 const timeline = data.startDate
   ? `${formatMonthYear(data.startDate, lang)} – ${
       data.completedDate ? formatMonthYear(data.completedDate, lang) : t('projects.present')
     }`
   : data.completedDate && formatMonthYear(data.completedDate, lang);
 
+const site = Astro.site ?? new URL(Astro.url.origin);
+const jsonLd = projectSchema(project, new URL(Astro.url.pathname, site), site, t('seo.jobTitle'));
+
 const sectionHeading = 'text-2xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark';
 ---
 
-<Layout title={`${data.title} | Aitorias`} description={data.tagline} author={data.author}>
+<Layout
+  title={`${data.title} | Aitorias`}
+  description={data.tagline}
+  author={data.author}
+  image={data.thumbnail}
+  imageAlt={`${t('projects.screenshotAlt')} ${data.title}`}
+  type="article"
+  jsonLd={jsonLd}
+>
   <Breadcrumbs
     customCrumbs={[
       { label: t('nav.projects'), href: translatePath('/projects') },
@@ -62,7 +76,7 @@ const sectionHeading = 'text-2xl font-bold tracking-tight text-text-main-light d
         {data.tagline}
       </p>
 
-      {(data.role || timeline) && (
+      {(data.role || timeline || repoStats) && (
         <dl class="grid gap-4 rounded-2xl bg-surface-light/60 p-5 sm:grid-cols-2 dark:bg-surface-dark/60">
           {data.role && (
             <div>
@@ -74,6 +88,24 @@ const sectionHeading = 'text-2xl font-bold tracking-tight text-text-main-light d
             <div>
               <dt class="text-sm font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark">{t('projects.timeline')}</dt>
               <dd class="mt-1 font-semibold text-text-main-light dark:text-text-main-dark">{timeline}</dd>
+            </div>
+          )}
+          {repoStats?.latestRelease && (
+            <div>
+              <dt class="text-sm font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark">{t('projects.latestRelease')}</dt>
+              <dd class="mt-1 font-semibold">
+                <Link href={repoStats.latestRelease.url} isExternal data-track-event={`project_release_click_${slug}`}>
+                  {repoStats.latestRelease.tag}
+                </Link>
+              </dd>
+            </div>
+          )}
+          {repoStats?.pushedAt && (
+            <div>
+              <dt class="text-sm font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark">{t('projects.lastUpdated')}</dt>
+              <dd class="mt-1 font-semibold text-text-main-light dark:text-text-main-dark">
+                <time datetime={repoStats.pushedAt.toISOString()}>{formatMonthYear(repoStats.pushedAt, lang)}</time>
+              </dd>
             </div>
           )}
         </dl>

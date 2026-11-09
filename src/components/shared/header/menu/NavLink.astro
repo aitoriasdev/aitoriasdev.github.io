@@ -24,7 +24,7 @@ const isActive =
   (targetPath !== '/' && currentPath.startsWith(`${targetPath}/`));
 
 // Clean path string for event name formatting (e.g. /projects -> projects)
-const cleanHrefName = href.replace(/^\//, '').replace(/\//g, '_') || 'home';
+const cleanHrefName = href.replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '') || 'home';
 ---
 
 {

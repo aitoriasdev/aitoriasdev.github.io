@@ -46,6 +46,7 @@ jobs:
       - name: Build with Astro
         env:
           PUBLIC_GA_MEASUREMENT_ID: ${{ vars.PUBLIC_GA_MEASUREMENT_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pnpm astro build \
             --site "${{ steps.pages.outputs.origin }}" \

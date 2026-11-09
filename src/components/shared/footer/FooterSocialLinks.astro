@@ -1,47 +1,27 @@
 ---
 import Icon from './../../shared/Icon.astro';
 import Link from './../../shared/Link.astro';
+import { SOCIAL_LINKS } from '../../../config/social';
 import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-interface SocialLink {
-  label: string;
-  href: string;
-  icon: 'github' | 'linkedin';
-  trackEvent: string;
-}
-
-const SOCIAL_LINKS: SocialLink[] = [
-  {
-    label: t('hero.github'),
-    href: 'https://github.com/aitoriasdev',
-    icon: 'github',
-    trackEvent: 'footer_social_github'
-  },
-  {
-    label: t('hero.linkedin'),
-    href: 'https://linkedin.com/in/aitordediego',
-    icon: 'linkedin',
-    trackEvent: 'footer_social_linkedin'
-  },
-];
 ---
 
 <nav aria-label={t('footer.socialAria')}>
   <ul class="flex flex-wrap items-center justify-center gap-4">
-  {SOCIAL_LINKS.map((link) => (
+  {Object.values(SOCIAL_LINKS).map((link) => (
     <li>
       <Link
         href={link.href}
         isExternal
         variant="menu"
-        data-track-event={link.trackEvent}
+        data-track-event={`footer_social_${link.id}`}
         class="inline-flex items-center gap-1.5 rounded-xl bg-bg-light/80 px-3 py-2.5 text-xs font-medium text-text-muted-light shadow-2xs hover:text-accent-primary dark:bg-bg-dark/80 dark:text-text-muted-dark"
       >
-        <Icon name={link.icon} class="h-4 w-4" />
-        <span>{link.label}</span>
+        <Icon name={link.id} class="h-4 w-4" />
+        <span>{t(link.labelKey)}</span>
         <Icon name="external" class="h-3 w-3 opacity-70" />
       </Link>
     </li>

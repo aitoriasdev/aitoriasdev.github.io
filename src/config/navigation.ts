@@ -9,4 +9,5 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { href: "/projects", labelKey: "nav.projects" },
+  { href: "/#contact", labelKey: "nav.contact" },
 ];
