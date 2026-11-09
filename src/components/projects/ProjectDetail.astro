@@ -1,0 +1,68 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Badge from '../shared/Badge.astro';
+import Breadcrumbs from '../shared/Breadcrumbs.astro';
+import Layout from '../../layouts/Layout.astro';
+import ProjectCardActions from './project-card/ProjectCardActions.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
+import type { Project } from '../../utils/projects';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+---
+
+<Layout title={`${data.title} | Aitorias`} description={data.tagline} author={data.author}>
+  <Breadcrumbs
+    customCrumbs={[
+      { label: t('nav.projects'), href: translatePath('/projects') },
+      { label: data.title },
+    ]}
+  />
+
+  <article class="mx-auto max-w-3xl px-6 py-12">
+    <header class="flex flex-col gap-5">
+      <h1 class="text-4xl font-bold tracking-tight text-text-main-light sm:text-5xl dark:text-text-main-dark">
+        {data.title}
+      </h1>
+      <p class="text-lg leading-relaxed text-text-muted-light dark:text-text-muted-dark">
+        {data.tagline}
+      </p>
+      <ul class="flex flex-wrap gap-1.5" aria-label={t('projects.techUsedAria')}>
+        {data.techStack.map((tech) => (
+          <li><Badge variant="surface">{tech}</Badge></li>
+        ))}
+      </ul>
+      <div class="max-w-md">
+        <ProjectCardActions gitHubUrl={data.gitHubUrl} liveUrl={data.liveUrl} title={data.title} />
+      </div>
+    </header>
+
+    {data.thumbnail && (
+      <div class="mt-10 aspect-video overflow-hidden rounded-2xl bg-surface-light dark:bg-surface-dark">
+        <Image
+          src={data.thumbnail}
+          alt={`${t('projects.screenshotAlt')} ${data.title}`}
+          widths={[768, 1200, 1536]}
+          sizes="(min-width: 768px) 720px, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="h-full w-full object-cover"
+        />
+      </div>
+    )}
+
+    <div class="prose prose-lg mt-10 max-w-none">
+      <Content />
+    </div>
+  </article>
+</Layout>

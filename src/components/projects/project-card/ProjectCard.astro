@@ -4,6 +4,7 @@ import ProjectCardBody from './ProjectCardBody.astro';
 import ProjectCardImage from './ProjectCardImage.astro';
 import { type CollectionEntry } from 'astro:content';
 import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../../i18n/utils';
+import { getProjectSlug } from '../../../utils/projects';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -15,9 +16,8 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 
-// Extract clean ID if it contains folder prefix like 'es/aitorias-dev'
-const cleanId = project.id.includes('/') ? project.id.split('/').pop() : project.id;
-const projectHref = translatePath(`/projects/${cleanId}`);
+const slug = getProjectSlug(project);
+const projectHref = translatePath(`/projects/${slug}`);
 ---
 
 <article
@@ -29,20 +29,20 @@ const projectHref = translatePath(`/projects/${cleanId}`);
     src={project.data.thumbnail}
     alt={`${t('projects.screenshotAlt')} ${project.data.title}`}
     href={projectHref}
-    cleanId={cleanId}
+    slug={slug}
     title={project.data.title}
     isLcp={isLcp}
   />
   <!-- Padded Body Content -->
   <div class="flex flex-1 flex-col gap-6 justify-between p-5">
     <ProjectCardBody
-      id={project.id}
+      href={projectHref}
+      slug={slug}
       title={project.data.title}
       description={project.data.tagline}
       tags={project.data.techStack}
     />
     <ProjectCardActions
-      id={project.id}
       gitHubUrl={project.data.gitHubUrl}
       liveUrl={project.data.liveUrl}
       title={project.data.title}

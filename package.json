@@ -1,17 +1,21 @@
 {
-  "name": "astro",
+  "name": "aitoriasdev-portfolio",
   "version": "0.0.1",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "check": "astro check",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepare": "simple-git-hooks"
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.7",
@@ -23,13 +27,20 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.12",
     "lint-staged": "^17.3.0",
     "oxfmt": "^0.63.0",
     "oxlint": "^1.78.0",
+    "simple-git-hooks": "^2.14.0",
+    "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged"
+  },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,mjs,cjs}": "pnpm run lint"
+    "*.{js,jsx,ts,tsx,mjs,cjs,astro}": "oxlint",
+    "*.{js,jsx,ts,tsx,mjs,cjs,json,md,css}": "oxfmt --no-error-on-unmatched-pattern"
   },
   "devEngines": {
     "runtime": {

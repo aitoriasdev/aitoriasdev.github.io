@@ -1,51 +1,15 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { getCollection, render } from 'astro:content';
-import { Image } from 'astro:assets';
-import Breadcrumbs from '../../components/shared/Breadcrumbs.astro';
-import { useTranslations, useTranslatedPath, getLangFromUrl } from '../../i18n/utils';
-import type { InferGetStaticPropsType } from 'astro';
+import ProjectDetail from '../../components/projects/ProjectDetail.astro';
+import { getProjectStaticPaths } from '../../utils/get-projects';
+import type { Project } from '../../utils/projects';
 
-export async function getStaticPaths() {
-  const projects = await getCollection('projects', (p) => p.data.lang === 'en');
+export const getStaticPaths = () => getProjectStaticPaths('en');
 
-  return projects.map((project) => ({
-    params: { slug: project.id.split('/').pop() },
-    props: { project },
-  }));
+interface Props {
+  project: Project;
 }
 
-type Props = InferGetStaticPropsType<typeof getStaticPaths>;
-
 const { project } = Astro.props;
-const { Content } = await render(project);
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-const translatePath = useTranslatedPath(lang);
 ---
 
-<Layout
-  title={`${project.data.title} | Aitorias`}
-  description={project.data.tagline}
-  author={project.data.author || "Aitor"}
->
-  <Breadcrumbs
-    customCrumbs={[
-      { label: t('nav.projects'), href: translatePath('/projects') },
-      { label: project.data.title },
-    ]}
-  />
-
-  <div class="mx-auto max-w-3xl px-6 py-12">
-    {project.data.thumbnail && (
-      <div class="mb-6 aspect-video overflow-hidden rounded-2xl bg-surface-light dark:bg-surface-dark">
-        <Image src={project.data.thumbnail} alt={project.data.title} class="h-full w-full object-cover" />
-      </div>
-    )}
-
-    <article class="prose dark:prose-invert max-w-none">
-      <Content />
-    </article>
-  </div>
-</Layout>
+<ProjectDetail project={project} />

@@ -1,7 +1,5 @@
 interface Window {
-  gtag?: (
-    command: string,
-    targetId: string,
-    config?: Record<string, any>,
-  ) => void;
+  dataLayer?: unknown[];
+  /** Main-thread stub forwarded to the Partytown worker (see astro.config.mjs). */
+  gtag?: (...args: unknown[]) => void;
 }

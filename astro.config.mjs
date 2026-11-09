@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, fontProviders } from "astro/config";
+import { defineConfig, envField, fontProviders } from "astro/config";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
@@ -39,6 +39,15 @@ export default defineConfig({
       },
     },
   ],
+  env: {
+    schema: {
+      PUBLIC_GA_MEASUREMENT_ID: envField.string({
+        context: "client",
+        access: "public",
+        optional: true,
+      }),
+    },
+  },
   i18n: {
     defaultLocale: "en",
     locales: ["en", "es"],
@@ -55,7 +64,14 @@ export default defineConfig({
         forward: ["dataLayer.push", "gtag"],
       },
     }),
-    sitemap(),
+    sitemap({
+      // hreflang pairs for identical paths (/ <-> /es/). Translated routes such
+      // as /projects <-> /es/proyectos get <link rel="alternate"> in Layout.
+      i18n: {
+        defaultLocale: "en",
+        locales: { en: "en", es: "es" },
+      },
+    }),
   ],
   site: "https://aitorias.is-a.dev",
   vite: {
