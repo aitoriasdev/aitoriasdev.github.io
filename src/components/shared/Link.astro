@@ -15,17 +15,17 @@ const t = useTranslations(getLangFromUrl(Astro.url));
 
 const variants = {
   default:
-    'text-md font-medium text-accent-primary hover:underline dark:text-accent-primary-dark',
+    'font-medium text-accent-primary hover:underline', // inherits font size from its context
   menu:
-    'relative py-1 text-lg font-medium no-underline text-text-main-light hover:text-accent-primary dark:text-text-muted-dark dark:hover:text-accent-primary-dark',
+    'relative py-1 text-lg font-medium no-underline text-text-main-light hover:text-accent-primary dark:text-text-muted-dark',
   subtle:
-    'text-md text-text-muted-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:text-text-main-dark',
+    'text-text-muted-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:text-text-main-dark',
   'button-primary':
-    'inline-flex items-center justify-center gap-2 rounded-xl bg-accent-primary px-5 py-3 text-md font-semibold text-white shadow-sm hover:opacity-90 dark:bg-accent-primary-dark dark:text-bg-dark dark:hover:bg-accent-primary-dark/90 cursor-pointer select-none no-underline',
+    'inline-flex items-center justify-center gap-2 rounded-xl bg-accent-primary px-5 py-3 text-base font-semibold text-white shadow-sm hover:opacity-90 dark:text-bg-dark dark:hover:bg-accent-primary-dark/90 cursor-pointer select-none no-underline',
   'button-secondary':
-    'inline-flex items-center justify-center gap-2 rounded-xl bg-surface-light px-5 py-3 text-md font-semibold text-text-main-light shadow-sm hover:bg-bg-light dark:bg-surface-dark dark:text-text-main-dark dark:hover:bg-bg-dark cursor-pointer select-none no-underline',
+    'inline-flex items-center justify-center gap-2 rounded-xl bg-surface-light px-5 py-3 text-base font-semibold text-text-main-light shadow-sm hover:bg-bg-light dark:bg-surface-dark dark:text-text-main-dark dark:hover:bg-bg-dark cursor-pointer select-none no-underline',
   'button-outline':
-    'inline-flex items-center justify-center gap-2 rounded-xl border border-accent-primary bg-transparent px-5 py-3 text-md font-semibold text-accent-primary hover:bg-surface-light dark:border-accent-primary-dark dark:text-accent-primary-dark dark:hover:bg-surface-dark cursor-pointer select-none no-underline',
+    'inline-flex items-center justify-center gap-2 rounded-xl border border-accent-primary bg-transparent px-5 py-3 text-base font-semibold text-accent-primary hover:bg-surface-light dark:hover:bg-surface-dark cursor-pointer select-none no-underline',
 };
 ---
 
@@ -34,7 +34,7 @@ const variants = {
   target={isOutbound ? '_blank' : undefined}
   rel={isOutbound ? 'noopener noreferrer' : undefined}
   class:list={[
-    'transition-colors motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-accent-primary dark:focus-visible:outline-accent-primary-dark',
+    'transition-colors motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-accent-primary',
     variants[variant],
     className,
   ]}

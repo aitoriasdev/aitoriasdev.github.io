@@ -25,7 +25,7 @@ const STACK: TechTag[] = [
       <!-- Status Badge: jumps to the contact section -->
       <a
         href="#contact"
-        class="inline-block rounded-full transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-accent-primary motion-reduce:transition-none dark:focus-visible:outline-accent-primary-dark"
+        class="inline-block rounded-full transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-accent-primary motion-reduce:transition-none"
         data-track-event="hero_status_contact"
       >
       <Badge variant="status">
@@ -44,7 +44,7 @@ const STACK: TechTag[] = [
       </p>
       <!-- Tech Stack Badges -->
       <div class="flex flex-wrap items-center gap-2 pt-2">
-        <span class="text-md font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark">
+        <span class="text-base font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark">
           {t('hero.stackLabel')}
         </span>
         {STACK.map((tech) => (

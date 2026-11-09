@@ -17,11 +17,11 @@ const t = useTranslations(lang);
 const ariaLabel = t('a11y.useLabel').replace('{label}', label);
 ---
 
-<label for={id} class:list={['flex cursor-pointer items-center justify-between rounded-xl bg-surface-light/60 p-2 text-md font-semibold text-text-main-light transition-colors hover:bg-surface-light dark:bg-surface-dark/60 dark:text-text-main-dark dark:hover:bg-surface-dark', className]}>
+<label for={id} class:list={['flex cursor-pointer items-center justify-between rounded-xl bg-surface-light/60 p-2 text-base font-semibold text-text-main-light transition-colors hover:bg-surface-light dark:bg-surface-dark/60 dark:text-text-main-dark dark:hover:bg-surface-dark', className]}>
   <span>{label}</span>
-  <div class="group relative inline-flex w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-surface-dark/20 transition-colors duration-200 ease-in-out dark:bg-surface-light/20 has-checked:bg-accent-primary dark:has-checked:bg-accent-primary-dark">
+  <div class="group relative inline-flex w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-text-muted-light transition-colors duration-200 ease-in-out has-checked:bg-accent-primary dark:bg-text-muted-dark">
     <span
-      class="relative inline-block h-5 w-5 transition-transform transition-translate transition-scale transition-rotate rounded-full bg-bg-light shadow ring-0 duration-200 ease-in-out translate-x-0 group-has-checked:translate-x-5 dark:bg-bg-dark"
+      class="relative inline-block h-5 w-5 transition-transform rounded-full bg-bg-light shadow ring-0 duration-200 ease-in-out translate-x-0 group-has-checked:translate-x-5 dark:bg-bg-dark"
     >
       <span aria-hidden="true" class="absolute inset-0 flex h-full w-full items-center justify-center transition-opacity duration-200 ease-in opacity-100 group-has-checked:opacity-0">
         <Icon name="close" class="h-3 w-3 text-text-muted-light dark:text-text-muted-dark" />
@@ -36,7 +36,7 @@ const ariaLabel = t('a11y.useLabel').replace('{label}', label);
       name={label.toLowerCase()}
       aria-label={ariaLabel}
       checked={checked}
-      class="appearance-none absolute inset-0 h-full w-full"
+      class="absolute inset-0 h-full w-full cursor-pointer appearance-none rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-primary"
     />
   </div>
 </label>

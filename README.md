@@ -57,7 +57,7 @@ The site targets WCAG 2.x AA and combines system-level settings with manual cont
 - **Keyboard and screen readers:**
   - a skip link
   - a mobile drawer that traps focus and closes with Escape
-  - visible focus rings
+  - one global `:focus-visible` outline in the accent colour (at least 6.8:1 in light mode and 9.1:1 in dark), so every focusable element, including links inside Markdown, has a visible focus ring
   - `aria-pressed` on toggle buttons, `aria-current` on the active navigation link
   - translated screen-reader text, such as "(opens in a new tab)"
 
@@ -148,15 +148,17 @@ The Markdown case study goes here (styled with the typography plugin).
 
 A custom Japanese pastel palette, declared with `@theme` in `src/styles/global.css`. The high-contrast mode overrides the background, surface, border and text tokens.
 
-| Token                           | Light                  | Dark                     | Usage                                  |
-| :------------------------------ | :--------------------- | :----------------------- | :------------------------------------- |
-| `--color-bg-*`                  | `#FBF9F5` (warm cream) | `#121418` (ink slate)    | Page backgrounds                       |
-| `--color-surface-*`             | `#F1ECE4` (sand)       | `#1E222A` (charcoal)     | Cards, panels, drawers                 |
-| `--color-border-*`              | `#E2DAD0` (paper)      | `#2E3440` (slate)        | Borders and dividers                   |
-| `--color-text-main-*`           | `#1F2228`              | `#F3F5F8`                | Headings and body text                 |
-| `--color-text-muted-*`          | `#4C535E`              | `#CBD5E1`                | Secondary text                         |
-| `--color-accent-primary(-dark)` | `#2D5A27` (matcha)     | `#A4D09C` (light matcha) | Primary buttons, links, active filters |
-| `--color-accent-secondary`      | `#C87A78` (sakura)     | `#C87A78` (sakura)       | Decorative accents, list markers       |
+`--color-accent-primary` is **theme-aware**: it switches to the light matcha under `.dark`, so `bg-accent-primary`, `text-accent-primary`, `outline-accent-primary` and so on need no `dark:` counterpart. All text and accent pairs meet WCAG AA (4.5:1 for text, 3:1 for focus rings and control boundaries).
+
+| Token                      | Light                  | Dark                                | Usage                                               |
+| :------------------------- | :--------------------- | :---------------------------------- | :-------------------------------------------------- |
+| `--color-bg-*`             | `#FBF9F5` (warm cream) | `#121418` (ink slate)               | Page backgrounds                                    |
+| `--color-surface-*`        | `#F1ECE4` (sand)       | `#1E222A` (charcoal)                | Cards, panels, drawers                              |
+| `--color-border-*`         | `#E2DAD0` (paper)      | `#2E3440` (slate)                   | Borders and dividers                                |
+| `--color-text-main-*`      | `#1F2228`              | `#F3F5F8`                           | Headings and body text                              |
+| `--color-text-muted-*`     | `#4C535E`              | `#CBD5E1`                           | Secondary text                                      |
+| `--color-accent-primary`   | `#2D5A27` (matcha)     | `#A4D09C` (light matcha), automatic | Primary buttons, links, focus rings, active filters |
+| `--color-accent-secondary` | `#C87A78` (sakura)     | `#C87A78` (sakura)                  | Decorative accents, list markers                    |
 
 ---
 

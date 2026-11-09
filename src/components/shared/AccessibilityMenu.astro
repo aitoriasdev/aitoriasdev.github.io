@@ -11,7 +11,7 @@ const t = useTranslations(lang);
 <button
   id="a11y-trigger"
   type="button"
-  class="fixed bottom-20 left-5 z-30 flex items-center gap-2 rounded-full border border-surface-light bg-bg-light/95 p-3 text-text-main-light shadow-xl backdrop-blur-md transition-transform motion-reduce:transform-none hover:scale-105 dark:border-surface-dark dark:bg-bg-dark/95 dark:text-text-main-dark"
+  class="fixed right-5 bottom-5 z-30 flex items-center gap-2 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-primary border border-surface-light bg-bg-light/95 p-3 text-text-main-light shadow-xl backdrop-blur-md transition-transform motion-reduce:transform-none hover:scale-105 dark:border-surface-dark dark:bg-bg-dark/95 dark:text-text-main-dark"
   aria-label={t('a11y.open')}
   aria-expanded="false"
 >
@@ -22,18 +22,18 @@ const t = useTranslations(lang);
 <!-- Accessibility Controls Panel -->
 <div
   id="a11y-panel"
-  class="fixed bottom-20 left-4 right-4 z-40 hidden max-w-md rounded-2xl border border-surface-light bg-bg-light/95 p-5 shadow-2xl backdrop-blur-md dark:border-surface-dark dark:bg-bg-dark/95 md:right-auto"
+  class="fixed right-4 bottom-20 left-4 z-40 hidden max-w-md rounded-2xl border border-surface-light bg-bg-light/95 p-5 shadow-2xl backdrop-blur-md dark:border-surface-dark dark:bg-bg-dark/95 md:left-auto"
   role="region"
   aria-label={t('a11y.title')}
 >
   <div class="flex items-center gap-4 justify-between border-b border-surface-light pb-2 dark:border-surface-dark">
-    <h3 class="text-md font-bold uppercase tracking-wider text-text-main-light dark:text-text-main-dark">
+    <h3 class="text-base font-bold uppercase tracking-wider text-text-main-light dark:text-text-main-dark">
       {t('a11y.title')}
     </h3>
     <button
       id="a11y-close"
       type="button"
-      class="rounded-lg p-1 text-text-muted-light transition-colors motion-reduce:transition-none hover:bg-surface-light dark:text-text-muted-dark dark:hover:bg-surface-dark"
+      class="rounded-lg p-1 text-text-muted-light transition-colors motion-reduce:transition-none hover:bg-surface-light dark:text-text-muted-dark dark:hover:bg-surface-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-primary"
       aria-label={t('a11y.close')}
     >
       <Icon name="close" class="h-4 w-4" />

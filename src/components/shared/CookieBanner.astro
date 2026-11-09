@@ -10,7 +10,7 @@ const t = useTranslations(lang);
 <button
   id="cookie-reopen-btn"
   type="button"
-  class="fixed bottom-5 left-5 z-30 hidden items-center justify-center gap-2 rounded-full border border-surface-light bg-bg-light p-3 text-text-main-light shadow-xl backdrop-blur-md transition-all duration-300 motion-reduce:transition-none hover:border-accent-primary hover:text-accent-primary dark:border-surface-dark dark:bg-bg-dark dark:text-text-main-dark"
+  class="fixed bottom-5 left-5 z-30 hidden items-center justify-center gap-2 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-primary border border-surface-light bg-bg-light p-3 text-text-main-light shadow-xl backdrop-blur-md transition-all duration-300 motion-reduce:transition-none hover:border-accent-primary hover:text-accent-primary dark:border-surface-dark dark:bg-bg-dark dark:text-text-main-dark"
   aria-label={t('cookies.manage')}
 >
   <Icon name="cookie" class="h-5 w-5" />
@@ -26,13 +26,13 @@ const t = useTranslations(lang);
 >
   <div class="flex items-start justify-between gap-2">
     <div class="flex items-center gap-2">
-      <p class="text-md font-semibold text-text-main-light dark:text-text-main-dark">
+      <p class="text-base font-semibold text-text-main-light dark:text-text-main-dark">
         {t('cookies.title')}
       </p>
       <!-- Live Status Badge -->
       <span
         id="cookie-status-badge"
-        class="hidden rounded-full px-2 py-0.5 text-md font-semibold uppercase tracking-wider"
+        class="hidden rounded-full px-2 py-0.5 text-base font-semibold uppercase tracking-wider"
         data-label-accepted={t('cookies.statusAccepted')}
         data-label-denied={t('cookies.statusDenied')}
       ></span>
@@ -41,36 +41,36 @@ const t = useTranslations(lang);
     <button
       id="btn-close-banner"
       type="button"
-      class="rounded-lg p-1 text-text-muted-light transition-colors motion-reduce:transition-none hover:bg-surface-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:bg-surface-dark dark:hover:text-text-main-dark"
+      class="rounded-lg p-1 text-text-muted-light transition-colors motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-primary hover:bg-surface-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:bg-surface-dark dark:hover:text-text-main-dark"
       aria-label={t('cookies.close')}
     >
       <Icon name="close" class="h-4 w-4" />
     </button>
   </div>
-  <p class="mt-2 text-md text-text-muted-light dark:text-text-muted-dark">
+  <p class="mt-2 text-base text-text-muted-light dark:text-text-muted-dark">
     {t('cookies.description')}
   </p>
   <!-- Cookie Details Section -->
-  <details class="group mt-3 border-t border-surface-light pt-3 text-md dark:border-surface-dark">
-    <summary class="cursor-pointer font-medium text-accent-primary hover:underline focus:outline-none">
+  <details class="group mt-3 border-t border-surface-light pt-3 text-base dark:border-surface-dark">
+    <summary class="cursor-pointer rounded-sm font-medium text-accent-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-primary">
       {t('cookies.viewDetails')}
     </summary>
     <div class="mt-2 space-y-2 text-text-muted-light dark:text-text-muted-dark">
       <div class="rounded-lg bg-surface-light/50 p-2 dark:bg-surface-dark/50">
         <div class="flex items-center justify-between font-semibold text-text-main-light dark:text-text-main-dark">
           <span>{t('cookies.essentialTitle')}</span>
-          <span class="text-md text-accent-primary">{t('cookies.required')}</span>
+          <span class="text-base text-accent-primary">{t('cookies.required')}</span>
         </div>
-        <p class="mt-1 text-md">
+        <p class="mt-1 text-base">
           <strong class="font-medium">analytics-consent:</strong> {t('cookies.essentialDesc')}
         </p>
       </div>
       <div class="rounded-lg bg-surface-light/50 p-2 dark:bg-surface-dark/50">
         <div class="flex items-center justify-between font-semibold text-text-main-light dark:text-text-main-dark">
           <span>{t('cookies.analyticsTitle')}</span>
-          <span class="text-md text-text-muted-light dark:text-text-muted-dark">{t('cookies.analyticsVendor')}</span>
+          <span class="text-base text-text-muted-light dark:text-text-muted-dark">{t('cookies.analyticsVendor')}</span>
         </div>
-        <p class="mt-1 text-md">
+        <p class="mt-1 text-base">
           <strong class="font-medium">_ga, _ga_*:</strong> {t('cookies.analyticsDesc')}
         </p>
       </div>
@@ -80,14 +80,14 @@ const t = useTranslations(lang);
     <button
       id="btn-deny"
       type="button"
-      class="rounded-xl px-4 py-2 text-md font-semibold text-text-muted-light transition-colors motion-reduce:transition-none hover:bg-surface-light dark:text-text-muted-dark dark:hover:bg-surface-dark"
+      class="rounded-xl px-4 py-2 text-base font-semibold text-text-muted-light transition-colors motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-primary hover:bg-surface-light dark:text-text-muted-dark dark:hover:bg-surface-dark"
     >
       {t('cookies.deny')}
     </button>
     <button
       id="btn-accept"
       type="button"
-      class="rounded-xl bg-accent-primary px-4 py-2 text-md font-semibold text-white transition-opacity motion-reduce:transition-none hover:opacity-90 dark:text-bg-dark"
+      class="rounded-xl bg-accent-primary px-4 py-2 text-base font-semibold text-white transition-opacity motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-primary hover:opacity-90 dark:text-bg-dark"
     >
       {t('cookies.accept')}
     </button>
@@ -107,7 +107,7 @@ const t = useTranslations(lang);
       if (!statusBadge || !reopenBtn || !banner) return;
 
       if (consent) {
-        statusBadge.className = 'rounded-full px-2 py-0.5 text-md font-semibold uppercase tracking-wider';
+        statusBadge.className = 'rounded-full px-2 py-0.5 text-base font-semibold uppercase tracking-wider';
 
         const labelAccepted = statusBadge.getAttribute('data-label-accepted') || 'Accepted';
         const labelDenied = statusBadge.getAttribute('data-label-denied') || 'Denied';
