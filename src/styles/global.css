@@ -28,6 +28,36 @@
   --font-open-dyslexic: var(--font-open-dyslexic), sans-serif;
 }
 
+/* --- Theme-aware accent ---
+   One token for every component: `bg-accent-primary`, `text-accent-primary`,
+   focus outlines, etc. switch to the light matcha automatically in dark mode,
+   so no component needs a `dark:*-accent-primary-dark` pair (forgetting it
+   produced 2.3:1 contrast in dark mode). */
+
+.dark {
+  --color-accent-primary: #a4d09c;
+}
+
+/* --- Focus indicator ---
+   Every focusable element gets the same accent outline (WCAG 2.4.7 + 1.4.11),
+   including ones without utility classes such as links inside Markdown.
+   In the base layer so a component's own focus utilities still win. */
+
+@layer base {
+  :where(
+    a[href],
+    button,
+    summary,
+    input,
+    select,
+    textarea,
+    [tabindex]:not([tabindex="-1"])
+  ):focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+  }
+}
+
 /* --- Absolute Zero Motion Overrides --- */
 
 /* Target OS settings & manual .reduce-motion toggle */

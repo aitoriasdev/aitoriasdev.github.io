@@ -9,9 +9,12 @@ interface Props {
   /** Show only `featured` projects (home page). */
   featuredOnly?: boolean;
   showViewAll?: boolean;
+  /** `h1` when the section is the page's main content (the projects page). */
+  headingLevel?: 'h1' | 'h2';
 }
 
-const { featuredOnly = false, showViewAll = false } = Astro.props;
+const { featuredOnly = false, showViewAll = false, headingLevel = 'h2' } = Astro.props;
+const Heading = headingLevel;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -36,10 +39,10 @@ const techs = [...techCounts]
   <!-- Section Title & Filters -->
   <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
     <div>
-      <h2 id="projects-heading" class="text-3xl font-extrabold tracking-tight text-text-main-light sm:text-3xl dark:text-text-main-dark">
+      <Heading id="projects-heading" class="text-3xl font-extrabold tracking-tight text-text-main-light sm:text-3xl dark:text-text-main-dark">
         {t('projects.title')}
-      </h2>
-      <p class="mt-1 text-md text-text-muted-light dark:text-text-muted-dark">
+      </Heading>
+      <p class="mt-1 text-base text-text-muted-light dark:text-text-muted-dark">
         {t('projects.subtitle')}
       </p>
     </div>
@@ -63,7 +66,7 @@ const techs = [...techCounts]
   <!-- Always in the DOM so screen readers announce text changes; filled by ProjectFilters -->
   <p
     id="projects-empty"
-    class="mt-10 text-center text-md text-text-muted-light empty:hidden dark:text-text-muted-dark"
+    class="mt-10 text-center text-base text-text-muted-light empty:hidden dark:text-text-muted-dark"
     role="status"
     data-message={t('projects.empty')}
   ></p>

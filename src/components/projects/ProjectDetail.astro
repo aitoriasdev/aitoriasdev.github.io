@@ -63,7 +63,7 @@ const sectionHeading = 'text-2xl font-bold tracking-tight text-text-main-light d
         <span
           class:list={[
             'inline-flex h-2 w-2 rounded-full',
-            isActive ? 'bg-accent-primary dark:bg-accent-primary-dark' : 'bg-text-muted-light dark:bg-text-muted-dark',
+            isActive ? 'bg-accent-primary' : 'bg-text-muted-light dark:bg-text-muted-dark',
           ]}
           aria-hidden="true"
         ></span>
@@ -143,7 +143,7 @@ const sectionHeading = 'text-2xl font-bold tracking-tight text-text-main-light d
         <ul class="mt-5 grid gap-3">
           {data.highlights.map((highlight) => (
             <li class="flex gap-3 rounded-xl bg-surface-light/60 p-4 text-text-main-light dark:bg-surface-dark/60 dark:text-text-main-dark">
-              <Icon name="check" class="mt-0.5 h-5 w-5 text-accent-primary dark:text-accent-primary-dark" />
+              <Icon name="check" class="mt-0.5 h-5 w-5 text-accent-primary" />
               <span>{highlight}</span>
             </li>
           ))}
