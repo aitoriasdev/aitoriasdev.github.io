@@ -32,18 +32,18 @@
 
 ## Tech Stack
 
-| Area            | Choice                                                                                                                             |
-| :-------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
-| Framework       | [Astro v7](https://astro.build): static output, Content Collections with the `glob` loader, `astro:assets`, `astro:env`, Fonts API |
-| Language        | TypeScript (strict), type-checked with `astro check`                                                                               |
-| Styling         | [Tailwind CSS v4](https://tailwindcss.com) with `@theme` design tokens and `@tailwindcss/typography` for Markdown content          |
-| Content         | Markdown with frontmatter validated by Zod schemas (`src/content.config.ts`)                                                       |
-| i18n            | Astro i18n routing, plus typed dictionaries and route helpers in `src/i18n/`                                                       |
-| Analytics       | GA4 through `@astrojs/partytown` (with `dataLayer.push` and `gtag` forwarded to the main thread) and Consent Mode                  |
-| Testing         | [Vitest](https://vitest.dev)                                                                                                       |
-| Lint and format | [Oxlint and Oxfmt](https://oxc.rs), run on staged files by `lint-staged` and `simple-git-hooks`                                    |
-| Package manager | [Yarn 4](https://yarnpkg.com): `node-modules` linker, with a 1-day minimum release age for packages                                |
-| Hosting         | GitHub Pages through GitHub Actions, with a custom [is-a.dev](https://is-a.dev) sub-domain (`CNAME`)                               |
+| Area            | Choice                                                                                                                                                                        |
+| :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Framework       | [Astro v7](https://astro.build): static output, Content Collections with the `glob` loader, `astro:assets`, `astro:env`, Fonts API                                            |
+| Language        | TypeScript (strict), type-checked with `astro check`                                                                                                                          |
+| Styling         | [Tailwind CSS v4](https://tailwindcss.com) with `@theme` design tokens and `@tailwindcss/typography` for Markdown content                                                     |
+| Content         | Markdown with frontmatter validated by Zod schemas (`src/content.config.ts`)                                                                                                  |
+| i18n            | Astro i18n routing, plus typed dictionaries and route helpers in `src/i18n/`                                                                                                  |
+| Analytics       | GA4 through `@astrojs/partytown` (with `dataLayer.push` and `gtag` forwarded to the main thread) and Consent Mode                                                             |
+| Testing         | [Vitest](https://vitest.dev) (unit and component tests with the Astro Container API), [Playwright](https://playwright.dev) with axe-core (end-to-end and accessibility tests) |
+| Lint and format | [Oxlint and Oxfmt](https://oxc.rs), run on staged files by `lint-staged` and `simple-git-hooks`                                                                               |
+| Package manager | [Yarn 4](https://yarnpkg.com): `node-modules` linker, with a 1-day minimum release age for packages                                                                           |
+| Hosting         | GitHub Pages through GitHub Actions, with a custom [is-a.dev](https://is-a.dev) sub-domain (`CNAME`)                                                                          |
 
 ---
 
@@ -73,7 +73,8 @@ yarn dev          # dev server at http://localhost:4321 (or `astro dev --backgro
 yarn build        # production build into dist/
 yarn preview      # preview the production build
 yarn check        # type-check .astro and .ts files
-yarn test         # unit tests (yarn test:watch for watch mode)
+yarn test         # unit + component tests (yarn test:watch for watch mode)
+yarn test:e2e     # Playwright end-to-end + accessibility tests (run yarn build first)
 yarn lint         # oxlint
 yarn fmt          # oxfmt (yarn fmt:check verifies formatting)
 ```
@@ -126,21 +127,39 @@ The Markdown case study goes here (styled with the typography plugin).
 
 ## Quality & CI
 
-- **`ci.yml`** runs on every pull request and every push to `main`:
-  1. `yarn install --immutable`
-  2. format check
-  3. Oxlint with warnings treated as errors
-  4. `astro check`
-  5. Vitest
-  6. a production build
+- **`ci.yml`** runs two jobs on every pull request and every push to `main`:
+  - **verify:** `yarn install --immutable` → format check → Oxlint with warnings treated as errors → `astro check` → Vitest → production build
+  - **e2e:** production build → Playwright tests in Chromium, with the browser cached between runs. The HTML report is uploaded when a test fails.
 - **`astro.yml`** builds and deploys to GitHub Pages on every push to `main`.
 - **`codeql.yml`** and **`dependency-review.yml`** handle security analysis and review new dependencies on pull requests.
 - **Dependabot** sends weekly updates for npm packages (which covers Yarn) and GitHub Actions, with a 7-day cooldown.
-- **Unit tests** cover:
-  - the i18n route helpers: language detection, translated paths, round trips
-  - that both dictionaries have the same keys
-  - project sorting and slugs
-  - GitHub URL parsing
+
+---
+
+## Testing
+
+| Layer      | Tool                                | Where                               | What it covers                                                                                                                                                                                                     |
+| :--------- | :---------------------------------- | :---------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Unit       | Vitest                              | `src/**/*.test.ts` next to the code | i18n routing and dictionary key parity, date formatting, project sorting and slugs, JSON-LD builders, consent-gated analytics, the GitHub stats fetch (mocked: success, missing release, offline, per-build cache) |
+| Component  | Vitest + Astro Container API        | `src/components/**/*.test.ts`       | Components rendered to HTML in English and Spanish: links (new-tab safety, screen-reader hints), breadcrumbs, language picker, navigation, toggle, badge, contact section, project card                            |
+| End-to-end | Playwright + `@axe-core/playwright` | `e2e/*.spec.ts`                     | See below                                                                                                                                                                                                          |
+
+The end-to-end tests run against the production build and cover:
+
+- **Accessibility:**
+  - axe WCAG 2.0, 2.1 and 2.2 A/AA rules on every page, in light, dark and both high-contrast modes, with the cookie banner, accessibility panel and mobile menu open
+  - a visible focus outline of at least 3:1 on every tab stop
+  - reflow at 320px
+  - the cookie banner never covering the accessibility button
+- **Pages:** status codes, one `<h1>`, canonical, Open Graph, hreflang and JSON-LD; the bilingual 404 page
+- **Interactions:**
+  - the language switch keeps you on the same page
+  - project cards, project filters and contact links work
+  - theme and accessibility preferences persist and apply before the first paint
+  - the mobile menu traps focus and closes with Escape
+  - the cookie banner records consent and can be reopened
+
+`src/test/render.ts` holds the shared render helper for component tests. `e2e/fixtures.ts` holds the shared Playwright helpers: stored preferences, axe scans and focus-contrast measurement.
 
 ---
 
@@ -191,12 +210,15 @@ A custom Japanese pastel palette, declared with `@theme` in `src/styles/global.c
 │   │   ├── 404.astro                       # Bilingual not-found page
 │   │   └── robots.txt.ts
 │   ├── styles/global.css        # Theme tokens, accessibility modes, prose theme
+│   ├── test/                    # Component-test render helper (Astro Container API)
 │   ├── utils/                   # Projects, GitHub stats, structured data, analytics (+ tests)
 │   ├── content.config.ts        # Content collection schemas (Zod)
 │   └── env.d.ts                 # Window typings (gtag, dataLayer)
+├── e2e/                         # Playwright end-to-end + accessibility tests
 ├── .yarnrc.yml                  # Yarn settings
 ├── .oxfmtrc.json / .oxlintrc.json
 ├── astro.config.mjs             # Fonts, env schema, i18n, Partytown, sitemap, Tailwind
+├── playwright.config.ts         # Runs e2e/ against `astro preview`
 ├── vitest.config.ts
 ├── AGENTS.md / CLAUDE.md        # Instructions for AI coding agents
 └── package.json
