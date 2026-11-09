@@ -29,6 +29,10 @@ export const ui = {
     "nav.toggleMenu": "Toggle Navigation Menu",
     "nav.closeMenu": "Close navigation menu",
     "nav.mobileNav": "Mobile Navigation",
+    "nav.mainNav": "Main Navigation",
+    "nav.breadcrumbs": "Breadcrumb",
+    "nav.skipToContent": "Skip to main content",
+    "link.newTab": "(opens in a new tab)",
     "projects.title": "My Projects",
     "projects.subtitle": "Selected open-source work and applications.",
     "projects.viewAll": "View all projects",
@@ -41,6 +45,7 @@ export const ui = {
     "projects.screenshotAlt": "Screenshot of",
     "projects.repoSrOnly": "repository for",
     "projects.liveDemo": "Live demo",
+    "projects.empty": "No projects match this technology yet.",
     "hero.status": "Available for new opportunities",
     "hero.bio":
       "Hi, I'm Aitor. I specialize in building accessible, high-performance web applications with clean, modern code architectures.",
@@ -96,6 +101,10 @@ export const ui = {
     "nav.toggleMenu": "Alternar menú de navegación",
     "nav.closeMenu": "Cerrar menú de navegación",
     "nav.mobileNav": "Navegación móvil",
+    "nav.mainNav": "Navegación principal",
+    "nav.breadcrumbs": "Ruta de navegación",
+    "nav.skipToContent": "Saltar al contenido principal",
+    "link.newTab": "(se abre en una pestaña nueva)",
     "projects.title": "Mis Proyectos",
     "projects.subtitle":
       "Trabajos seleccionados de código abierto y aplicaciones.",
@@ -109,6 +118,7 @@ export const ui = {
     "projects.screenshotAlt": "Captura de pantalla de",
     "projects.repoSrOnly": "repositorio de",
     "projects.liveDemo": "Demo en vivo",
+    "projects.empty": "Todavía no hay proyectos con esta tecnología.",
     "hero.status": "Disponible para nuevas oportunidades",
     "hero.bio":
       "Hola, soy Aitor. Me especializo en crear aplicaciones web accesibles y de alto rendimiento con arquitecturas de código limpias y modernas.",
@@ -153,3 +163,6 @@ export const ui = {
     "cookies.statusDenied": "Rechazado",
   },
 } as const;
+
+export type Lang = keyof typeof ui;
+export type UIKey = keyof (typeof ui)[typeof defaultLang];

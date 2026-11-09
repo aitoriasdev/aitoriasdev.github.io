@@ -1,5 +1,6 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
 interface Props extends HTMLAttributes<'a'> {
   href: string;
@@ -10,6 +11,7 @@ interface Props extends HTMLAttributes<'a'> {
 
 const { href, isExternal = false, variant = 'default', class: className = '', ...rest } = Astro.props;
 const isOutbound = isExternal || href.startsWith('http');
+const t = useTranslations(getLangFromUrl(Astro.url));
 
 const variants = {
   default:
@@ -42,7 +44,7 @@ const variants = {
   <slot />
   {
     isOutbound && (
-      <span class="sr-only"> (opens in a new tab)</span>
+      <span class="sr-only"> {t('link.newTab')}</span>
     )
   }
 </a>

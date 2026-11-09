@@ -14,8 +14,7 @@ const { id, label, checked = false, class: className = '' } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const ariaLabelTemplate = t('a11y.useLabel' as any) || 'Use {label}';
-const ariaLabel = ariaLabelTemplate.replace('{label}', label);
+const ariaLabel = t('a11y.useLabel').replace('{label}', label);
 ---
 
 <label for={id} class:list={['flex cursor-pointer items-center justify-between rounded-xl bg-surface-light/60 p-2 text-md font-semibold text-text-main-light transition-colors hover:bg-surface-light dark:bg-surface-dark/60 dark:text-text-main-dark dark:hover:bg-surface-dark', className]}>

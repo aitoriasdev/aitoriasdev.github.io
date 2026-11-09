@@ -49,7 +49,10 @@ export default defineConfig({
   integrations: [
     partytown({
       config: {
-        forward: ["dataLayer.push"],
+        // `gtag` is defined inside the Partytown worker. Forwarding it exposes a
+        // main-thread `window.gtag` stub so consent updates and custom events
+        // (CookieBanner, trackEvent) actually reach Google Analytics.
+        forward: ["dataLayer.push", "gtag"],
       },
     }),
     sitemap(),

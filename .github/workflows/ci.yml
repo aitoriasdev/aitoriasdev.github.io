@@ -5,20 +5,17 @@ on:
   pull_request:
     branches:
       - main
-    types: [opened, synchronize]
+    types: [opened, synchronize, reopened]
     paths-ignore:
       - "*.md"
-      - "*.json"
   push:
     branches:
       - main
     paths-ignore:
       - "*.md"
-      - "*.json"
 
 permissions:
   contents: read
-  id-token: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

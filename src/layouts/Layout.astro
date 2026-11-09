@@ -33,7 +33,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <html lang={lang}>
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<meta name="author" content={author} />
@@ -53,11 +53,27 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<link rel="canonical" href={canonicalURL} />
 
     <Font cssVariable="--font-open-dyslexic" />
+		<!-- Apply persisted theme + accessibility preferences before first paint (avoids a flash) -->
 		<script is:inline>
-			const theme = localStorage.getItem('theme') || 'system';
-			const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+			(function () {
+				const root = document.documentElement;
+				const theme = localStorage.getItem('theme') || 'system';
+				const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
-			document.documentElement.classList.toggle('dark', isDark);
+				root.classList.toggle('dark', isDark);
+
+				// Keep in sync with the toggles in AccessibilityMenu.astro
+				const a11yPrefs = {
+					'a11y-reduce-motion': 'reduce-motion',
+					'a11y-high-contrast': 'high-contrast',
+					'a11y-large-text': 'large-text',
+					'a11y-dyslexic-font': 'dyslexic-font',
+				};
+
+				Object.entries(a11yPrefs).forEach(([key, className]) => {
+					root.classList.toggle(className, localStorage.getItem(key) === 'true');
+				});
+			})();
 		</script>
     {gaId && <GoogleAnalytics measurementId={gaId} />}
     {gaId && <GoogleAnalyticsTracker />}
@@ -67,7 +83,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       href="#main-content"
       class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-accent-primary focus:px-4 focus:py-2 focus:text-bg-light focus:outline-none focus:ring-2 focus:ring-accent-primary dark:focus:text-bg-dark"
     >
-      Skip to main content
+      {t('nav.skipToContent')}
     </a>
     <Header />
 		<main id="main-content" tabindex="-1">

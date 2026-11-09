@@ -10,7 +10,7 @@ const t = useTranslations(lang);
 <button
   id="cookie-reopen-btn"
   type="button"
-  class="fixed bottom-5 left-5 z-30 hidden items-center justify-center gap-2 rounded-full border border-surface-light bg-bg-light p-3 text-text-light shadow-xl backdrop-blur-md transition-all duration-300 motion-reduce:transition-none hover:border-accent-primary hover:text-accent-primary dark:border-surface-dark dark:bg-bg-dark dark:text-text-dark"
+  class="fixed bottom-5 left-5 z-30 hidden items-center justify-center gap-2 rounded-full border border-surface-light bg-bg-light p-3 text-text-main-light shadow-xl backdrop-blur-md transition-all duration-300 motion-reduce:transition-none hover:border-accent-primary hover:text-accent-primary dark:border-surface-dark dark:bg-bg-dark dark:text-text-main-dark"
   aria-label={t('cookies.manage')}
 >
   <Icon name="cookie" class="h-5 w-5" />
@@ -26,7 +26,7 @@ const t = useTranslations(lang);
 >
   <div class="flex items-start justify-between gap-2">
     <div class="flex items-center gap-2">
-      <p class="text-md font-semibold text-text-light dark:text-text-dark">
+      <p class="text-md font-semibold text-text-main-light dark:text-text-main-dark">
         {t('cookies.title')}
       </p>
       <!-- Live Status Badge -->
@@ -41,7 +41,7 @@ const t = useTranslations(lang);
     <button
       id="btn-close-banner"
       type="button"
-      class="rounded-lg p-1 text-text-muted-light transition-colors motion-reduce:transition-none hover:bg-surface-light hover:text-text-light dark:text-text-muted-dark dark:hover:bg-surface-dark dark:hover:text-text-dark"
+      class="rounded-lg p-1 text-text-muted-light transition-colors motion-reduce:transition-none hover:bg-surface-light hover:text-text-main-light dark:text-text-muted-dark dark:hover:bg-surface-dark dark:hover:text-text-main-dark"
       aria-label={t('cookies.close')}
     >
       <Icon name="close" class="h-4 w-4" />
@@ -57,7 +57,7 @@ const t = useTranslations(lang);
     </summary>
     <div class="mt-2 space-y-2 text-text-muted-light dark:text-text-muted-dark">
       <div class="rounded-lg bg-surface-light/50 p-2 dark:bg-surface-dark/50">
-        <div class="flex items-center justify-between font-semibold text-text-light dark:text-text-dark">
+        <div class="flex items-center justify-between font-semibold text-text-main-light dark:text-text-main-dark">
           <span>{t('cookies.essentialTitle')}</span>
           <span class="text-md text-accent-primary">{t('cookies.required')}</span>
         </div>
@@ -66,7 +66,7 @@ const t = useTranslations(lang);
         </p>
       </div>
       <div class="rounded-lg bg-surface-light/50 p-2 dark:bg-surface-dark/50">
-        <div class="flex items-center justify-between font-semibold text-text-light dark:text-text-dark">
+        <div class="flex items-center justify-between font-semibold text-text-main-light dark:text-text-main-dark">
           <span>{t('cookies.analyticsTitle')}</span>
           <span class="text-md text-text-muted-light dark:text-text-muted-dark">{t('cookies.analyticsVendor')}</span>
         </div>
@@ -165,5 +165,4 @@ const t = useTranslations(lang);
   }
 
   initCookieBanner();
-  document.addEventListener('astro:page-load', initCookieBanner);
 </script>

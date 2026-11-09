@@ -1,20 +1,17 @@
 ---
 import NavLink from './NavLink.astro';
+import { NAV_ITEMS } from '../../../../config/navigation';
 import { getLangFromUrl, useTranslations } from '../../../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-
-const navItems = [
-  { href: '/projects', label: t('nav.projects') },
-];
 ---
 
-<nav aria-label="Main Navigation" class="hidden items-center md:flex">
+<nav aria-label={t('nav.mainNav')} class="hidden items-center md:flex">
   <ul class="flex items-center gap-8">
-    {navItems.map((item) => (
+    {NAV_ITEMS.map((item) => (
       <li>
-        <NavLink href={item.href} label={item.label} variant="desktop" />
+        <NavLink href={item.href} label={t(item.labelKey)} variant="desktop" />
       </li>
     ))}
   </ul>

@@ -1,33 +1,18 @@
-import { getCollection, type CollectionEntry } from "astro:content";
-import { defaultLang, routes, showDefaultLang, ui } from "./ui";
+import {
+  defaultLang,
+  routes,
+  showDefaultLang,
+  ui,
+  type Lang,
+  type UIKey,
+} from "./ui";
 
 export function getLangFromUrl(url: URL) {
   const [, lang] = url.pathname.split("/");
 
-  if (lang in ui) return lang as keyof typeof ui;
+  if (lang in ui) return lang as Lang;
 
   return defaultLang;
-}
-
-export async function getProjectStaticPaths() {
-  const projects = await getCollection("projects");
-
-  // Filter for English entries only (or entries without language prefix)
-  const enProjects = projects.filter(
-    (p) => p.data.lang === "en" || !p.data.lang,
-  );
-
-  return enProjects.map((project: CollectionEntry<"projects">) => {
-    // Strip folder prefix if project.id contains 'en/slug' or 'es/slug'
-    const slug = project.id.includes("/")
-      ? project.id.split("/").pop()
-      : project.id;
-
-    return {
-      params: { slug },
-      props: { project },
-    };
-  });
 }
 
 export function getRouteFromUrl(url: URL): string {
@@ -57,15 +42,19 @@ export function getRouteFromUrl(url: URL): string {
   return restPath ? `${englishBaseKey}/${restPath}` : englishBaseKey;
 }
 
-export function useTranslations(lang: keyof typeof ui) {
-  const localizedUI: Record<string, string> = ui[lang];
+export function isUIKey(key: string): key is UIKey {
+  return key in ui[defaultLang];
+}
 
-  return function t(key: keyof (typeof ui)[typeof defaultLang]) {
-    return key in localizedUI ? localizedUI[key] : ui[defaultLang][key];
+export function useTranslations(lang: Lang) {
+  const localizedUI: Partial<Record<UIKey, string>> = ui[lang];
+
+  return function t(key: UIKey): string {
+    return localizedUI[key] ?? ui[defaultLang][key];
   };
 }
 
-export function useTranslatedPath(lang: keyof typeof ui) {
+export function useTranslatedPath(lang: Lang) {
   return function translatePath(path: string, l: string = lang) {
     const parts = path.split("/").filter(Boolean);
 

@@ -81,7 +81,7 @@ The application fully adheres to modern Web Content Accessibility Guidelines (WC
 │   │       ├── drawer/        # Navigation mobile drawer
 │   │       ├── footer/        # Shared site footer
 │   │       └── header/        # Header and menu components
-│   ├── config/                # Site configs (navigation.ts, projects.ts, tech-stack.ts)
+│   ├── config/                # Site configs (navigation.ts)
 │   ├── content/               # Content Collections
 │   │   └── projects/          # English project entries (*.md)
 │   │       └── es/            # Spanish project entries (*.md)
@@ -100,7 +100,6 @@ The application fully adheres to modern Web Content Accessibility Guidelines (WC
 │   ├── utils/                 # Helper utilities
 │   ├── content.config.ts      # Zod schema definitions for Content Collections
 │   └── env.d.ts               # Global TypeScript declarations (Window, gtag, etc.)
-├── test/                      # Test suites and setup files
 ├── .editorconfig
 ├── .oxfmtrc.json              # oxfmt formatter rules
 ├── .oxlintrc.json             # oxlint configuration
