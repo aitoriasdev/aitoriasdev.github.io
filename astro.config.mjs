@@ -46,6 +46,12 @@ export default defineConfig({
         access: "public",
         optional: true,
       }),
+      // Optional: raises the GitHub API rate limit for build-time repo stats
+      GITHUB_TOKEN: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
     },
   },
   i18n: {

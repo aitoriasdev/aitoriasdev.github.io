@@ -1,0 +1,23 @@
+---
+import { getImage } from 'astro:assets';
+import ContactSection from '../contact/ContactSection.astro';
+import Hero from '../hero/Hero.astro';
+import Layout from '../../layouts/Layout.astro';
+import ProjectsSection from '../projects/ProjectsSection.astro';
+import profileImage from '../../assets/images/aitorias.webp';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { homeSchema } from '../../utils/structured-data';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const site = Astro.site ?? new URL(Astro.url.origin);
+const profile = await getImage({ src: profileImage, width: 512, format: 'jpg' });
+const jsonLd = homeSchema(site, lang, t('seo.jobTitle'), new URL(profile.src, site).href);
+---
+
+<Layout title={`Aitorias - ${t('title')}`} description={t('description')} jsonLd={jsonLd}>
+  <Hero />
+  <ProjectsSection featuredOnly showViewAll />
+  <ContactSection />
+</Layout>
