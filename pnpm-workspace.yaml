@@ -1,6 +1,8 @@
 allowBuilds:
   esbuild: true
   sharp: true
+  # Hooks are installed via the `prepare` script instead
+  simple-git-hooks: false
 minimumReleaseAgeExclude:
   - astro@7.2.2
   - "@oxfmt/binding-android-arm-eabi@0.63.0"

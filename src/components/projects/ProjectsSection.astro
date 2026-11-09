@@ -1,23 +1,23 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
 import ProjectCard from './project-card/ProjectCard.astro';
 import ProjectFilters from './ProjectFilters.astro';
 import Link from '../shared/Link.astro';
 import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
+import { getProjects } from '../../utils/get-projects';
 
 interface Props {
+  /** Show only `featured` projects (home page). */
+  featuredOnly?: boolean;
   showViewAll?: boolean;
 }
 
-const { showViewAll = false } = Astro.props;
+const { featuredOnly = false, showViewAll = false } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 
-const allProjects = await getCollection('projects');
-// Filter projects matching current language
-const projects = allProjects.filter((p) => p.data.lang === lang);
+const projects = await getProjects(lang, { featuredOnly });
 const projectCount = projects.length;
 
 // Offer only technologies that at least one rendered project uses, most common first.
@@ -56,7 +56,7 @@ const techs = [...techCounts]
       projectCount >= 3 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
     ]}
   >
-    {projects.map((project: CollectionEntry<'projects'>, index: number) => (
+    {projects.map((project, index) => (
       <ProjectCard project={project} isLcp={index === 0} />
     ))}
   </div>

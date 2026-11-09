@@ -9,12 +9,12 @@ interface Props {
   src?: ImageMetadata;
   alt: string;
   href: string;
-  cleanId?: string;
+  slug?: string;
   title?: string;
   isLcp?: boolean;
 }
 
-const { src, alt, href, cleanId, title, isLcp = false } = Astro.props;
+const { src, alt, href, slug, title, isLcp = false } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
@@ -23,7 +23,7 @@ const t = useTranslations(lang);
   <Link
     href={href}
     aria-label={`${t('projects.viewDetailsAria')} ${title || ''}`}
-    data-track-event={`project_image_click_${cleanId || 'unknown'}`}
+    data-track-event={`project_image_click_${slug || 'unknown'}`}
     class="block h-full w-full"
   >
     {
