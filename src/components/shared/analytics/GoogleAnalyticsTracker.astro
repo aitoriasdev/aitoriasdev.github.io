@@ -35,7 +35,6 @@
     });
   }
 
-  // Initialize safely on load or view transitions
+  // Initialize once; the guard keeps the document listener from stacking
   initGlobalAnalytics();
-  document.addEventListener('astro:page-load', initGlobalAnalytics);
 </script>

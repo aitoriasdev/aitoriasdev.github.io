@@ -1,8 +1,13 @@
 ---
 import Button from '../shared/Button.astro';
-import { TECH_STACK } from '../../config/tech-stack';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
+interface Props {
+  /** Technologies to offer as filters, derived from the rendered projects. */
+  techs: string[];
+}
+
+const { techs } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
@@ -30,7 +35,7 @@ const t = useTranslations(lang);
     {t('projects.filterAll')}
   </Button>
   {/* Tech Stack Filter Buttons */}
-  {TECH_STACK.map((tech) => (
+  {techs.map((tech) => (
     <Button
       data-filter={tech}
       data-active="false"
@@ -54,6 +59,7 @@ const t = useTranslations(lang);
   function initProjectFilters() {
     const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
     const cards = document.querySelectorAll<HTMLElement>('.project-card');
+    const emptyState = document.getElementById('projects-empty');
 
     if (!filterButtons.length || !cards.length) return;
 
@@ -69,19 +75,22 @@ const t = useTranslations(lang);
         button.setAttribute('data-active', 'true');
         button.setAttribute('aria-pressed', 'true');
 
-        cards.forEach((card) => {
-          const cardTechs = JSON.parse(card.getAttribute('data-tags') || '[]');
+        let visibleCount = 0;
 
-          if (selectedTech === 'All' || cardTechs.includes(selectedTech)) {
-            card.classList.remove('hidden');
-          } else {
-            card.classList.add('hidden');
-          }
+        cards.forEach((card) => {
+          const cardTechs: string[] = JSON.parse(card.getAttribute('data-tags') || '[]');
+          const isVisible = selectedTech === 'All' || cardTechs.includes(selectedTech ?? '');
+
+          card.classList.toggle('hidden', !isVisible);
+          if (isVisible) visibleCount++;
         });
+
+        if (emptyState) {
+          emptyState.textContent = visibleCount > 0 ? '' : (emptyState.dataset.message ?? '');
+        }
       });
     });
   }
 
   initProjectFilters();
-  document.addEventListener('astro:page-load', initProjectFilters);
 </script>

@@ -8,7 +8,6 @@ export default getViteConfig(
     },
   },
   {
-    site: "https://aitoriasdev.github.io/",
-    trailingSlash: "always",
+    site: "https://aitorias.is-a.dev",
   },
 );

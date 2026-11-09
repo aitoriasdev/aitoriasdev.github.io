@@ -19,6 +19,17 @@ const allProjects = await getCollection('projects');
 // Filter projects matching current language
 const projects = allProjects.filter((p) => p.data.lang === lang);
 const projectCount = projects.length;
+
+// Offer only technologies that at least one rendered project uses, most common first.
+const techCounts = new Map<string, number>();
+for (const project of projects) {
+  for (const tech of project.data.techStack) {
+    techCounts.set(tech, (techCounts.get(tech) ?? 0) + 1);
+  }
+}
+const techs = [...techCounts]
+  .sort(([techA, countA], [techB, countB]) => countB - countA || techA.localeCompare(techB))
+  .map(([tech]) => tech);
 ---
 
 <section id="projects" class="mx-auto max-w-5xl px-6 py-10 lg:py-20" aria-labelledby="projects-heading">
@@ -33,7 +44,7 @@ const projectCount = projects.length;
       </p>
     </div>
     <div class="flex items-center gap-4">
-      <ProjectFilters />
+      <ProjectFilters techs={techs} />
     </div>
   </div>
   <!-- Dynamic Adaptive Grid Container -->
@@ -49,6 +60,13 @@ const projectCount = projects.length;
       <ProjectCard project={project} isLcp={index === 0} />
     ))}
   </div>
+  <!-- Always in the DOM so screen readers announce text changes; filled by ProjectFilters -->
+  <p
+    id="projects-empty"
+    class="mt-10 text-center text-md text-text-muted-light empty:hidden dark:text-text-muted-dark"
+    role="status"
+    data-message={t('projects.empty')}
+  ></p>
   <div class="mt-5">
     {/* Conditionally render the "View All" link with localized route */}
       {showViewAll && (

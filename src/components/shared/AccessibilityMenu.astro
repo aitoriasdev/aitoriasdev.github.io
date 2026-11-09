@@ -54,6 +54,7 @@ const t = useTranslations(lang);
     const panel = document.getElementById('a11y-panel');
     const closeBtn = document.getElementById('a11y-close');
 
+    // Keep in sync with the pre-paint script in Layout.astro
     const toggles = [
       { id: 'toggle-motion', key: 'a11y-reduce-motion', className: 'reduce-motion' },
       { id: 'toggle-contrast', key: 'a11y-high-contrast', className: 'high-contrast' },
@@ -126,5 +127,4 @@ const t = useTranslations(lang);
   }
 
   initA11yMenu();
-  document.addEventListener('astro:page-load', initA11yMenu);
 </script>

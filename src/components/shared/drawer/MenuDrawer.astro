@@ -5,14 +5,11 @@ import Logo from '../Logo.astro';
 import NavLink from '../header/menu/NavLink.astro';
 import ThemeToggle from '../ThemeToggle.astro';
 import LanguagePicker from '../LanguagePicker.astro';
+import { NAV_ITEMS } from '../../../config/navigation';
 import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-
-const navItems = [
-  { href: '/projects', label: t('nav.projects') },
-];
 ---
 
 <div
@@ -48,9 +45,9 @@ const navItems = [
       </div>
       <nav aria-label={t('nav.mobileNav')}>
         <ul class="flex flex-col gap-3 pt-2">
-          {navItems.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <li>
-              <NavLink href={item.href} label={item.label} variant="mobile" />
+              <NavLink href={item.href} label={t(item.labelKey)} variant="mobile" />
             </li>
           ))}
         </ul>
@@ -165,5 +162,4 @@ const navItems = [
   }
 
   initMobileMenu();
-  document.addEventListener('astro:page-load', initMobileMenu);
 </script>

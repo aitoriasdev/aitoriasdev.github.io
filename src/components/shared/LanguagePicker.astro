@@ -1,7 +1,7 @@
 ---
 import Icon from '../shared/Icon.astro';
 import Link from '../shared/Link.astro';
-import { languages } from '../../i18n/ui';
+import { languages, type Lang } from '../../i18n/ui';
 import { getLangFromUrl, getRouteFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
 
 interface Props {
@@ -30,7 +30,7 @@ const menuDirectionClasses = {
     aria-expanded="false"
     aria-haspopup="true"
   >
-    <span>{t(`lang.${currentLanguage}` as any)}</span>
+    <span>{t(`lang.${currentLanguage}`)}</span>
     <Icon name="chevron-down" class="h-3.5 w-3.5 text-text-muted-light dark:text-text-muted-dark transition-transform duration-200" />
   </button>
 
@@ -43,10 +43,10 @@ const menuDirectionClasses = {
     role="menu"
   >
     {
-      Object.keys(languages).map((lang) => {
+      (Object.keys(languages) as Lang[]).map((lang) => {
         const isSelected = lang === currentLanguage;
         const targetHref = translatePath(route, lang);
-        const localizedLabel = t(`lang.${lang}` as any);
+        const localizedLabel = t(`lang.${lang}`);
 
         return (
           <Link
@@ -111,5 +111,4 @@ const menuDirectionClasses = {
   }
 
   initLanguagePickers();
-  document.addEventListener('astro:page-load', initLanguagePickers);
 </script>

@@ -57,6 +57,8 @@ const t = useTranslations(lang);
 
         const isActive = val === theme;
 
+        button.setAttribute('aria-pressed', String(isActive));
+
         button.classList.toggle('bg-bg-light', isActive);
         button.classList.toggle('text-accent-primary', isActive);
         button.classList.toggle('shadow-sm', isActive);
@@ -87,5 +89,4 @@ const t = useTranslations(lang);
   }
 
   initThemeToggle();
-  document.addEventListener('astro:page-load', initThemeToggle);
 </script>
