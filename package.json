@@ -18,22 +18,22 @@
     "postinstall": "simple-git-hooks"
   },
   "dependencies": {
-    "@astrojs/partytown": "^2.1.7",
-    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/partytown": "^2.1.9",
+    "@astrojs/sitemap": "^3.7.4",
     "@tailwindcss/typography": "^0.5.20",
-    "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.2.2",
-    "sharp": "^0.35.3",
-    "tailwindcss": "^4.3.3"
+    "@tailwindcss/vite": "^4.3.5",
+    "astro": "^7.4.7",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
-    "lint-staged": "^17.3.0",
-    "oxfmt": "^0.63.0",
-    "oxlint": "^1.78.0",
+    "lint-staged": "^17.6.0",
+    "oxfmt": "^0.77.0",
+    "oxlint": "^1.92.0",
     "simple-git-hooks": "^2.14.0",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.10"
+    "vitest": "^5.1.0"
   },
   "dependenciesMeta": {
     "simple-git-hooks": {
@@ -41,8 +41,7 @@
     }
   },
   "resolutions": {
-    "@tailwindcss/typography/postcss-selector-parser": "^6.1.5",
-    "oxfmt/tinypool": "^2.1.2"
+    "@tailwindcss/typography/postcss-selector-parser": "^6.1.5"
   },
   "simple-git-hooks": {
     "pre-commit": "yarn lint-staged"
