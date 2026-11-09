@@ -65,7 +65,8 @@ export function findAll(html: string, tag: string): HtmlElement[] {
   return [...html.matchAll(pattern)].map(([, attrs, inner = ""]) => ({
     attrs: parseAttrs(attrs),
     inner,
-    text: decode(inner.replace(/<[^>]+>/g, ""))
+    // Text content for assertions (not sanitisation): drop the tags, then decode
+    text: decode(inner.split(/<[^>]*>/).join(""))
       .replace(/\s+/g, " ")
       .trim(),
   }));
