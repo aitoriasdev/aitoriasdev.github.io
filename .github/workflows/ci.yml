@@ -1,9 +1,8 @@
 name: CI
 
 on:
+  # Any base branch, so stacked PRs (base = another feature branch) are checked too
   pull_request:
-    branches:
-      - main
     types: [opened, synchronize, reopened]
     paths-ignore:
       - "*.md"
