@@ -4,11 +4,11 @@
 
   Before submitting a pull request, please make sure the following is done:
 
-  1. Run `pnpm i` in the repository root.
+  1. Run `yarn install` in the repository root.
   2. If you've fixed a bug or added code that should be tested, add tests!
-  3. Ensure the test suite passes (`pnpm run test`).
-  4. Format your code with [oxc](https://github.com/oxc-project/oxc)
-  5. Make sure your code lints (`pnpm run lint`).
+  3. Ensure the test suite passes (`yarn test`).
+  4. Format your code with [oxc](https://github.com/oxc-project/oxc) (`yarn fmt`)
+  5. Make sure your code lints (`yarn lint`).
 -->
 
 ## Summary
