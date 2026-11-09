@@ -12,21 +12,42 @@ describe("getProjectSlug", () => {
 });
 
 describe("compareProjects", () => {
-  const project = (completedDate: string) =>
-    ({ data: { completedDate: new Date(completedDate) } }) as Parameters<
-      typeof compareProjects
-    >[0];
+  const project = (
+    name: string,
+    data: { order?: number; startDate?: string; completedDate?: string },
+  ) => ({
+    name,
+    data: {
+      order: data.order ?? 100,
+      startDate: data.startDate ? new Date(data.startDate) : undefined,
+      completedDate: data.completedDate
+        ? new Date(data.completedDate)
+        : undefined,
+    },
+  });
 
-  it("sorts most recent first", () => {
+  it("sorts by explicit order first", () => {
     const sorted = [
-      project("2025-01-01"),
-      project("2026-03-01"),
-      project("2025-06-01"),
+      project("b", { order: 2, completedDate: "2026-01-01" }),
+      project("a", { order: 1, completedDate: "2020-01-01" }),
     ].sort(compareProjects);
 
-    expect(sorted.map((p) => p.data.completedDate.getFullYear())).toEqual([
-      2026, 2025, 2025,
+    expect(sorted.map((p) => p.name)).toEqual(["a", "b"]);
+  });
+
+  it("falls back to the most recent completed/start date", () => {
+    const sorted = [
+      project("old", { completedDate: "2024-05-01" }),
+      project("active", { startDate: "2026-02-01" }),
+      project("undated", {}),
+      project("recent", { completedDate: "2025-06-01" }),
+    ].sort(compareProjects);
+
+    expect(sorted.map((p) => p.name)).toEqual([
+      "active",
+      "recent",
+      "old",
+      "undated",
     ]);
-    expect(sorted[1].data.completedDate.getMonth()).toBe(5);
   });
 });

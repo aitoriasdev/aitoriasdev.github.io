@@ -79,3 +79,12 @@ export function useTranslatedPath(lang: Lang) {
       : `/${l}${fullPath}`;
   };
 }
+
+/** e.g. "Nov 2025" / "nov 2025" */
+export function formatMonthYear(date: Date, lang: Lang): string {
+  return new Intl.DateTimeFormat(lang, {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+}
