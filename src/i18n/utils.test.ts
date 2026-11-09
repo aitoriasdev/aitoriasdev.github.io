@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { ui } from "./ui";
 import {
+  formatMonthYear,
   getLangFromUrl,
   getRouteFromUrl,
   isUIKey,
@@ -99,5 +100,14 @@ describe("ui dictionary", () => {
         expect(value.trim()).not.toBe("");
       }
     }
+  });
+});
+
+describe("formatMonthYear", () => {
+  it("formats in the page language, independent of the build machine's time zone", () => {
+    const date = new Date("2025-11-01T00:00:00Z");
+
+    expect(formatMonthYear(date, "en")).toBe("Nov 2025");
+    expect(formatMonthYear(date, "es")).toBe("nov 2025");
   });
 });

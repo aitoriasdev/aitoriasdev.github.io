@@ -5,6 +5,8 @@ export default getViteConfig(
   {
     test: {
       globals: true,
+      // Unit + component tests live next to the code; e2e/ is Playwright's
+      include: ["src/**/*.test.ts"],
     },
   },
   {

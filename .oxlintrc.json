@@ -10,14 +10,25 @@
   },
   "ignorePatterns": ["dist/**", "node_modules/**", ".astro/**"],
   "rules": {
-    "eqeqeq": ["error", "always", { "null": "ignore" }],
+    "eqeqeq": [
+      "error",
+      "always",
+      {
+        "null": "ignore"
+      }
+    ],
     "eslint/no-unused-vars": "error",
     "import/first": "error",
     "import/no-duplicates": "error",
     "no-console": "warn",
     "no-debugger": "error",
     "no-duplicate-case": "error",
-    "no-empty": ["error", { "allowEmptyCatch": true }],
+    "no-empty": [
+      "error",
+      {
+        "allowEmptyCatch": true
+      }
+    ],
     "no-eval": "error",
     "no-unused-vars": [
       "error",
@@ -37,7 +48,12 @@
       }
     ],
     "no-var": "error",
-    "prefer-const": ["error", { "destructuring": "all" }]
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "all"
+      }
+    ]
   },
   "overrides": [
     {
@@ -51,6 +67,12 @@
       "rules": {
         "no-useless-constructor": "off",
         "no-unused-vars": "off"
+      }
+    },
+    {
+      "files": ["e2e/**/*.ts"],
+      "rules": {
+        "no-await-in-loop": "off"
       }
     }
   ]
