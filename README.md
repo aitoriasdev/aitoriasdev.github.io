@@ -22,6 +22,7 @@ Live Website: [https://aitorias.is-a.dev](https://aitorias.is-a.dev)
 - **Accessibility:** Interactive Accessibility Menu (`reduce-motion`, `high-contrast`, `large-text`, `dyslexic-font`)
 - **Data Management:** Type-safe Markdown frontmatter validation with Zod schemas
 - **Architecture:** Encapsulated Layout shell (`Layout.astro`) & shared modular layout components (`Header`, `Footer`, `Drawer`)
+- **Package manager:** [Yarn 4](https://yarnpkg.com) (`node-modules` linker, 1-day minimum release age)
 - **Tooling & Formatting:** High-performance linting and formatting via [`oxc`](https://oxc.rs) (`oxlint` & `oxfmt`) + Vitest for testing
 - **Deployment:** GitHub Pages via automated GitHub Actions CI/CD pipeline with custom domain verification (`CNAME`)
 
@@ -58,6 +59,28 @@ The application fully adheres to modern Web Content Accessibility Guidelines (WC
 - **OpenDyslexic Font:** Configured through Astro's local font provider (`astro.config.mjs`) and CSS variables (`--font-open-dyslexic`) to allow full site font swaps.
 - **Dynamic Base Text Scaling:** Toggling **Larger Text** sets `font-size: 112.5%` on `<html>`, cleanly scaling standard 16px base typography up to 18px across all `rem`-based layout elements.
 - **High Contrast & Dark Mode:** Unified color tokens ensure accessible contrast ratios across light and dark themes.
+
+---
+
+## Development
+
+Requires Node.js 24+ and Yarn 4 (pinned via `packageManager`; run `corepack enable` once).
+
+```sh
+yarn install      # install dependencies (also sets up the pre-commit hook)
+yarn dev          # start the dev server at http://localhost:4321
+yarn build        # production build into dist/
+yarn preview      # preview the production build
+yarn check        # type-check .astro and .ts files (astro check)
+yarn test         # unit tests (Vitest); yarn test:watch for watch mode
+yarn lint         # lint with oxlint
+yarn fmt          # format with oxfmt (yarn fmt:check in CI)
+```
+
+Optional environment variables (see `.env.example`):
+
+- `PUBLIC_GA_MEASUREMENT_ID`: enables Google Analytics 4.
+- `GITHUB_TOKEN`: raises the GitHub API rate limit for the build-time repository stats on project pages.
 
 ---
 

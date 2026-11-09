@@ -15,7 +15,7 @@
     "lint:fix": "oxlint --fix",
     "test": "vitest run",
     "test:watch": "vitest",
-    "prepare": "simple-git-hooks"
+    "postinstall": "simple-git-hooks"
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.7",
@@ -35,22 +35,23 @@
     "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   },
+  "dependenciesMeta": {
+    "simple-git-hooks": {
+      "built": false
+    }
+  },
+  "resolutions": {
+    "@tailwindcss/typography/postcss-selector-parser": "^6.1.5"
+  },
   "simple-git-hooks": {
-    "pre-commit": "pnpm exec lint-staged"
+    "pre-commit": "yarn lint-staged"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs,astro}": "oxlint",
     "*.{js,jsx,ts,tsx,mjs,cjs,json,md,css}": "oxfmt --no-error-on-unmatched-pattern"
   },
-  "devEngines": {
-    "runtime": {
-      "name": "node",
-      "version": "^24.0.0",
-      "onFail": "download"
-    }
-  },
   "engines": {
     "node": ">=24.0.0"
   },
-  "packageManager": "pnpm@11.21.0"
+  "packageManager": "yarn@4.18.1"
 }
