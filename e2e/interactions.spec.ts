@@ -106,6 +106,150 @@ test.describe("with cookies decided", () => {
     );
   });
 
+  test("filters offer headline technologies only; case studies keep the full stack", async ({
+    page,
+  }) => {
+    await page.goto("/projects/");
+    const filters = await page
+      .getByRole("group", { name: "Filter projects by technology" })
+      .getByRole("button")
+      .allInnerTexts();
+
+    expect(filters).toEqual(
+      expect.arrayContaining(["All", "React", "Shopify", "WordPress"]),
+    );
+    for (const hidden of [
+      "Liquid",
+      "WooCommerce",
+      "TanStack Query",
+      "JavaScript",
+      "CSS",
+      "Vite",
+      "Vitest",
+      "Playwright",
+    ]) {
+      expect(filters, hidden).not.toContain(hidden);
+    }
+
+    await page.goto("/projects/awaken-brnd/");
+    const stack = page.getByRole("list", { name: "Technologies used" });
+    await expect(stack.getByRole("listitem")).toHaveText([
+      "Shopify",
+      "Liquid",
+      "JavaScript",
+      "CSS",
+      "WordPress",
+      "WooCommerce",
+    ]);
+  });
+
+  test("cards stay compact: a three-line teaser and at most five badges", async ({
+    page,
+  }) => {
+    await page.goto("/projects/");
+    const cards = page.locator("article.project-card");
+
+    for (const card of await cards.all()) {
+      const lines = await card
+        .locator("p")
+        .first()
+        .evaluate((p) => {
+          const { lineHeight } = getComputedStyle(p);
+          return Math.round(
+            p.getBoundingClientRect().height / parseFloat(lineHeight),
+          );
+        });
+      expect(lines).toBeLessThanOrEqual(3);
+      expect(await card.getByRole("listitem").count()).toBeLessThanOrEqual(5);
+    }
+  });
+
+  test.describe("filter animation", () => {
+    test.beforeEach(async ({ page }) => {
+      // Count view transitions without changing what they do
+      await page.addInitScript(() => {
+        const original = document.startViewTransition?.bind(document);
+        (window as unknown as { transitions: number }).transitions = 0;
+        if (!original) return;
+        document.startViewTransition = ((update: () => void) => {
+          (window as unknown as { transitions: number }).transitions++;
+          return original(update);
+        }) as typeof document.startViewTransition;
+      });
+    });
+
+    const transitions = (page: import("@playwright/test").Page) =>
+      page.evaluate(
+        () => (window as unknown as { transitions: number }).transitions,
+      );
+
+    test("cards move, leave and arrive with a view transition", async ({
+      page,
+    }) => {
+      await page.goto("/projects/");
+      const filters = page.getByRole("group", {
+        name: "Filter projects by technology",
+      });
+
+      await filters
+        .getByRole("button", { name: "Shopify", exact: true })
+        .click();
+      // The animation runs on the cards' view-transition pseudo-elements
+      await expect
+        .poll(() =>
+          page.evaluate(() =>
+            document
+              .getAnimations()
+              .map(
+                (a) => (a.effect as KeyframeEffect | null)?.pseudoElement ?? "",
+              )
+              .some((pseudo) => pseudo.includes("project-")),
+          ),
+        )
+        .toBe(true);
+      await expect(
+        page.locator("article.project-card").filter({ visible: true }),
+      ).toHaveCount(1);
+      expect(await transitions(page)).toBe(1);
+
+      // Clicking the active filter again does nothing
+      await filters
+        .getByRole("button", { name: "Shopify", exact: true })
+        .click();
+      expect(await transitions(page)).toBe(1);
+    });
+
+    for (const [how, setup] of [
+      [
+        "the OS asks for reduced motion",
+        async (page: import("@playwright/test").Page) =>
+          page.emulateMedia({ reducedMotion: "reduce" }),
+      ],
+      [
+        "the site's Reduce motion toggle is on",
+        async (page: import("@playwright/test").Page) =>
+          page.addInitScript(() =>
+            localStorage.setItem("a11y-reduce-motion", "true"),
+          ),
+      ],
+    ] as const) {
+      test(`filtering is instant when ${how}`, async ({ page }) => {
+        await setup(page);
+        await page.goto("/projects/");
+
+        await page
+          .getByRole("group", { name: "Filter projects by technology" })
+          .getByRole("button", { name: "Electron", exact: true })
+          .click();
+
+        await expect(
+          page.locator("article.project-card").filter({ visible: true }),
+        ).toHaveCount(1);
+        expect(await transitions(page)).toBe(0);
+      });
+    }
+  });
+
   test("the mobile menu traps focus and closes with Escape", async ({
     page,
   }) => {
@@ -281,3 +425,84 @@ test("the cookie banner records consent and can be reopened", async ({
   await expect(banner).toBeVisible();
   await expect(banner.getByText("Accepted")).toBeVisible();
 });
+
+for (const consent of [undefined, "denied"] as const) {
+  test.describe(consent ? "after choosing cookies" : "on a first visit", () => {
+    test.use({ prefs: { consent } });
+
+    test("the header and fixed overlays stay above cards animating underneath", async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.goto("/projects/");
+      await page
+        .getByRole("group", { name: "Filter projects by technology" })
+        .getByRole("button", { name: "WordPress", exact: true })
+        .click();
+      await expect
+        .poll(() =>
+          page.evaluate(() =>
+            document
+              .getAnimations()
+              .some((a) =>
+                (
+                  (a.effect as KeyframeEffect | null)?.pseudoElement ?? ""
+                ).includes("project-"),
+              ),
+          ),
+        )
+        .toBe(true);
+
+      const layers = await page.evaluate(() => {
+        document.getAnimations().forEach((a) => a.pause());
+        const zIndex = (name: string) =>
+          getComputedStyle(
+            document.documentElement,
+            `::view-transition-group(${name})`,
+          ).zIndex;
+        // Fixed or sticky elements a visitor can currently see
+        const overlays = [
+          ...document.querySelectorAll<HTMLElement>("body *"),
+        ].filter((el) => {
+          const style = getComputedStyle(el);
+          const rect = el.getBoundingClientRect();
+          return (
+            ["fixed", "sticky"].includes(style.position) &&
+            style.display !== "none" &&
+            Number(style.opacity) > 0 &&
+            rect.width > 0 &&
+            rect.right > 0 &&
+            rect.left < innerWidth &&
+            rect.bottom > 0 &&
+            rect.top < innerHeight
+          );
+        });
+        return {
+          card: zIndex("project-awaken-brnd"),
+          overlays: overlays.map((el) => {
+            const name = getComputedStyle(el).viewTransitionName;
+            return {
+              el: el.id || el.tagName.toLowerCase(),
+              name,
+              zIndex: name === "none" ? null : zIndex(name),
+            };
+          }),
+        };
+      });
+
+      expect(layers.overlays.map((o) => o.el)).toEqual(
+        expect.arrayContaining(
+          consent
+            ? ["header", "cookie-reopen-btn", "a11y-trigger"]
+            : ["header", "cookie-banner", "a11y-trigger"],
+        ),
+      );
+      for (const overlay of layers.overlays) {
+        expect(overlay.name, overlay.el).not.toBe("none");
+        expect(Number(overlay.zIndex), overlay.el).toBeGreaterThan(
+          Number(layers.card) || 0,
+        );
+      }
+    });
+  });
+}
