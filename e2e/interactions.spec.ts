@@ -125,6 +125,134 @@ test.describe("with cookies decided", () => {
     await expect(toggle).toBeFocused();
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
   });
+
+  test.describe("image viewer", () => {
+    test("opens screenshots in place with a backdrop and browses the gallery", async ({
+      page,
+    }) => {
+      await page.goto("/projects/cdm-optimiser/");
+      const viewer = page.getByRole("dialog", { name: "Image viewer" });
+      const image = viewer.getByRole("img");
+      const counter = viewer.locator("[data-lightbox-counter]");
+
+      await page
+        .getByRole("link", { name: /^Enlarge image: Patients list/ })
+        .click();
+
+      await expect(viewer).toBeVisible();
+      await expect(page).toHaveURL(/\/projects\/cdm-optimiser\/$/);
+      await expect(
+        viewer.getByRole("button", { name: "Close image viewer" }),
+      ).toBeFocused();
+      await expect(image).toHaveAttribute("alt", /^Patients list/);
+      await expect(viewer).toContainText(
+        "Patients list: server-side pagination",
+      );
+      await expect(counter).toHaveText("Image 1 of 4");
+      await expect
+        .poll(() => image.evaluate((img: HTMLImageElement) => img.naturalWidth))
+        .toBeGreaterThan(0);
+      // The page behind can't scroll while the viewer is open
+      await expect(page.locator("html")).toHaveCSS("overflow", "hidden");
+
+      await viewer.getByRole("button", { name: "Next image" }).click();
+      await expect(counter).toHaveText("Image 2 of 4");
+      await expect(image).toHaveAttribute("alt", /^Patient information dialog/);
+
+      await page.keyboard.press("ArrowLeft");
+      await page.keyboard.press("ArrowLeft");
+      await expect(counter).toHaveText("Image 4 of 4");
+
+      await page.keyboard.press("ArrowRight");
+      await expect(counter).toHaveText("Image 1 of 4");
+    });
+
+    test("closes with Escape, the close button or a backdrop click, returning focus", async ({
+      page,
+    }) => {
+      await page.goto("/projects/cdm-optimiser/");
+      const viewer = page.getByRole("dialog", { name: "Image viewer" });
+      const trigger = page.getByRole("link", {
+        name: /^Enlarge image: Pending patients/,
+      });
+
+      await trigger.click();
+      await page.keyboard.press("Escape");
+      await expect(viewer).toBeHidden();
+      await expect(trigger).toBeFocused();
+
+      await trigger.click();
+      await viewer.getByRole("button", { name: "Close image viewer" }).click();
+      await expect(viewer).toBeHidden();
+
+      await trigger.click();
+      await page.mouse.click(5, 400);
+      await expect(viewer).toBeHidden();
+      await expect(page.locator("html")).not.toHaveCSS("overflow", "hidden");
+    });
+
+    test("a single image has no gallery controls, and Ctrl/Cmd-click still opens a new tab", async ({
+      page,
+      context,
+    }) => {
+      await page.goto("/projects/aitorias-dev/");
+      const viewer = page.getByRole("dialog", { name: "Image viewer" });
+      const trigger = page.getByRole("link", { name: /^Enlarge image:/ });
+
+      await expect(trigger).toHaveAttribute("aria-haspopup", "dialog");
+      await trigger.click();
+      await expect(viewer).toBeVisible();
+      await expect(
+        viewer.getByRole("button", { name: "Next image" }),
+      ).toBeHidden();
+      await expect(viewer.locator("[data-lightbox-counter]")).toBeHidden();
+      await page.keyboard.press("Escape");
+
+      const [newTab] = await Promise.all([
+        context.waitForEvent("page"),
+        trigger.click({ modifiers: ["ControlOrMeta"] }),
+      ]);
+      await expect(newTab).toHaveURL(/\.(webp|png|jpe?g)$/);
+      await expect(viewer).toBeHidden();
+    });
+
+    test("swiping on a touch screen moves between screenshots", async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.goto("/projects/cdm-optimiser/");
+      await page
+        .getByRole("link", { name: /^Enlarge image: Patients list/ })
+        .click();
+      const counter = page.locator("[data-lightbox-counter]");
+      const stage = page.locator("[data-lightbox-stage]");
+
+      const swipe = (from: number, to: number) =>
+        stage.evaluate(
+          (el, [a, b]) => {
+            const touch = (x: number) =>
+              new Touch({
+                identifier: 1,
+                target: el,
+                clientX: x,
+                clientY: 400,
+              });
+            el.dispatchEvent(
+              new TouchEvent("touchstart", { touches: [touch(a)] }),
+            );
+            el.dispatchEvent(
+              new TouchEvent("touchend", { changedTouches: [touch(b)] }),
+            );
+          },
+          [from, to],
+        );
+
+      await swipe(300, 100);
+      await expect(counter).toHaveText("Image 2 of 4");
+      await swipe(100, 300);
+      await expect(counter).toHaveText("Image 1 of 4");
+    });
+  });
 });
 
 test("the cookie banner records consent and can be reopened", async ({

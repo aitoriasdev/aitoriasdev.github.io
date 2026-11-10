@@ -15,6 +15,7 @@
 ## Features
 
 - **Project case studies.** Each project page has a status, role, timeline, key highlights, a screenshot gallery, a Markdown write-up and a call to action. All of it is driven by type-safe frontmatter.
+- **Image viewer.** Clicking a screenshot opens it enlarged over a dark backdrop instead of leaving the site. You can browse the gallery with the arrow buttons, the arrow keys or a swipe, and close it with Escape, the close button or a click outside the image. It's built on the native `<dialog>` element, and without JavaScript the images are still plain links to the full-size file.
 - **Build-time GitHub data.** Project pages show the latest release and last update of their repository. The data is fetched once per build, and the page still renders if GitHub can't be reached.
 - **Contact.** A "Let's work together" section with LinkedIn and GitHub links. The "Available for new opportunities" badge and the header both link to it.
 - **Bilingual.** English and Spanish, with translated routes (`/projects` ↔ `/es/proyectos`) and a language picker that keeps you on the same page.
@@ -57,6 +58,7 @@ The site targets WCAG 2.x AA and combines system-level settings with manual cont
 - **Keyboard and screen readers:**
   - a skip link
   - a mobile drawer that traps focus and closes with Escape
+  - an image viewer (a modal `<dialog>`) that keeps focus inside, closes with Escape, returns focus to the image that opened it and announces "Image 2 of 4" as you browse
   - one global `:focus-visible` outline in the accent colour (at least 6.8:1 in light mode and 9.1:1 in dark), so every focusable element, including links inside Markdown, has a visible focus ring
   - `aria-pressed` on toggle buttons, `aria-current` on the active navigation link
   - translated screen-reader text, such as "(opens in a new tab)"
@@ -147,7 +149,7 @@ The Markdown case study goes here (styled with the typography plugin).
 The end-to-end tests run against the production build and cover:
 
 - **Accessibility:**
-  - axe WCAG 2.0, 2.1 and 2.2 A/AA rules on every page, in light, dark and both high-contrast modes, with the cookie banner, accessibility panel and mobile menu open
+  - axe WCAG 2.0, 2.1 and 2.2 A/AA rules on every page, in light, dark and both high-contrast modes, with the cookie banner, accessibility panel, mobile menu and image viewer open
   - a visible focus outline of at least 3:1 on every tab stop
   - reflow at 320px
   - the cookie banner never covering the accessibility button
@@ -157,6 +159,7 @@ The end-to-end tests run against the production build and cover:
   - project cards, project filters and contact links work
   - theme and accessibility preferences persist and apply before the first paint
   - the mobile menu traps focus and closes with Escape
+  - the image viewer opens in place, browses with buttons, keys and swipes, closes three ways and returns focus, while Ctrl/Cmd-click still opens a new tab
   - the cookie banner records consent and can be reopened
 
 `src/test/render.ts` holds the shared render helper for component tests. `e2e/fixtures.ts` holds the shared Playwright helpers: stored preferences, axe scans and focus-contrast measurement.
@@ -199,7 +202,7 @@ A custom Japanese pastel palette, declared with `@theme` in `src/styles/global.c
 │   │   ├── hero/                # Hero banner, photo and social links
 │   │   ├── home/                # HomePage composition shared by / and /es
 │   │   ├── projects/            # Projects grid, filters, cards and ProjectDetail
-│   │   └── shared/              # Accessibility menu, cookie banner, header, footer, drawer, icons, links…
+│   │   └── shared/              # Accessibility menu, cookie banner, image viewer, header, footer, drawer, icons, links…
 │   ├── config/                  # navigation.ts, social.ts
 │   ├── content/projects/        # English case studies (*.md); translations in es/
 │   ├── i18n/                    # ui.ts (dictionaries and types), utils.ts (+ tests)

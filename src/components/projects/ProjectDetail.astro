@@ -4,6 +4,7 @@ import { render } from 'astro:content';
 import Badge from '../shared/Badge.astro';
 import Breadcrumbs from '../shared/Breadcrumbs.astro';
 import Icon from '../shared/Icon.astro';
+import ImageLightbox from '../shared/ImageLightbox.astro';
 import Layout from '../../layouts/Layout.astro';
 import Link from '../shared/Link.astro';
 import ProjectCardActions from './project-card/ProjectCardActions.astro';
@@ -38,6 +39,9 @@ const site = Astro.site ?? new URL(Astro.url.origin);
 const jsonLd = projectSchema(project, new URL(Astro.url.pathname, site), site, t('seo.jobTitle'));
 
 const sectionHeading = 'text-2xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark';
+// Images open in the full-screen viewer (ImageLightbox); without JS they link to the full-size file
+const zoomLink = 'group block cursor-zoom-in overflow-hidden bg-surface-light dark:bg-surface-dark';
+const zoomImage = 'transition-transform duration-300 group-hover:scale-[1.02]';
 ---
 
 <Layout
@@ -123,7 +127,13 @@ const sectionHeading = 'text-2xl font-bold tracking-tight text-text-main-light d
 
     <!-- Hero image (only when there is no screenshot gallery) -->
     {data.thumbnail && data.screenshots.length === 0 && (
-      <div class="mt-10 aspect-video overflow-hidden rounded-2xl bg-surface-light dark:bg-surface-dark">
+      <a
+        href={data.thumbnail.src}
+        class={`mt-10 aspect-video ${zoomLink} rounded-2xl`}
+        aria-label={`${t('projects.openFullSize')}: ${t('projects.screenshotAlt')} ${data.title}`}
+        data-lightbox="hero"
+        data-track-event={`project_image_zoom_${slug}`}
+      >
         <Image
           src={data.thumbnail}
           alt={`${t('projects.screenshotAlt')} ${data.title}`}
@@ -131,9 +141,9 @@ const sectionHeading = 'text-2xl font-bold tracking-tight text-text-main-light d
           sizes="(min-width: 768px) 720px, 100vw"
           loading="eager"
           fetchpriority="high"
-          class="h-full w-full object-cover"
+          class={`h-full w-full object-cover ${zoomImage}`}
         />
-      </div>
+      </a>
     )}
 
     <!-- Key highlights -->
@@ -160,8 +170,10 @@ const sectionHeading = 'text-2xl font-bold tracking-tight text-text-main-light d
             <figure class="flex flex-col gap-2">
               <a
                 href={shot.src.src}
-                class="block overflow-hidden rounded-xl bg-surface-light shadow-sm focus-visible:outline-2 focus-visible:outline-accent-primary dark:bg-surface-dark"
+                class={`${zoomLink} rounded-xl shadow-sm`}
                 aria-label={`${t('projects.openFullSize')}: ${shot.alt}`}
+                data-lightbox="screenshots"
+                data-caption={shot.caption}
                 data-track-event={`project_screenshot_click_${slug}`}
               >
                 <Image
@@ -170,7 +182,7 @@ const sectionHeading = 'text-2xl font-bold tracking-tight text-text-main-light d
                   widths={[400, 720, 1080, 1440]}
                   sizes={data.screenshots.length > 1 ? '(min-width: 768px) 352px, 100vw' : '(min-width: 768px) 720px, 100vw'}
                   loading={index < 2 ? 'eager' : 'lazy'}
-                  class="h-auto w-full"
+                  class={`h-auto w-full ${zoomImage}`}
                 />
               </a>
               {shot.caption && (
@@ -236,4 +248,6 @@ const sectionHeading = 'text-2xl font-bold tracking-tight text-text-main-light d
       <span>{t('projects.back')}</span>
     </Link>
   </article>
+
+  <ImageLightbox />
 </Layout>

@@ -15,7 +15,9 @@ export type IconName =
   | 'cookie'
   | 'accessibility'
   | 'arrow-left'
-  | 'chevron-down';
+  | 'chevron-down'
+  | 'chevron-left'
+  | 'chevron-right';
 
 interface Props {
   name: IconName;
@@ -103,5 +105,17 @@ const { name, class: className = 'h-4 w-4', 'aria-hidden': ariaHidden = true } =
 {name === 'chevron-down' && (
   <svg class:list={['fill-current shrink-0', className]} viewBox="0 0 20 20" aria-hidden={ariaHidden}>
     <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+  </svg>
+)}
+
+{name === 'chevron-left' && (
+  <svg class:list={['fill-current shrink-0', className]} viewBox="0 0 20 20" aria-hidden={ariaHidden}>
+    <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+  </svg>
+)}
+
+{name === 'chevron-right' && (
+  <svg class:list={['fill-current shrink-0', className]} viewBox="0 0 20 20" aria-hidden={ariaHidden}>
+    <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
   </svg>
 )}
