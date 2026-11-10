@@ -52,6 +52,37 @@ describe("ProjectCard", () => {
     ]);
   });
 
+  it("shows only headline technologies, and the same ones it can be filtered by", async () => {
+    const html = await render(ProjectCard, {
+      props: {
+        project: project({
+          techStack: [
+            "Shopify",
+            "Liquid",
+            "JavaScript",
+            "CSS",
+            "WordPress",
+            "WooCommerce",
+          ],
+        }),
+      },
+    });
+    const badges = findAll(html, "li").map((li) => li.text);
+
+    expect(badges).toEqual(["Shopify", "WordPress"]);
+    expect(JSON.parse(find(html, "article")!.attrs["data-tags"])).toEqual(
+      badges,
+    );
+  });
+
+  it("names itself for the filter animation", async () => {
+    const html = await render(ProjectCard, { props: { project: project() } });
+    const { style } = find(html, "article")!.attrs;
+
+    expect(style).toContain("view-transition-name: project-demo-project");
+    expect(style).toContain("view-transition-class: project-card");
+  });
+
   it("renders GitHub and live demo actions with descriptive names and tracking", async () => {
     const links = findAll(
       await render(ProjectCard, { props: { project: project() } }),

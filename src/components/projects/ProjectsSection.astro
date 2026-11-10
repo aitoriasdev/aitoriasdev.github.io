@@ -4,6 +4,7 @@ import ProjectFilters from './ProjectFilters.astro';
 import Link from '../shared/Link.astro';
 import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
 import { getProjects } from '../../utils/get-projects';
+import { filterOptions } from '../../config/tech-filters';
 
 interface Props {
   /** Show only `featured` projects (home page). */
@@ -23,16 +24,8 @@ const translatePath = useTranslatedPath(lang);
 const projects = await getProjects(lang, { featuredOnly });
 const projectCount = projects.length;
 
-// Offer only technologies that at least one rendered project uses, most common first.
-const techCounts = new Map<string, number>();
-for (const project of projects) {
-  for (const tech of project.data.techStack) {
-    techCounts.set(tech, (techCounts.get(tech) ?? 0) + 1);
-  }
-}
-const techs = [...techCounts]
-  .sort(([techA, countA], [techB, countB]) => countB - countA || techA.localeCompare(techB))
-  .map(([tech]) => tech);
+// Headline technologies of the rendered projects only, most common first (see config/tech-filters.ts)
+const techs = filterOptions(projects.map((project) => project.data.techStack));
 ---
 
 <section id="projects" class="mx-auto max-w-5xl px-6 py-10 lg:py-20" aria-labelledby="projects-heading">

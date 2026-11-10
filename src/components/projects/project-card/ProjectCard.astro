@@ -5,6 +5,7 @@ import ProjectCardImage from './ProjectCardImage.astro';
 import { type CollectionEntry } from 'astro:content';
 import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../../i18n/utils';
 import { getProjectSlug } from '../../../utils/projects';
+import { filterTechs } from '../../../config/tech-filters';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -18,11 +19,14 @@ const translatePath = useTranslatedPath(lang);
 
 const slug = getProjectSlug(project);
 const projectHref = translatePath(`/projects/${slug}`);
+// The card shows the technologies it can be filtered by; the full stack is on the project page
+const techs = filterTechs(project.data.techStack);
 ---
 
 <article
   class="project-card group flex flex-col justify-between overflow-hidden rounded-2xl bg-surface-light/60 shadow-sm backdrop-blur-sm transition-all duration-300 hover:bg-surface-light hover:shadow-xl dark:bg-surface-dark/60 dark:shadow-md dark:shadow-black/20 dark:hover:bg-surface-dark dark:hover:shadow-black/40 motion-reduce:transition-none [.reduce-motion]:transition-none"
-  data-tags={JSON.stringify(project.data.techStack)}
+  data-tags={JSON.stringify(techs)}
+  style={`view-transition-name: project-${slug}; view-transition-class: project-card`}
 >
   <!-- Full Width Image Container at Top -->
   <ProjectCardImage
@@ -40,7 +44,7 @@ const projectHref = translatePath(`/projects/${slug}`);
       slug={slug}
       title={project.data.title}
       description={project.data.tagline}
-      tags={project.data.techStack}
+      tags={techs}
     />
     <ProjectCardActions
       gitHubUrl={project.data.gitHubUrl}

@@ -35,7 +35,8 @@ export const ui = {
     "nav.skipToContent": "Skip to main content",
     "link.newTab": "(opens in a new tab)",
     "projects.title": "My Projects",
-    "projects.subtitle": "Selected open-source work and applications.",
+    "projects.subtitle":
+      "Selected open-source work, applications and client projects.",
     "projects.viewAll": "View all projects",
     "projects.filterAll": "All",
     "projects.filterAria": "Filter projects by technology",
@@ -137,7 +138,7 @@ export const ui = {
     "link.newTab": "(se abre en una pestaña nueva)",
     "projects.title": "Mis Proyectos",
     "projects.subtitle":
-      "Trabajos seleccionados de código abierto y aplicaciones.",
+      "Una selección de proyectos de código abierto, aplicaciones y trabajos para clientes.",
     "projects.viewAll": "Ver todos los proyectos",
     "projects.filterAll": "Todos",
     "projects.filterAria": "Filtrar proyectos por tecnología",

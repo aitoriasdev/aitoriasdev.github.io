@@ -19,7 +19,8 @@
 - **Build-time GitHub data.** Project pages show the latest release and last update of their repository. The data is fetched once per build, and the page still renders if GitHub can't be reached.
 - **Contact.** A "Let's work together" section with LinkedIn and GitHub links. The "Available for new opportunities" badge and the header both link to it.
 - **Bilingual.** English and Spanish, with translated routes (`/projects` ↔ `/es/proyectos`) and a language picker that keeps you on the same page.
-- **Project filters.** Generated from the technologies the projects actually use, with an empty state announced to screen readers.
+- **Project filters.** Generated from the headline technologies the projects actually use (rules in `src/config/tech-filters.ts`: add-ons such as Liquid or WooCommerce fold into Shopify or WordPress, and generic languages and tooling aren't offered). Filtering is animated with the View Transitions API: cards slide to their new place, fade out or grow in. The empty state is announced to screen readers.
+- **Compact project cards.** Title, a three-line teaser and the same headline technologies as the filters. The full stack and description are on each case-study page.
 - **SEO and social sharing:**
   - canonical URLs
   - `hreflang` alternates, including `x-default`
@@ -54,7 +55,7 @@ The site targets WCAG 2.x AA and combines system-level settings with manual cont
 
 - **Accessibility menu.** Reduce motion, high contrast, larger text (the root font size becomes `112.5%`, so everything sized in `rem` scales) and the OpenDyslexic font, served locally through Astro's Fonts API.
 - **No flash on load.** Theme and accessibility preferences are stored in `localStorage` and applied by an inline script in `<head>` before the first paint.
-- **Reduced motion.** Respects `prefers-reduced-motion` as well as the manual toggle (`.reduce-motion`), which turns off transitions, hover zooms and animations.
+- **Reduced motion.** Respects `prefers-reduced-motion` as well as the manual toggle (`.reduce-motion`), which turns off transitions, hover zooms and animations, including the project-filter animation.
 - **Keyboard and screen readers:**
   - a skip link
   - a mobile drawer that traps focus and closes with Escape
@@ -107,7 +108,7 @@ startDate: "2026-01-01"
 completedDate: "2026-06-01" # optional while active
 order: 1 # lower numbers are listed first; ties are sorted by date
 role: "Front-end lead"
-techStack: ["React", "TypeScript"] # also generates the project filters
+techStack: ["React", "TypeScript", "Vite"] # full stack, shown on the project page; cards and filters show headline techs only (see src/config/tech-filters.ts)
 thumbnail: "../../assets/images/projects/my-project.webp" # also used as the social preview image
 gitHubUrl: "https://github.com/user/repo" # optional, e.g. omit it for client work
 liveUrl: "https://example.com"
@@ -159,6 +160,7 @@ The end-to-end tests run against the production build and cover:
 - **Interactions:**
   - the language switch keeps you on the same page
   - project cards, project filters and contact links work, and the card buttons never break their labels across lines (desktop, tablet and phone)
+  - filters list only headline technologies, cards stay compact, and filtering animates with a view transition except when reduced motion is requested
   - theme and accessibility preferences persist and apply before the first paint
   - the mobile menu traps focus and closes with Escape
   - the image viewer opens in place, browses with buttons, keys and swipes, closes three ways and returns focus, while Ctrl/Cmd-click still opens a new tab

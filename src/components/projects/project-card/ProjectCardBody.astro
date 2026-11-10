@@ -16,14 +16,8 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<div class="flex flex-col gap-4">
-  <ul class="flex flex-wrap gap-1.5" aria-label={t('projects.techUsedAria')}>
-    {tags.map((tag) => (
-      <li>
-        <Badge variant="surface">{tag}</Badge>
-      </li>
-    ))}
-  </ul>
+<!-- Title, a short teaser and the headline technologies: the same shape on every card keeps the grid even -->
+<div class="flex flex-col gap-3">
   <h3 class="text-lg font-bold">
     <Link
       href={href}
@@ -33,7 +27,15 @@ const t = useTranslations(lang);
       {title}
     </Link>
   </h3>
-  <p class="text-base leading-relaxed text-text-muted-light dark:text-text-muted-dark">
+  <!-- Clamped to three lines (screen readers still get it all); the full text is on the project page -->
+  <p class="line-clamp-3 text-base leading-relaxed text-text-muted-light dark:text-text-muted-dark">
     {description}
   </p>
+  <ul class="mt-1 flex flex-wrap gap-1.5" aria-label={t('projects.techUsedAria')}>
+    {tags.map((tag) => (
+      <li>
+        <Badge variant="surface">{tag}</Badge>
+      </li>
+    ))}
+  </ul>
 </div>
