@@ -425,3 +425,84 @@ test("the cookie banner records consent and can be reopened", async ({
   await expect(banner).toBeVisible();
   await expect(banner.getByText("Accepted")).toBeVisible();
 });
+
+for (const consent of [undefined, "denied"] as const) {
+  test.describe(consent ? "after choosing cookies" : "on a first visit", () => {
+    test.use({ prefs: { consent } });
+
+    test("the header and fixed overlays stay above cards animating underneath", async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.goto("/projects/");
+      await page
+        .getByRole("group", { name: "Filter projects by technology" })
+        .getByRole("button", { name: "WordPress", exact: true })
+        .click();
+      await expect
+        .poll(() =>
+          page.evaluate(() =>
+            document
+              .getAnimations()
+              .some((a) =>
+                (
+                  (a.effect as KeyframeEffect | null)?.pseudoElement ?? ""
+                ).includes("project-"),
+              ),
+          ),
+        )
+        .toBe(true);
+
+      const layers = await page.evaluate(() => {
+        document.getAnimations().forEach((a) => a.pause());
+        const zIndex = (name: string) =>
+          getComputedStyle(
+            document.documentElement,
+            `::view-transition-group(${name})`,
+          ).zIndex;
+        // Fixed or sticky elements a visitor can currently see
+        const overlays = [
+          ...document.querySelectorAll<HTMLElement>("body *"),
+        ].filter((el) => {
+          const style = getComputedStyle(el);
+          const rect = el.getBoundingClientRect();
+          return (
+            ["fixed", "sticky"].includes(style.position) &&
+            style.display !== "none" &&
+            Number(style.opacity) > 0 &&
+            rect.width > 0 &&
+            rect.right > 0 &&
+            rect.left < innerWidth &&
+            rect.bottom > 0 &&
+            rect.top < innerHeight
+          );
+        });
+        return {
+          card: zIndex("project-awaken-brnd"),
+          overlays: overlays.map((el) => {
+            const name = getComputedStyle(el).viewTransitionName;
+            return {
+              el: el.id || el.tagName.toLowerCase(),
+              name,
+              zIndex: name === "none" ? null : zIndex(name),
+            };
+          }),
+        };
+      });
+
+      expect(layers.overlays.map((o) => o.el)).toEqual(
+        expect.arrayContaining(
+          consent
+            ? ["header", "cookie-reopen-btn", "a11y-trigger"]
+            : ["header", "cookie-banner", "a11y-trigger"],
+        ),
+      );
+      for (const overlay of layers.overlays) {
+        expect(overlay.name, overlay.el).not.toBe("none");
+        expect(Number(overlay.zIndex), overlay.el).toBeGreaterThan(
+          Number(layers.card) || 0,
+        );
+      }
+    });
+  });
+}

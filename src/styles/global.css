@@ -185,3 +185,17 @@ html.dyslexic-font * {
     transition: none;
   }
 }
+
+/* --- View transitions ---
+   During a view transition (e.g. the project filters) every named element is
+   painted on its own layer above the rest of the page, in DOM order. The sticky
+   header and the fixed overlays are named too, and lifted here, so animated
+   content passes underneath them instead of over them. Each name must be unique
+   on the page: keep this list in sync with the `view-transition-name` styles. */
+::view-transition-group(site-header),
+::view-transition-group(cookie-reopen),
+::view-transition-group(cookie-banner),
+::view-transition-group(a11y-trigger),
+::view-transition-group(a11y-panel) {
+  z-index: 1;
+}

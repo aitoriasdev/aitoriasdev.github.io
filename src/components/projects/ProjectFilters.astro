@@ -76,11 +76,6 @@ const t = useTranslations(lang);
     animation: project-card-in 340ms cubic-bezier(0.2, 0.8, 0.2, 1) 120ms both;
   }
 
-  /* Keep the sticky header above cards moving underneath it */
-  ::view-transition-group(site-header) {
-    z-index: 1;
-  }
-
   @keyframes project-card-out {
     to {
       opacity: 0;

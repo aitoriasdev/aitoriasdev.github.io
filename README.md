@@ -19,7 +19,7 @@
 - **Build-time GitHub data.** Project pages show the latest release and last update of their repository. The data is fetched once per build, and the page still renders if GitHub can't be reached.
 - **Contact.** A "Let's work together" section with LinkedIn and GitHub links. The "Available for new opportunities" badge and the header both link to it.
 - **Bilingual.** English and Spanish, with translated routes (`/projects` ↔ `/es/proyectos`) and a language picker that keeps you on the same page.
-- **Project filters.** Generated from the headline technologies the projects actually use (rules in `src/config/tech-filters.ts`: add-ons such as Liquid or WooCommerce fold into Shopify or WordPress, and generic languages and tooling aren't offered). Filtering is animated with the View Transitions API: cards slide to their new place, fade out or grow in. The empty state is announced to screen readers.
+- **Project filters.** Generated from the headline technologies the projects actually use (rules in `src/config/tech-filters.ts`: add-ons such as Liquid or WooCommerce fold into Shopify or WordPress, and generic languages and tooling aren't offered). Filtering is animated with the View Transitions API: cards slide to their new place, fade out or grow in. The sticky header and the fixed overlays (cookie banner, accessibility button) have their own transition layers, lifted above the cards in `global.css`. The empty state is announced to screen readers.
 - **Compact project cards.** Title, a three-line teaser and the same headline technologies as the filters. The full stack and description are on each case-study page.
 - **SEO and social sharing:**
   - canonical URLs
@@ -160,7 +160,7 @@ The end-to-end tests run against the production build and cover:
 - **Interactions:**
   - the language switch keeps you on the same page
   - project cards, project filters and contact links work, and the card buttons never break their labels across lines (desktop, tablet and phone)
-  - filters list only headline technologies, cards stay compact, and filtering animates with a view transition except when reduced motion is requested
+  - filters list only headline technologies, cards stay compact, and filtering animates with a view transition except when reduced motion is requested, passing underneath the header, cookie banner and accessibility button
   - theme and accessibility preferences persist and apply before the first paint
   - the mobile menu traps focus and closes with Escape
   - the image viewer opens in place, browses with buttons, keys and swipes, closes three ways and returns focus, while Ctrl/Cmd-click still opens a new tab
