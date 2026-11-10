@@ -12,7 +12,7 @@ import { SOCIAL_LINKS } from '../../config/social';
 import { formatMonthYear, getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
 import { getProjectSlug, type Project } from '../../utils/projects';
 import { getRepoStats } from '../../utils/github';
-import { projectSchema } from '../../utils/structured-data';
+import { breadcrumbSchema, canonicalUrl, projectSchema } from '../../utils/structured-data';
 
 interface Props {
   project: Project;
@@ -36,7 +36,16 @@ const timeline = data.startDate
   : data.completedDate && formatMonthYear(data.completedDate, lang);
 
 const site = Astro.site ?? new URL(Astro.url.origin);
-const jsonLd = projectSchema(project, new URL(Astro.url.pathname, site), site, t('seo.jobTitle'));
+const pageUrl = canonicalUrl(Astro.url.pathname, site);
+const jsonLd = [
+  projectSchema(project, pageUrl, site, t('seo.jobTitle')),
+  // Mirrors the visible breadcrumbs below
+  breadcrumbSchema([
+    { name: t('nav.home'), url: canonicalUrl(translatePath('/'), site) },
+    { name: t('nav.projects'), url: canonicalUrl(translatePath('/projects'), site) },
+    { name: data.title, url: pageUrl },
+  ]),
+];
 
 const sectionHeading = 'text-2xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark';
 // Images open in the full-screen viewer (ImageLightbox); without JS they link to the full-size file

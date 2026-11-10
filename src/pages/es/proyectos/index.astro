@@ -1,18 +1,5 @@
 ---
-import Layout from '../../../layouts/Layout.astro';
-import Breadcrumbs from '../../../components/shared/Breadcrumbs.astro';
-import ProjectsSection from '../../../components/projects/ProjectsSection.astro';
-import { useTranslations, getLangFromUrl } from '../../../i18n/utils';
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+import ProjectsPage from '../../../components/projects/ProjectsPage.astro';
 ---
 
-<Layout
-  title={`${t('nav.projects')} | Aitorias`}
-  description={t('projects.subtitle')}
-  author="Aitor"
->
-  <Breadcrumbs />
-  <ProjectsSection headingLevel="h1" />
-</Layout>
+<ProjectsPage />

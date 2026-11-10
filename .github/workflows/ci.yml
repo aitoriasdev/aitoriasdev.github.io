@@ -1,11 +1,11 @@
 name: CI
 
 on:
-  # Any base branch, so stacked PRs (base = another feature branch) are checked too
+  # Any base branch, so stacked PRs (base = another feature branch) are checked too.
+  # No path filters on PRs: these jobs are required checks on main, and a skipped
+  # required check never reports, which would block docs-only PRs forever.
   pull_request:
     types: [opened, synchronize, reopened]
-    paths-ignore:
-      - "*.md"
   push:
     branches:
       - main

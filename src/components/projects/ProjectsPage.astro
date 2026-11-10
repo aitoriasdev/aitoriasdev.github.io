@@ -1,0 +1,38 @@
+---
+import Breadcrumbs from '../shared/Breadcrumbs.astro';
+import Layout from '../../layouts/Layout.astro';
+import ProjectsSection from './ProjectsSection.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
+import { getProjects } from '../../utils/get-projects';
+import { getProjectSlug } from '../../utils/projects';
+import { breadcrumbSchema, canonicalUrl, projectsPageSchema } from '../../utils/structured-data';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+const site = Astro.site ?? new URL(Astro.url.origin);
+const canonical = (path: string) => canonicalUrl(path, site);
+
+const page = { name: t('nav.projects'), url: canonical(Astro.url.pathname) };
+const projects = await getProjects(lang);
+
+const jsonLd = [
+  projectsPageSchema({
+    page,
+    description: t('projects.subtitle'),
+    lang,
+    site,
+    projects: projects.map((project) => ({
+      name: project.data.title,
+      url: canonical(translatePath(`/projects/${getProjectSlug(project)}`)),
+    })),
+  }),
+  breadcrumbSchema([{ name: t('nav.home'), url: canonical(translatePath('/')) }, page]),
+];
+---
+
+<Layout title={`${t('nav.projects')} | Aitorias`} description={t('projects.subtitle')} author="Aitor" jsonLd={jsonLd}>
+  <Breadcrumbs />
+  <ProjectsSection headingLevel="h1" />
+</Layout>

@@ -24,7 +24,7 @@
   - canonical URLs
   - `hreflang` alternates, including `x-default`
   - Open Graph and Twitter cards with per-page images
-  - JSON-LD structured data (`WebSite` and `Person` on the home page, `SoftwareSourceCode` on project pages)
+  - JSON-LD structured data on every page: `WebSite` and `Person` on the home page, a `CollectionPage` listing the case studies on the projects page, `SoftwareSourceCode` on project pages, and a `BreadcrumbList` matching the visible breadcrumbs
   - a sitemap and `robots.txt`
 - **Bilingual 404 page.** A single `404.html` (GitHub Pages serves one for every unknown URL). It shows the Spanish copy first for `/es/` URLs.
 - **Privacy-aware analytics.** Google Analytics 4 runs in a web worker through Partytown and uses Consent Mode behind a cookie banner. Custom click events come from `data-track-event` attributes, and are sent only after the visitor accepts.
@@ -129,9 +129,10 @@ The Markdown case study goes here (styled with the typography plugin).
 
 ## Quality & CI
 
-- **`ci.yml`** runs two jobs on every pull request and every push to `main`:
+- **`ci.yml`** runs two jobs on every pull request and every push to `main` (pushes that only change root Markdown files are skipped):
   - **verify:** `yarn install --immutable` → format check → Oxlint with warnings treated as errors → `astro check` → Vitest → production build
   - **e2e:** production build → Playwright tests in Chromium, with the browser cached between runs. The HTML report is uploaded when a test fails.
+- **Branch protection.** A ruleset on `main` requires a pull request, signed commits, CodeQL results and both CI jobs to pass before merging. PRs therefore have no path filters: a skipped required check never reports, so it would block the PR.
 - **`astro.yml`** builds and deploys to GitHub Pages on every push to `main`.
 - **`codeql.yml`** and **`dependency-review.yml`** handle security analysis and review new dependencies on pull requests.
 - **Dependabot** sends weekly updates for npm packages (which covers Yarn) and GitHub Actions, with a 7-day cooldown.
@@ -153,7 +154,7 @@ The end-to-end tests run against the production build and cover:
   - a visible focus outline of at least 3:1 on every tab stop
   - reflow at 320px
   - the cookie banner never covering the accessibility button
-- **Pages:** status codes, one `<h1>`, canonical, Open Graph, hreflang and JSON-LD; the bilingual 404 page
+- **Pages:** status codes, one `<h1>`, canonical, Open Graph, hreflang and JSON-LD; structured breadcrumbs that match the visible ones; a projects list whose structured data links to every case study; the bilingual 404 page
 - **Interactions:**
   - the language switch keeps you on the same page
   - project cards, project filters and contact links work
@@ -201,7 +202,7 @@ A custom Japanese pastel palette, declared with `@theme` in `src/styles/global.c
 │   │   ├── contact/             # Contact section
 │   │   ├── hero/                # Hero banner, photo and social links
 │   │   ├── home/                # HomePage composition shared by / and /es
-│   │   ├── projects/            # Projects grid, filters, cards and ProjectDetail
+│   │   ├── projects/            # Projects grid, filters, cards, ProjectsPage and ProjectDetail
 │   │   └── shared/              # Accessibility menu, cookie banner, image viewer, header, footer, drawer, icons, links…
 │   ├── config/                  # navigation.ts, social.ts
 │   ├── content/projects/        # English case studies (*.md); translations in es/

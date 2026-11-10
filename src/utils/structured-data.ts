@@ -3,6 +3,82 @@ import type { Lang } from "../i18n/ui";
 import type { Project } from "./projects";
 
 const PERSON_NAME = "Aitor";
+const SITE_NAME = "aitorias.is-a.dev";
+
+/**
+ * Absolute URL of a page in the same form as its canonical link: GitHub Pages
+ * serves every page as a directory, so it always ends with a slash.
+ */
+export function canonicalUrl(path: string, site: URL) {
+  return new URL(path.endsWith("/") ? path : `${path}/`, site);
+}
+
+/** A titled page, used for breadcrumb trails and item lists. */
+export interface LinkedPage {
+  name: string;
+  url: URL;
+}
+
+/**
+ * Breadcrumb trail, mirroring the visible breadcrumbs. Google can show it in
+ * place of the raw URL in search results.
+ */
+export function breadcrumbSchema(trail: LinkedPage[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: trail.map((page, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: page.name,
+      item: page.url.href,
+    })),
+  };
+}
+
+interface ProjectsPageSchemaOptions {
+  page: LinkedPage;
+  description: string;
+  lang: Lang;
+  site: URL;
+  /** Case studies in the order the page shows them. */
+  projects: LinkedPage[];
+}
+
+/** Projects listing: a collection page whose main entity is the list of case studies. */
+export function projectsPageSchema({
+  page,
+  description,
+  lang,
+  site,
+  projects,
+}: ProjectsPageSchemaOptions) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": page.url.href,
+    url: page.url.href,
+    name: page.name,
+    description,
+    inLanguage: lang,
+    isPartOf: {
+      "@type": "WebSite",
+      "@id": new URL("/#website", site).href,
+      name: SITE_NAME,
+      url: site.href,
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: projects.length,
+      itemListElement: projects.map((project, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: project.name,
+        url: project.url.href,
+      })),
+    },
+  };
+}
 
 /** schema.org Person describing the site owner. */
 export function personSchema(site: URL, jobTitle: string, imageUrl?: string) {
@@ -30,7 +106,7 @@ export function homeSchema(
       {
         "@type": "WebSite",
         "@id": new URL("/#website", site).href,
-        name: "aitorias.is-a.dev",
+        name: SITE_NAME,
         url: site.href,
         inLanguage: lang,
         author: { "@id": new URL("/#person", site).href },

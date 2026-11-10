@@ -1,7 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { SOCIAL_LINKS } from "../config/social";
 import type { Project } from "./projects";
-import { homeSchema, personSchema, projectSchema } from "./structured-data";
+import {
+  breadcrumbSchema,
+  canonicalUrl,
+  homeSchema,
+  personSchema,
+  projectSchema,
+  projectsPageSchema,
+} from "./structured-data";
 
 const site = new URL("https://aitorias.is-a.dev");
 
@@ -101,5 +108,89 @@ describe("projectSchema", () => {
       "dateModified",
     ])
       expect(schema).not.toHaveProperty(key);
+  });
+});
+
+describe("canonicalUrl", () => {
+  it("always ends with a slash, like the canonical links", () => {
+    expect(canonicalUrl("/es", site).href).toBe(
+      "https://aitorias.is-a.dev/es/",
+    );
+    expect(canonicalUrl("/projects/", site).href).toBe(
+      "https://aitorias.is-a.dev/projects/",
+    );
+    expect(canonicalUrl("/", site).href).toBe("https://aitorias.is-a.dev/");
+  });
+});
+
+describe("breadcrumbSchema", () => {
+  it("numbers the trail from 1 in the order given", () => {
+    const schema = breadcrumbSchema([
+      { name: "Home", url: canonicalUrl("/", site) },
+      { name: "Projects", url: canonicalUrl("/projects", site) },
+    ]);
+
+    expect(schema).toEqual({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://aitorias.is-a.dev/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Projects",
+          item: "https://aitorias.is-a.dev/projects/",
+        },
+      ],
+    });
+  });
+});
+
+describe("projectsPageSchema", () => {
+  const schema = projectsPageSchema({
+    page: { name: "Proyectos", url: canonicalUrl("/es/proyectos", site) },
+    description: "Trabajo seleccionado",
+    lang: "es",
+    site,
+    projects: [
+      { name: "B", url: canonicalUrl("/es/proyectos/b", site) },
+      { name: "A", url: canonicalUrl("/es/proyectos/a", site) },
+    ],
+  });
+
+  it("describes the page and links it to the website node", () => {
+    expect(schema).toMatchObject({
+      "@type": "CollectionPage",
+      "@id": "https://aitorias.is-a.dev/es/proyectos/",
+      name: "Proyectos",
+      inLanguage: "es",
+      isPartOf: { "@id": "https://aitorias.is-a.dev/#website" },
+    });
+    expect(schema.isPartOf["@id"]).toBe(
+      homeSchema(site, "es", "x")["@graph"][0]["@id"],
+    );
+  });
+
+  it("lists the case studies in display order", () => {
+    expect(schema.mainEntity.numberOfItems).toBe(2);
+    expect(schema.mainEntity.itemListElement).toEqual([
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "B",
+        url: "https://aitorias.is-a.dev/es/proyectos/b/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "A",
+        url: "https://aitorias.is-a.dev/es/proyectos/a/",
+      },
+    ]);
   });
 });

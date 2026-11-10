@@ -8,6 +8,7 @@ export const PAGES = [
   "/projects/",
   "/projects/cdm-optimiser/",
   "/es/",
+  "/es/proyectos/",
   "/es/proyectos/cdm-optimiser/",
 ] as const;
 
