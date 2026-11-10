@@ -20,6 +20,8 @@ const projects = defineCollection({
         techStack: z.array(z.string()),
         thumbnail: image().optional(),
         liveUrl: z.url().optional(),
+        /** Wording of the `liveUrl` button: a demo app or a real client site. */
+        liveLabel: z.enum(["demo", "site"]).default("demo"),
         gitHubUrl: z.url().optional(),
         featured: z.boolean().default(false),
         lang: z.enum(["en", "es"]).default("en"),

@@ -7,6 +7,7 @@ export const PAGES = [
   "/",
   "/projects/",
   "/projects/cdm-optimiser/",
+  "/projects/awaken-brnd/",
   "/es/",
   "/es/proyectos/",
   "/es/proyectos/cdm-optimiser/",

@@ -3,7 +3,7 @@ title: "Aitorias.is-a.dev Portfolio"
 tagline: "Mi espacio personal en la web: un sitio estático rápido, accesible y bilingüe creado con Astro v7 y Tailwind CSS v4."
 status: "active"
 startDate: "2026-02-01"
-order: 2
+order: 3
 role: "Diseño y desarrollo"
 techStack: ["Astro", "TypeScript", "Tailwind"]
 thumbnail: "../../../assets/images/projects/aitoriasdev-portfolio.webp"
