@@ -14,7 +14,7 @@
 
 ## Features
 
-- **Project case studies.** Each project page has a status, role, timeline, key highlights, a screenshot gallery, a Markdown write-up and a call to action. All of it is driven by type-safe frontmatter.
+- **Project case studies.** Personal, open-source and client work, such as an e-commerce store built for a Spanish sportswear brand. Each project page has a status, role, timeline, key highlights, a screenshot gallery, a Markdown write-up and a call to action. All of it is driven by type-safe frontmatter.
 - **Image viewer.** Clicking a screenshot opens it enlarged over a dark backdrop instead of leaving the site. You can browse the gallery with the arrow buttons, the arrow keys or a swipe, and close it with Escape, the close button or a click outside the image. It's built on the native `<dialog>` element, and without JavaScript the images are still plain links to the full-size file.
 - **Build-time GitHub data.** Project pages show the latest release and last update of their repository. The data is fetched once per build, and the page still renders if GitHub can't be reached.
 - **Contact.** A "Let's work together" section with LinkedIn and GitHub links. The "Available for new opportunities" badge and the header both link to it.
@@ -109,8 +109,9 @@ order: 1 # lower numbers are listed first; ties are sorted by date
 role: "Front-end lead"
 techStack: ["React", "TypeScript"] # also generates the project filters
 thumbnail: "../../assets/images/projects/my-project.webp" # also used as the social preview image
-gitHubUrl: "https://github.com/user/repo"
+gitHubUrl: "https://github.com/user/repo" # optional, e.g. omit it for client work
 liveUrl: "https://example.com"
+liveLabel: "demo" # button text: "demo" (Live demo) or "site" (Visit site) for a real client website
 featured: true # shown on the home page
 highlights:
   - "A key achievement."
@@ -157,7 +158,7 @@ The end-to-end tests run against the production build and cover:
 - **Pages:** status codes, one `<h1>`, canonical, Open Graph, hreflang and JSON-LD; structured breadcrumbs that match the visible ones; a projects list whose structured data links to every case study; the bilingual 404 page
 - **Interactions:**
   - the language switch keeps you on the same page
-  - project cards, project filters and contact links work
+  - project cards, project filters and contact links work, and the card buttons never break their labels across lines (desktop, tablet and phone)
   - theme and accessibility preferences persist and apply before the first paint
   - the mobile menu traps focus and closes with Escape
   - the image viewer opens in place, browses with buttons, keys and swipes, closes three ways and returns focus, while Ctrl/Cmd-click still opens a new tab

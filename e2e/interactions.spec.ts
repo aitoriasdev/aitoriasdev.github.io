@@ -94,8 +94,16 @@ test.describe("with cookies decided", () => {
       "Aitorias.is-a.dev Portfolio",
     );
 
+    await filter("Shopify").click();
+    await expect(cards.filter({ visible: true })).toHaveCount(1);
+    await expect(cards.filter({ visible: true })).toContainText(
+      "Awaken Brnd Store",
+    );
+
     await filter("All").click();
-    await expect(cards.filter({ visible: true })).toHaveCount(2);
+    await expect(cards.filter({ visible: true })).toHaveCount(
+      await cards.count(),
+    );
   });
 
   test("the mobile menu traps focus and closes with Escape", async ({

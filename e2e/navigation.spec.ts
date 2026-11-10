@@ -89,10 +89,17 @@ test("the projects page lists every case study in its structured data", async ({
   );
   expect(listed).toHaveLength(cardLinks.length);
 
-  // Each listed URL opens a real case study
   for (const url of listed) {
-    const response = await page.request.get(url);
-    expect(response.status(), url).toBe(200);
+    // Listed URLs are canonical production URLs; check this build serves each path
+    const { origin, pathname } = new URL(url);
+    expect(origin).toBe("https://aitorias.is-a.dev");
+    expect(
+      cardLinks.map((href) => `${new URL(href).pathname}/`),
+      "matches a project card",
+    ).toContain(pathname);
+
+    const response = await page.request.get(pathname);
+    expect(response.status(), pathname).toBe(200);
   }
 });
 
@@ -163,3 +170,58 @@ test("unknown URLs get the bilingual 404 page, Spanish first under /es/", async 
     page.getByRole("link", { name: "Ir a la página de inicio" }),
   ).toHaveAttribute("href", "/es");
 });
+
+test("client sites get a full-width 'Visit site' button instead of 'Live demo'", async ({
+  page,
+}) => {
+  await page.goto("/projects/awaken-brnd/");
+  const actions = page.locator("article header");
+
+  const visit = actions.getByRole("link", { name: /^Visit site/ });
+  await expect(visit).toHaveAttribute("href", "https://awakenbrnd.store/en");
+  await expect(
+    actions.getByRole("link", { name: /Live demo|GitHub/ }),
+  ).toHaveCount(0);
+  // A lone button fills its row
+  expect(
+    await visit.evaluate(
+      (el) =>
+        el.getBoundingClientRect().width /
+        el.parentElement!.getBoundingClientRect().width,
+    ),
+  ).toBeCloseTo(1, 2);
+
+  await page.goto("/es/proyectos/awaken-brnd/");
+  await expect(
+    page.locator("article header").getByRole("link", { name: /^Ver la web/ }),
+  ).toBeVisible();
+});
+
+for (const width of [1280, 1024, 390]) {
+  test(`project card buttons keep their labels on one line at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/es/proyectos/");
+    const buttons = page.locator(
+      'article.project-card a:is([data-track-event^="project_github_click"], [data-track-event^="project_demo_click"])',
+    );
+
+    expect(await buttons.count()).toBe(5); // GitHub + live on two cards, live only on one
+    const lineCounts = await buttons.evaluateAll((links) =>
+      links.map((link) => {
+        const label = [...link.querySelectorAll("span")].find(
+          (s) => !s.classList.contains("sr-only"),
+        )!;
+        const range = document.createRange();
+        range.selectNodeContents(label);
+        return {
+          label: label.textContent,
+          lines: range.getClientRects().length,
+        };
+      }),
+    );
+    for (const { label, lines } of lineCounts)
+      expect(lines, label ?? "").toBe(1);
+  });
+}
