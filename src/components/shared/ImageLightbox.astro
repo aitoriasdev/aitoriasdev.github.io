@@ -1,0 +1,216 @@
+---
+/**
+ * Full-screen image viewer for links marked with `data-lightbox="<group>"`.
+ *
+ * Progressive enhancement: each trigger is a normal link to the full-size
+ * image, so it still works without JavaScript (or with Ctrl/Cmd-click to open
+ * a new tab). With JavaScript, a plain click opens the image in a native modal
+ * <dialog>, which gives us the focus trap, Escape to close, an inert page
+ * behind it and focus returning to the link for free. Links sharing a group
+ * name can be browsed with the arrow buttons, the arrow keys or a swipe.
+ *
+ * Optional `data-caption` on the link is shown under the image; the alt text
+ * is taken from the thumbnail <img> inside the link.
+ */
+import Icon from './Icon.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const t = useTranslations(getLangFromUrl(Astro.url));
+
+// Fixed light-on-dark colours: the backdrop is always black, whatever the theme
+const control =
+  'absolute z-10 inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-black/70 text-white ring-1 ring-white/30 transition-colors hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
+---
+
+<dialog
+  id="image-lightbox"
+  class="lightbox fixed inset-0 m-0 h-dvh max-h-none w-dvw max-w-none overflow-hidden bg-transparent p-0 text-white backdrop:bg-black/90 open:flex"
+  aria-label={t('lightbox.label')}
+  data-counter={t('lightbox.counter')}
+>
+  <figure
+    class="m-auto flex max-h-full w-full flex-col items-center justify-center gap-3 px-4 py-18 sm:px-20 sm:py-16"
+    data-lightbox-stage
+  >
+    <img
+      class="lightbox-image block h-auto max-h-[calc(100dvh-10rem)] w-auto max-w-full rounded-lg object-contain shadow-2xl"
+      alt=""
+      decoding="async"
+      data-lightbox-image
+    />
+    <figcaption class="max-w-3xl text-center text-base text-white" data-lightbox-caption hidden></figcaption>
+  </figure>
+
+  <p
+    class="absolute top-4 left-4 rounded-full bg-black/70 px-3 py-1.5 text-sm text-white ring-1 ring-white/30"
+    aria-live="polite"
+    data-lightbox-counter
+    hidden
+  >
+  </p>
+
+  <button type="button" class:list={[control, 'top-3 right-3']} aria-label={t('lightbox.close')} autofocus data-lightbox-close>
+    <Icon name="close" class="h-6 w-6" />
+  </button>
+  <button
+    type="button"
+    class:list={[control, 'bottom-4 left-4 sm:top-1/2 sm:bottom-auto sm:-translate-y-1/2']}
+    aria-label={t('lightbox.previous')}
+    data-lightbox-prev
+    hidden
+  >
+    <Icon name="chevron-left" class="h-6 w-6" />
+  </button>
+  <button
+    type="button"
+    class:list={[control, 'right-4 bottom-4 sm:top-1/2 sm:bottom-auto sm:-translate-y-1/2']}
+    aria-label={t('lightbox.next')}
+    data-lightbox-next
+    hidden
+  >
+    <Icon name="chevron-right" class="h-6 w-6" />
+  </button>
+</dialog>
+
+<style>
+  /* Stop the page behind the viewer from scrolling */
+  :global(html:has(#image-lightbox[open])) {
+    overflow: hidden;
+  }
+
+  /* The global motion overrides use `*`, which this scoped selector would beat,
+     so the zoom only runs when neither the OS nor the site asks for less motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html:not(.reduce-motion)) .lightbox[open] .lightbox-image {
+      animation: lightbox-zoom 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    :global(html:not(.reduce-motion)) .lightbox[open]::backdrop {
+      animation: lightbox-fade 220ms ease-out;
+    }
+  }
+
+  @keyframes lightbox-zoom {
+    from {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+  }
+
+  @keyframes lightbox-fade {
+    from {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  const SWIPE_THRESHOLD = 50;
+
+  function initLightbox() {
+    const dialog = document.getElementById('image-lightbox') as HTMLDialogElement | null;
+
+    if (!dialog || dialog.dataset.ready) return;
+
+    dialog.dataset.ready = 'true';
+
+    const stage = dialog.querySelector<HTMLElement>('[data-lightbox-stage]')!;
+    const image = dialog.querySelector<HTMLImageElement>('[data-lightbox-image]')!;
+    const caption = dialog.querySelector<HTMLElement>('[data-lightbox-caption]')!;
+    const counter = dialog.querySelector<HTMLElement>('[data-lightbox-counter]')!;
+    const prevButton = dialog.querySelector<HTMLButtonElement>('[data-lightbox-prev]')!;
+    const nextButton = dialog.querySelector<HTMLButtonElement>('[data-lightbox-next]')!;
+    const closeButton = dialog.querySelector<HTMLButtonElement>('[data-lightbox-close]')!;
+    const counterTemplate = dialog.dataset.counter ?? '{current} / {total}';
+
+    let items: HTMLAnchorElement[] = [];
+    let index = 0;
+    let opener: HTMLElement | null = null;
+
+    document.querySelectorAll('a[data-lightbox]').forEach((link) => link.setAttribute('aria-haspopup', 'dialog'));
+
+    const wrap = (i: number) => (i + items.length) % items.length;
+
+    function show(i: number) {
+      index = wrap(i);
+      const link = items[index];
+      const hasMany = items.length > 1;
+
+      image.src = link.href;
+      image.alt = link.querySelector('img')?.alt ?? '';
+      caption.textContent = link.dataset.caption ?? '';
+      caption.hidden = !caption.textContent;
+
+      prevButton.hidden = !hasMany;
+      nextButton.hidden = !hasMany;
+      counter.hidden = !hasMany;
+      counter.textContent = counterTemplate
+        .replace('{current}', String(index + 1))
+        .replace('{total}', String(items.length));
+
+      // Warm the cache so browsing feels instant
+      if (hasMany) {
+        new Image().src = items[wrap(index + 1)].href;
+        new Image().src = items[wrap(index - 1)].href;
+      }
+    }
+
+    document.addEventListener('click', (event) => {
+      const isPlainClick =
+        event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+
+      if (event.defaultPrevented || !isPlainClick) return;
+
+      const link = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[data-lightbox]');
+
+      if (!link) return;
+
+      event.preventDefault();
+      opener = link;
+      items = [
+        ...document.querySelectorAll<HTMLAnchorElement>(`a[data-lightbox="${CSS.escape(link.dataset.lightbox ?? '')}"]`),
+      ];
+      show(items.indexOf(link));
+      dialog.showModal();
+    });
+
+    prevButton.addEventListener('click', () => show(index - 1));
+    nextButton.addEventListener('click', () => show(index + 1));
+    closeButton.addEventListener('click', () => dialog.close());
+
+    // Clicking the dark area around the image closes the viewer
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog || event.target === stage) dialog.close();
+    });
+
+    dialog.addEventListener('keydown', (event) => {
+      if (items.length < 2) return;
+      if (event.key === 'ArrowLeft') show(index - 1);
+      else if (event.key === 'ArrowRight') show(index + 1);
+      else return;
+      event.preventDefault();
+    });
+
+    let touchStartX: number | null = null;
+
+    stage.addEventListener('touchstart', (event) => (touchStartX = event.touches[0].clientX), { passive: true });
+    stage.addEventListener(
+      'touchend',
+      (event) => {
+        if (touchStartX === null || items.length < 2) return;
+        const deltaX = event.changedTouches[0].clientX - touchStartX;
+        touchStartX = null;
+        if (Math.abs(deltaX) >= SWIPE_THRESHOLD) show(index + (deltaX < 0 ? 1 : -1));
+      },
+      { passive: true },
+    );
+
+    dialog.addEventListener('close', () => {
+      image.removeAttribute('src');
+      opener?.focus({ preventScroll: true });
+      opener = null;
+    });
+  }
+
+  initLightbox();
+</script>

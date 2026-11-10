@@ -56,6 +56,20 @@ for (const theme of ["light", "dark"] as const) {
 
       expect(await scanForViolations(page)).toEqual([]);
     });
+
+    for (const path of [
+      "/projects/cdm-optimiser/",
+      "/es/proyectos/cdm-optimiser/",
+    ]) {
+      test(`image viewer open on ${path}`, async ({ page }) => {
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.goto(path);
+        await page.locator("a[data-lightbox]").first().click();
+        await expect(page.locator("#image-lightbox")).toBeVisible();
+
+        expect(await scanForViolations(page)).toEqual([]);
+      });
+    }
   });
 }
 
