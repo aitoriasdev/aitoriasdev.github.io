@@ -6,21 +6,24 @@ import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
 interface Props {
   gitHubUrl?: string;
   liveUrl?: string;
+  /** `site` for real client websites, `demo` (default) for demo apps. */
+  liveLabel?: 'demo' | 'site';
   title: string;
 }
 
-const { gitHubUrl, liveUrl, title } = Astro.props;
+const { gitHubUrl, liveUrl, liveLabel = 'demo', title } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<div class="flex w-full items-stretch gap-2">
+<!-- Buttons share the row and wrap onto their own rows when there is no room; labels never break -->
+<div class="flex w-full flex-wrap items-stretch gap-2">
   {gitHubUrl && (
     <Link
       href={gitHubUrl}
       isExternal
       variant="button-outline"
-      class="w-1/2"
+      class="flex-1 whitespace-nowrap"
       data-track-event={`project_github_click_${title.toLowerCase().replace(/\s+/g, '_')}`}
     >
       <Icon name="github" class="h-[1.125em] w-[1.125em] shrink-0" />
@@ -34,10 +37,10 @@ const t = useTranslations(lang);
       href={liveUrl}
       isExternal
       variant="button-primary"
-      class="w-1/2"
+      class="flex-1 whitespace-nowrap"
       data-track-event={`project_demo_click_${title.toLowerCase().replace(/\s+/g, '_')}`}
     >
-      <span>{t('projects.liveDemo')}</span>
+      <span>{t(liveLabel === 'site' ? 'projects.visitSite' : 'projects.liveDemo')}</span>
       <Icon name="external" class="h-[1.125em] w-[1.125em] shrink-0" />
     </Link>
   )}
