@@ -38,7 +38,12 @@ const control =
       decoding="async"
       data-lightbox-image
     />
-    <figcaption class="max-w-3xl text-center text-base text-white" data-lightbox-caption hidden></figcaption>
+    <!-- Own dark background: the ::backdrop is invisible to contrast checkers -->
+    <figcaption
+      class="max-w-3xl rounded-lg bg-black/70 px-3 py-1.5 text-center text-base text-white ring-1 ring-white/30"
+      data-lightbox-caption
+      hidden
+    ></figcaption>
   </figure>
 
   <p
