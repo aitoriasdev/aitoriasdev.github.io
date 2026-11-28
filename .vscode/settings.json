@@ -1,9 +1,38 @@
 {
   "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
-  "editor.formatOnSaveMode": "file" // tell oxfmt to format the whole file, not only the modified lines
-  // Or enable it for specific file types:
-  // "[javascript]": {
-  //   "editor.defaultFormatter": "oxc.oxc-vscode"
-  // },
+  "editor.formatOnSaveMode": "file",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "explicit"
+  },
+
+  // oxfmt does not format .astro files yet
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode",
+    "editor.formatOnSave": false
+  },
+
+  // Use the project's TypeScript (astro check needs 6.x) instead of VS Code's
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+
+  // Tailwind v4 directives (@theme, @apply...) in global.css
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+
+  "search.exclude": {
+    "dist": true,
+    ".astro": true,
+    ".yarn": true,
+    "test-results": true,
+    "playwright-report": true,
+    "yarn.lock": true
+  },
+  "files.watcherExclude": {
+    "**/dist/**": true,
+    "**/.astro/**": true,
+    "**/test-results/**": true,
+    "**/playwright-report/**": true
+  }
 }
